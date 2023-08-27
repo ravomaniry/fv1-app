@@ -16,18 +16,19 @@ class QuizItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ScreenH2(question.question),
-        for (final opt in question.options)
-          RadioListTile(
-            title: Text(opt),
-            value: opt,
-            groupValue: value,
-            onChanged: onChanged,
-          ),
-      ],
+    return ListTile(
+      title: ScreenH2(question.question),
+      subtitle: Column(
+        children: [
+          for (final opt in question.options)
+            RadioListTile(
+              title: Text(opt),
+              value: opt,
+              groupValue: value,
+              onChanged: onChanged,
+            ),
+        ],
+      ),
     );
   }
 }

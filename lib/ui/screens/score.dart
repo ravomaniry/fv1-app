@@ -18,7 +18,7 @@ class ScoreScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle()),
+      appBar: buildAppBar(context),
       body: Column(
         children: [
           ScreenH1(testChapter.title),

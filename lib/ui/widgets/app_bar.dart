@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 
-class AppBarTitle extends StatelessWidget {
-  const AppBarTitle({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Row(
+AppBar buildAppBar(BuildContext context) {
+  final theme = Theme.of(context);
+  return AppBar(
+    centerTitle: false,
+    leadingWidth: 0,
+    title: Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
           'FITIAVANA',
           style: TextStyle(
+            fontWeight: FontWeight.bold,
             color: theme.colorScheme.primary,
+            fontStyle: FontStyle.italic,
             fontSize: 24,
           ),
         ),
@@ -21,10 +22,10 @@ class AppBarTitle extends StatelessWidget {
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: theme.colorScheme.secondary,
-            fontSize: 16,
+            fontSize: 20,
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
 }

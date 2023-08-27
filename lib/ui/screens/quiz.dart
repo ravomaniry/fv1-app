@@ -20,13 +20,18 @@ class QuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle()),
+      appBar: buildAppBar(context),
       body: Column(
         children: [
           ScreenH1(testChapter.title),
-          for (final q in testQuestions)
-            QuizItemWidget(question: q, value: '', onChanged: (_) {}),
-          Expanded(child: Container()),
+          Expanded(
+            child: ListView(
+              children: [
+                for (final q in testQuestions)
+                  QuizItemWidget(question: q, value: '', onChanged: (_) {})
+              ],
+            ),
+          ),
           ContinueButton(onPressed: () => _goToScore(context))
         ],
       ),

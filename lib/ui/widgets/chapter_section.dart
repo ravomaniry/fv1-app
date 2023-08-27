@@ -1,7 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:fv1/models/section.dart';
-import 'package:fv1/ui/widgets/AudioPlayer.dart';
-import 'package:fv1/ui/widgets/h2.dart';
+import 'package:fv1/ui/widgets/audio_player.dart';
 
 class SectionWidget extends StatelessWidget {
   final SectionModel _section;
@@ -13,8 +12,10 @@ class SectionWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ScreenH2(_section.subtitle),
-        Text(_section.content),
+        ListTile(
+          title: Text(_section.subtitle),
+          subtitle: Text(_section.content),
+        ),
         AudioPlayer(_section.audioUrl),
       ],
     );

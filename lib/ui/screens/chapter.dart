@@ -20,12 +20,18 @@ class ChapterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle()),
+      appBar: buildAppBar(context),
       body: Column(
         children: [
           ScreenH1(testChapter.title),
-          for (final section in testChapter.sections) SectionWidget(section),
-          Expanded(child: Container()),
+          Expanded(
+            child: ListView(
+              children: [
+                for (final section in testChapter.sections)
+                  SectionWidget(section),
+              ],
+            ),
+          ),
           ContinueButton(onPressed: () => _goToChapter(context)),
         ],
       ),

@@ -30,7 +30,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const AppBarTitle()),
+      appBar: buildAppBar(context),
       floatingActionButton: SearchButton(
         onPressed: () => _goToExplorer(context),
       ),

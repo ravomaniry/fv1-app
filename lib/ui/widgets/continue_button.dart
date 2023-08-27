@@ -9,10 +9,16 @@ class ContinueButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ActionButton(
-      label: 'TOHIZANA',
-      icon: Icons.chevron_right,
-      onPressed: onPressed,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ActionButton(
+          label: 'TOHIZANA',
+          icon: Icons.chevron_right,
+          onPressed: onPressed,
+        ),
+        SizedBox(width: MediaQuery.of(context).size.width * 0.02),
+      ],
     );
   }
 }
