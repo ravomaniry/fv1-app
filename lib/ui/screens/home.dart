@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/widgets/action_button.dart';
-import 'package:fv1/ui/widgets/app_bar.dart';
+import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/search_button.dart';
 
@@ -29,8 +29,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
+    return AppContainer(
       floatingActionButton: SearchButton(
         onPressed: () => _goToExplorer(context),
       ),

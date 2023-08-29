@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/theme.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/quiz.dart';
 import 'package:fv1/ui/screens/score.dart';
+import 'package:fv1/ui/theme.dart';
 
 void main() {
   runApp(const MyApp());

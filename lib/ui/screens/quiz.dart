@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/mocks/test_chapter.dart';
 import 'package:fv1/mocks/test_quiz.dart';
 import 'package:fv1/ui/screens/score.dart';
-import 'package:fv1/ui/widgets/app_bar.dart';
+import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/quiz_item.dart';
@@ -19,8 +19,7 @@ class QuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: buildAppBar(context),
+    return AppContainer(
       body: Column(
         children: [
           ScreenH1(testChapter.title),
