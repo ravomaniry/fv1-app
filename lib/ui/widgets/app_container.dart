@@ -14,7 +14,7 @@ class AppContainer extends StatelessWidget {
       appBar: buildAppBar(context),
       floatingActionButton: floatingActionButton,
       body: Container(
-        padding: const EdgeInsets.only(top: 12, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 4, left: 8, right: 8),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(

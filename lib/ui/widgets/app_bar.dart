@@ -5,19 +5,19 @@ AppBar buildAppBar(BuildContext context) {
   return AppBar(
     centerTitle: false,
     leadingWidth: 0,
-    leading: const BackButton(),
-    actions: const [
-      Icon(Icons.more_vert),
+    leading: BackButton(color: theme.colorScheme.primary),
+    actions: [
+      Icon(Icons.more_vert, color: theme.colorScheme.primary),
     ],
     title: Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text(
+        Text(
           'FITIAVANA',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.white,
+            color: theme.colorScheme.primary,
             fontSize: 24,
           ),
         ),

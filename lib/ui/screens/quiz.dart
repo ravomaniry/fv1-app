@@ -8,10 +8,23 @@ import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/quiz_item.dart';
 import 'package:fv1/utils/router.dart';
 
-class QuizScreen extends StatelessWidget {
+class QuizScreen extends StatefulWidget {
   static const route = '/quiz';
 
   const QuizScreen({super.key});
+
+  @override
+  State<QuizScreen> createState() => _QuizScreenState();
+}
+
+class _QuizScreenState extends State<QuizScreen> {
+  Map<String, dynamic> formValues = {};
+
+  void _onChanged(String name, dynamic value) {
+    setState(() {
+      formValues[name] = value;
+    });
+  }
 
   void _goToScore(BuildContext context) {
     pushOnTopOfHome(context, ScoreScreen.route);
@@ -27,7 +40,11 @@ class QuizScreen extends StatelessWidget {
             child: ListView(
               children: [
                 for (final q in testQuestions)
-                  QuizItemWidget(question: q, value: '', onChanged: (_) {})
+                  QuizItemWidget(
+                    question: q,
+                    value: formValues[q.key],
+                    onChanged: (v) => _onChanged(q.key, v),
+                  ),
               ],
             ),
           ),

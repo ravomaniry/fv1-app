@@ -22,7 +22,10 @@ class QuizItemWidget extends StatelessWidget {
         children: [
           for (final opt in question.options)
             RadioListTile(
-              title: Text(opt),
+              title: Text(
+                opt,
+                style: const TextStyle(fontWeight: FontWeight.normal),
+              ),
               value: opt,
               groupValue: value,
               onChanged: onChanged,

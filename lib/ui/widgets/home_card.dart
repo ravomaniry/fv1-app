@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/ui/widgets/card_container.dart';
 
 class HomeCard extends StatelessWidget {
   final String title;
@@ -14,7 +15,7 @@ class HomeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return CardContainer(
       child: Column(
         children: [
           ListTile(
