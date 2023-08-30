@@ -1,15 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/action_button.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
+import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/search_button.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
   static const route = '';
 
   const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AppState>(builder: (_, appState, __) => _Body(appState));
+  }
+}
+
+class _Body extends StatelessWidget {
+  final AppState _appState;
+
+  const _Body(this._appState);
 
   void _goToExplorer(BuildContext context) {
     Navigator.of(context).pushNamed(ExplorerScreen.route);
@@ -33,21 +47,18 @@ class HomeScreen extends StatelessWidget {
       floatingActionButton: SearchButton(
         onPressed: () => _goToExplorer(context),
       ),
-      body: Column(
-        children: [
-          HomeCard(
-            title: 'Fahasoavana sy finoana',
-            subtitle: 'Mianara mampiaraka ny herin\'ny fahasoavan\''
-                'Andriamanitra sy ny finoana hahazoana vokatra mahagaga.',
-            actionButton: _buildActionButton(context),
-          ),
-          HomeCard(
-            title: 'Fitiavana voalohany',
-            subtitle: 'Hianarana amin\'ny ankapobeny ny fototry ny'
-                'fifandraisana amin\'Andriamanitra.',
-            actionButton: _buildActionButton(context),
-          ),
-        ],
+      body: WrapInLoader(
+        isReady: _appState.localTeachings != null,
+        builder: () => Column(
+          children: [
+            for (final teaching in _appState.localTeachings!)
+              HomeCard(
+                title: teaching.title,
+                subtitle: teaching.subtitle,
+                actionButton: _buildActionButton(context),
+              ),
+          ],
+        ),
       ),
     );
   }

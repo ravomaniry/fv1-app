@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/ui/screens/chapter.dart';
-import 'package:fv1/ui/screens/explorer.dart';
-import 'package:fv1/ui/screens/home.dart';
-import 'package:fv1/ui/screens/quiz.dart';
-import 'package:fv1/ui/screens/score.dart';
-import 'package:fv1/ui/screens/teaching_summary.dart';
-import 'package:fv1/ui/theme.dart';
+import 'package:fv1/app.dart';
+import 'package:fv1/providers/app_state.dart';
+import 'package:fv1/providers/explorer_state.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,18 +13,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Fitiavana voalohany',
-      theme: createTheme(),
-      initialRoute: HomeScreen.route,
-      routes: {
-        HomeScreen.route: (_) => const HomeScreen(),
-        ExplorerScreen.route: (_) => const ExplorerScreen(),
-        TeachingSummaryScreen.route: (_) => const TeachingSummaryScreen(),
-        ChapterScreen.route: (_) => const ChapterScreen(),
-        QuizScreen.route: (_) => const QuizScreen(),
-        ScoreScreen.route: (_) => const ScoreScreen(),
-      },
-    );
+    final providers = [
+      ChangeNotifierProvider<AppState>(create: (_) => AppState()),
+      ChangeNotifierProvider<ExplorerState>(create: (_) => ExplorerState()),
+    ];
+    return Fv1App(providers);
   }
 }

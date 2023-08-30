@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 ThemeData createTheme() {
   const bgColor = Color(0xfff4f4f4);
   final primary = _createMaterialColor(const Color(0xff5c4aff));
+  const accent = Colors.deepOrange;
   return ThemeData(
     unselectedWidgetColor: Colors.black38,
+    useMaterial3: true,
     appBarTheme: const AppBarTheme(
       backgroundColor: bgColor,
       elevation: 0,
@@ -13,7 +15,7 @@ ThemeData createTheme() {
     scaffoldBackgroundColor: bgColor,
     colorScheme: ColorScheme.fromSwatch(
       primarySwatch: primary,
-      accentColor: Colors.deepOrange,
+      accentColor: accent,
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: ButtonStyle(
@@ -40,6 +42,13 @@ ThemeData createTheme() {
               : Colors.black38;
         },
       ),
+    ),
+    floatingActionButtonTheme: const FloatingActionButtonThemeData(
+      elevation: 2,
+      backgroundColor: accent,
+    ),
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(foregroundColor: primary.shade500),
     ),
   );
 }
