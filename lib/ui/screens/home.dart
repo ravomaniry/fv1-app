@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
+import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/action_button.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
@@ -15,15 +15,15 @@ class HomeScreen extends StatelessWidget {
     Navigator.of(context).pushNamed(ExplorerScreen.route);
   }
 
-  void _goToChapter(BuildContext context) {
-    Navigator.of(context).pushNamed(ChapterScreen.route);
+  void _onTeachingSelected(BuildContext context) {
+    Navigator.of(context).pushNamed(TeachingSummaryScreen.route);
   }
 
   Widget _buildActionButton(BuildContext context) {
     return ActionButton(
       label: 'TOHIZANA',
       icon: Icons.chevron_right,
-      onPressed: () => _goToChapter(context),
+      onPressed: () => _onTeachingSelected(context),
     );
   }
 

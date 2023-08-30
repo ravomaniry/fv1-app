@@ -6,7 +6,6 @@ import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/quiz_item.dart';
-import 'package:fv1/utils/router.dart';
 
 class QuizScreen extends StatefulWidget {
   static const route = '/quiz';
@@ -26,8 +25,8 @@ class _QuizScreenState extends State<QuizScreen> {
     });
   }
 
-  void _goToScore(BuildContext context) {
-    pushOnTopOfHome(context, ScoreScreen.route);
+  void _onContinue(BuildContext context) {
+    Navigator.of(context).pushReplacementNamed(ScoreScreen.route);
   }
 
   @override
@@ -48,7 +47,7 @@ class _QuizScreenState extends State<QuizScreen> {
               ],
             ),
           ),
-          ContinueButton(onPressed: () => _goToScore(context))
+          ContinueButton(onPressed: () => _onContinue(context))
         ],
       ),
     );

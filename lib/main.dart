@@ -4,6 +4,7 @@ import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/quiz.dart';
 import 'package:fv1/ui/screens/score.dart';
+import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/theme.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         HomeScreen.route: (_) => const HomeScreen(),
         ExplorerScreen.route: (_) => const ExplorerScreen(),
+        TeachingSummaryScreen.route: (_) => const TeachingSummaryScreen(),
         ChapterScreen.route: (_) => const ChapterScreen(),
         QuizScreen.route: (_) => const QuizScreen(),
         ScoreScreen.route: (_) => const ScoreScreen(),

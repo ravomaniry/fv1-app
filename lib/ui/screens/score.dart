@@ -4,7 +4,6 @@ import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
-import 'package:fv1/utils/router.dart';
 
 class ScoreScreen extends StatelessWidget {
   static const route = '/score';
@@ -12,7 +11,7 @@ class ScoreScreen extends StatelessWidget {
   const ScoreScreen({super.key});
 
   _goToChapter(BuildContext context) {
-    pushOnTopOfHome(context, ChapterScreen.route);
+    Navigator.of(context).pushReplacementNamed(ChapterScreen.route);
   }
 
   @override
