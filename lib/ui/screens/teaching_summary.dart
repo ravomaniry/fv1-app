@@ -6,6 +6,7 @@ import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class TeachingSummaryScreen extends StatelessWidget {
@@ -34,8 +35,18 @@ class _ScreenBody extends StatefulWidget {
 class _ScreenBodyState extends State<_ScreenBody> {
   int? _prevId;
 
-  void _onContinue(BuildContext context) {
-    Navigator.of(context).pushNamed(ChapterScreen.route);
+  void _onContinue() {
+    _onOpenChapter(0);
+  }
+
+  void _onOpenChapter(int chapterIndex) {
+    context.goNamed(
+      ChapterScreen.route,
+      pathParameters: {
+        'id': widget._teachingId.toString(),
+        'chapterIndex': chapterIndex.toString(),
+      },
+    );
   }
 
   void _loadTeaching() {
@@ -63,12 +74,15 @@ class _ScreenBodyState extends State<_ScreenBody> {
             Expanded(
               child: ListView(
                 children: [
-                  for (final chapter in teaching.chapters)
-                    _ChapterCard(chapter),
+                  for (int i = 0; i < teaching.chapters.length; i++)
+                    _ChapterCard(
+                      teaching.chapters[i],
+                      () => _onOpenChapter(i),
+                    ),
                 ],
               ),
             ),
-            ContinueButton(onPressed: () => _onContinue(context)),
+            ContinueButton(onPressed: _onContinue),
           ],
         ),
       ),
@@ -78,18 +92,15 @@ class _ScreenBodyState extends State<_ScreenBody> {
 
 class _ChapterCard extends StatelessWidget {
   final ChapterModel _chapter;
+  final void Function() _onTap;
 
-  const _ChapterCard(this._chapter);
-
-  void _onSelected(BuildContext context) {
-    Navigator.of(context).pushNamed(ChapterScreen.route);
-  }
+  const _ChapterCard(this._chapter, this._onTap);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(_chapter.title),
-      onTap: () => _onSelected(context),
+      onTap: _onTap,
     );
   }
 }

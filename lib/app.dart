@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
@@ -23,18 +24,29 @@ class Fv1App extends StatelessWidget {
             GoRoute(
               path: '/',
               builder: (_, __) => const HomeScreen(),
-            ),
-            GoRoute(
-              name: TeachingSummaryScreen.route,
-              path: '/teaching/:id',
-              builder: (_, state) => TeachingSummaryScreen(
-                id: int.parse(state.pathParameters['id']!),
-              ),
-            ),
-            GoRoute(
-              name: ExplorerScreen.route,
-              path: '/explorer',
-              builder: (_, __) => const ExplorerScreen(),
+              routes: [
+                GoRoute(
+                  name: TeachingSummaryScreen.route,
+                  path: 'teaching/:id',
+                  builder: (_, state) => TeachingSummaryScreen(
+                    id: int.parse(state.pathParameters['id']!),
+                  ),
+                  routes: [
+                    GoRoute(
+                      name: ChapterScreen.route,
+                      path: 'chapter/:chapterIndex',
+                      builder: (_, state) => ChapterScreen(
+                        index: int.parse(state.pathParameters['chapterIndex']!),
+                      ),
+                    ),
+                  ],
+                ),
+                GoRoute(
+                  name: ExplorerScreen.route,
+                  path: 'explorer',
+                  builder: (_, __) => const ExplorerScreen(),
+                ),
+              ],
             ),
           ],
         ),

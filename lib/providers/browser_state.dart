@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:fv1/mocks/test_teaching.dart';
+import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/teaching.dart';
 
 class BrowserState extends ChangeNotifier {
@@ -37,5 +38,12 @@ class BrowserState extends ChangeNotifier {
       testTeaching.chapters,
     );
     notifyListeners();
+  }
+
+  // The index is from the url so it must be checked
+  ChapterModel? getActiveChapter(int index) {
+    return _activeTeaching == null || _activeTeaching!.chapters.length <= index
+        ? null
+        : _activeTeaching!.chapters[index];
   }
 }
