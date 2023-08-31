@@ -37,7 +37,9 @@ class _Body extends StatelessWidget {
       icon: Icons.chevron_right,
       onPressed: () => context.goNamed(
         TeachingSummaryScreen.route,
-        pathParameters: {'id': teaching.id.toString()},
+        pathParameters: {
+          TeachingSummaryScreen.teachingIdKey: teaching.id.toString(),
+        },
       ),
     );
   }

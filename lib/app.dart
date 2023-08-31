@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
+import 'package:fv1/ui/screens/quiz.dart';
+import 'package:fv1/ui/screens/score.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/theme.dart';
 import 'package:go_router/go_router.dart';
@@ -27,18 +30,25 @@ class Fv1App extends StatelessWidget {
               routes: [
                 GoRoute(
                   name: TeachingSummaryScreen.route,
-                  path: 'teaching/:id',
-                  builder: (_, state) => TeachingSummaryScreen(
-                    id: int.parse(state.pathParameters['id']!),
-                  ),
+                  path: 'teaching/:$teachingIdKey',
+                  builder: (_, __) => const TeachingSummaryScreen(),
                   routes: [
                     GoRoute(
-                      name: ChapterScreen.route,
-                      path: 'chapter/:chapterIndex',
-                      builder: (_, state) => ChapterScreen(
-                        index: int.parse(state.pathParameters['chapterIndex']!),
-                      ),
-                    ),
+                        name: ChapterScreen.route,
+                        path: 'chapter/:$chapterIndexKey',
+                        builder: (_, __) => const ChapterScreen(),
+                        routes: [
+                          GoRoute(
+                            name: QuizScreen.route,
+                            path: 'quiz',
+                            builder: (_, __) => const QuizScreen(),
+                          ),
+                          GoRoute(
+                            name: ScoreScreen.route,
+                            path: 'score',
+                            builder: (_, __) => const ScoreScreen(),
+                          ),
+                        ]),
                   ],
                 ),
                 GoRoute(

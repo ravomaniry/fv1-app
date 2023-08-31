@@ -10,11 +10,13 @@ class BrowserState extends ChangeNotifier {
   TeachingModel? _activeTeaching;
   TeachingModel? get activeTeaching => _activeTeaching;
 
+  Map<String, dynamic> _formValue = {};
+
   BrowserState() {
     _loadInitialData();
   }
 
-  _loadInitialData() async {
+  void _loadInitialData() async {
     await Future.delayed(const Duration(seconds: 1));
     _localTeachings = [
       testTeaching,
@@ -28,7 +30,7 @@ class BrowserState extends ChangeNotifier {
     notifyListeners();
   }
 
-  loadTeaching(int id) async {
+  void loadTeaching(int id) async {
     _activeTeaching = null;
     await Future.delayed(const Duration(seconds: 1));
     _activeTeaching = TeachingModel(
@@ -39,6 +41,21 @@ class BrowserState extends ChangeNotifier {
     );
     notifyListeners();
   }
+
+  void resetFormValue() {
+    _formValue = {};
+  }
+
+  void onFormValueChanged(String key, dynamic value) {
+    _formValue[key] = value;
+    notifyListeners();
+  }
+
+  dynamic getFormValue(String key) {
+    return _formValue[key];
+  }
+
+  void submitQuiz() {}
 
   // The index is from the url so it must be checked
   ChapterModel? getActiveChapter(int index) {

@@ -10,23 +10,22 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class TeachingSummaryScreen extends StatelessWidget {
-  final int id;
   static const route = '/teaching';
+  static const teachingIdKey = 'teachingId';
 
-  const TeachingSummaryScreen({super.key, required this.id});
+  const TeachingSummaryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<BrowserState>(
-        builder: (_, state, __) => _ScreenBody(state, id));
+        builder: (_, state, __) => _ScreenBody(state));
   }
 }
 
 class _ScreenBody extends StatefulWidget {
   final BrowserState _state;
-  final int _teachingId;
 
-  const _ScreenBody(this._state, this._teachingId);
+  const _ScreenBody(this._state);
 
   @override
   State<_ScreenBody> createState() => _ScreenBodyState();
@@ -39,25 +38,28 @@ class _ScreenBodyState extends State<_ScreenBody> {
     _onOpenChapter(0);
   }
 
+  int _readTeachingId() {
+    return int.parse(GoRouterState.of(context)
+        .pathParameters[TeachingSummaryScreen.teachingIdKey]!);
+  }
+
   void _onOpenChapter(int chapterIndex) {
-    context.goNamed(
-      ChapterScreen.route,
-      pathParameters: {
-        'id': widget._teachingId.toString(),
-        'chapterIndex': chapterIndex.toString(),
-      },
-    );
+    final params =
+        Map<String, String>.from(GoRouterState.of(context).pathParameters);
+    params['chapterIndex'] = chapterIndex.toString();
+    context.goNamed(ChapterScreen.route, pathParameters: params);
   }
 
   void _loadTeaching() {
-    widget._state.loadTeaching(widget._teachingId);
+    widget._state.loadTeaching(_readTeachingId());
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (widget._teachingId != _prevId) {
-      _prevId = widget._teachingId;
+    final teachingId = _readTeachingId();
+    if (teachingId != _prevId) {
+      _prevId = teachingId;
       _loadTeaching();
     }
   }
