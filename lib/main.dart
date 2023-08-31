@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/providers/app_state.dart';
+import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/providers/explorer_state.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
     final providers = [
       ChangeNotifierProvider<AppState>(create: (_) => AppState()),
       ChangeNotifierProvider<ExplorerState>(create: (_) => ExplorerState()),
+      ChangeNotifierProvider<BrowserState>(create: (_) => BrowserState()),
     ];
     return Fv1App(providers);
   }

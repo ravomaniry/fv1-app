@@ -18,9 +18,9 @@ ThemeData createTheme() {
       accentColor: accent,
     ),
     filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      style: FilledButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
       ),
     ),

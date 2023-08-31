@@ -9,8 +9,8 @@ class ExplorerState extends ChangeNotifier {
     _teachings = null;
     await Future.delayed(const Duration(seconds: 1));
     _teachings = [
-      TeachingModel('Teaching 1', 'Subtitle 1', []),
-      TeachingModel('Teaching 2', 'Subtitle 2', []),
+      TeachingModel(1, 'Teaching 1', 'Subtitle 1', []),
+      TeachingModel(2, 'Teaching 2', 'Subtitle 2', []),
     ];
     notifyListeners();
   }
