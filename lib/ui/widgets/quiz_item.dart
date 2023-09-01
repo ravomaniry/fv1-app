@@ -21,6 +21,7 @@ class QuizItemWidget extends StatelessWidget {
     return ListTile(
       title: ScreenH2('${index + 1}. ${question.question}'),
       subtitle: FormBuilderRadioGroup(
+        orientation: OptionsOrientation.vertical,
         name: question.key,
         initialValue: value,
         validator: FormBuilderValidators.required(

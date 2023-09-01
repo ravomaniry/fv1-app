@@ -22,21 +22,22 @@ final _routeConfig = GoRouter(
           builder: (_, __) => const TeachingSummaryScreen(),
           routes: [
             GoRoute(
-                name: ChapterScreen.route,
-                path: 'chapter/:$chapterIndexKey',
-                builder: (_, __) => const ChapterScreen(),
-                routes: [
-                  GoRoute(
-                    name: QuizScreen.route,
-                    path: 'quiz',
-                    builder: (_, __) => const QuizScreen(),
-                  ),
-                  GoRoute(
-                    name: ScoreScreen.route,
-                    path: 'score',
-                    builder: (_, __) => const ScoreScreen(),
-                  ),
-                ]),
+              name: ChapterScreen.route,
+              path: 'chapter/:$chapterIndexKey',
+              builder: (_, __) => const ChapterScreen(),
+              routes: [
+                GoRoute(
+                  name: QuizScreen.route,
+                  path: 'quiz',
+                  builder: (_, __) => const QuizScreen(),
+                ),
+                GoRoute(
+                  name: ScoreScreen.route,
+                  path: 'score',
+                  builder: (_, __) => const ScoreScreen(),
+                ),
+              ],
+            ),
           ],
         ),
         GoRoute(

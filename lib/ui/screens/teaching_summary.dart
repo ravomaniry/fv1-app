@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/providers/browser_state.dart';
+import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
@@ -38,29 +39,20 @@ class _ScreenBodyState extends State<_ScreenBody> {
     _onOpenChapter(0);
   }
 
-  int _readTeachingId() {
-    return int.parse(GoRouterState.of(context)
-        .pathParameters[TeachingSummaryScreen.teachingIdKey]!);
-  }
-
   void _onOpenChapter(int chapterIndex) {
     final params =
         Map<String, String>.from(GoRouterState.of(context).pathParameters);
     params['chapterIndex'] = chapterIndex.toString();
-    context.goNamed(ChapterScreen.route, pathParameters: params);
-  }
-
-  void _loadTeaching() {
-    widget._state.loadTeaching(_readTeachingId());
+    GoRouter.of(context).goNamed(ChapterScreen.route, pathParameters: params);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final teachingId = _readTeachingId();
+    final teachingId = readTeachingId(context);
     if (teachingId != _prevId) {
       _prevId = teachingId;
-      _loadTeaching();
+      widget._state.loadTeaching(readTeachingId(context));
     }
   }
 
