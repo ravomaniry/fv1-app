@@ -10,6 +10,45 @@ import 'package:fv1/ui/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+final _routeConfig = GoRouter(
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (_, __) => const HomeScreen(),
+      routes: [
+        GoRoute(
+          name: TeachingSummaryScreen.route,
+          path: 'teaching/:$teachingIdKey',
+          builder: (_, __) => const TeachingSummaryScreen(),
+          routes: [
+            GoRoute(
+                name: ChapterScreen.route,
+                path: 'chapter/:$chapterIndexKey',
+                builder: (_, __) => const ChapterScreen(),
+                routes: [
+                  GoRoute(
+                    name: QuizScreen.route,
+                    path: 'quiz',
+                    builder: (_, __) => const QuizScreen(),
+                  ),
+                  GoRoute(
+                    name: ScoreScreen.route,
+                    path: 'score',
+                    builder: (_, __) => const ScoreScreen(),
+                  ),
+                ]),
+          ],
+        ),
+        GoRoute(
+          name: ExplorerScreen.route,
+          path: 'explorer',
+          builder: (_, __) => const ExplorerScreen(),
+        ),
+      ],
+    ),
+  ],
+);
+
 class Fv1App extends StatelessWidget {
   final List<ChangeNotifierProvider<ChangeNotifier>> _providers;
 
@@ -22,44 +61,7 @@ class Fv1App extends StatelessWidget {
       child: MaterialApp.router(
         title: 'Fitiavana voalohany',
         theme: createTheme(),
-        routerConfig: GoRouter(
-          routes: [
-            GoRoute(
-              path: '/',
-              builder: (_, __) => const HomeScreen(),
-              routes: [
-                GoRoute(
-                  name: TeachingSummaryScreen.route,
-                  path: 'teaching/:$teachingIdKey',
-                  builder: (_, __) => const TeachingSummaryScreen(),
-                  routes: [
-                    GoRoute(
-                        name: ChapterScreen.route,
-                        path: 'chapter/:$chapterIndexKey',
-                        builder: (_, __) => const ChapterScreen(),
-                        routes: [
-                          GoRoute(
-                            name: QuizScreen.route,
-                            path: 'quiz',
-                            builder: (_, __) => const QuizScreen(),
-                          ),
-                          GoRoute(
-                            name: ScoreScreen.route,
-                            path: 'score',
-                            builder: (_, __) => const ScoreScreen(),
-                          ),
-                        ]),
-                  ],
-                ),
-                GoRoute(
-                  name: ExplorerScreen.route,
-                  path: 'explorer',
-                  builder: (_, __) => const ExplorerScreen(),
-                ),
-              ],
-            ),
-          ],
-        ),
+        routerConfig: _routeConfig,
       ),
     );
   }

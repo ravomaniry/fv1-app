@@ -55,7 +55,9 @@ class BrowserState extends ChangeNotifier {
     return _formValue[key];
   }
 
-  void submitQuiz() {}
+  void submitQuiz(Map<String, dynamic> value) {
+    _formValue = {};
+  }
 
   // The index is from the url so it must be checked
   ChapterModel? getActiveChapter(int index) {
