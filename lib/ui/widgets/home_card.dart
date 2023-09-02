@@ -3,7 +3,7 @@ import 'package:fv1/ui/widgets/card_container.dart';
 
 class HomeCard extends StatelessWidget {
   final String title;
-  final String subtitle;
+  final Widget subtitle;
   final Widget actionButton;
 
   const HomeCard({
@@ -20,7 +20,7 @@ class HomeCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(title),
-            subtitle: Text(subtitle),
+            subtitle: subtitle,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

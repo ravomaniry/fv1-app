@@ -18,9 +18,9 @@ ThemeData createTheme() {
       accentColor: accent,
     ),
     filledButtonTheme: FilledButtonThemeData(
-      style: ButtonStyle(
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      style: FilledButton.styleFrom(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
         ),
       ),
     ),
@@ -49,6 +49,10 @@ ThemeData createTheme() {
     ),
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(foregroundColor: primary.shade500),
+    ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      linearTrackColor: Colors.black12,
+      color: accent,
     ),
   );
 }
