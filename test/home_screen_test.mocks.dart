@@ -3,11 +3,11 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i3;
+import 'dart:async' as _i4;
 
-import 'package:fv1/models/progress.dart' as _i4;
-import 'package:fv1/models/teaching.dart' as _i5;
-import 'package:fv1/services/data/data_service.dart' as _i2;
+import 'package:fv1/models/progress.dart' as _i2;
+import 'package:fv1/models/teaching_summary.dart' as _i5;
+import 'package:fv1/services/data/data_service.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -21,31 +21,74 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
+class _FakeProgressModel_0 extends _i1.SmartFake implements _i2.ProgressModel {
+  _FakeProgressModel_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
 /// A class which mocks [AbstractDataService].
 ///
 /// See the documentation for Mockito's code generation for more information.
 class MockAbstractDataService extends _i1.Mock
-    implements _i2.AbstractDataService {
+    implements _i3.AbstractDataService {
   @override
-  _i3.Future<List<_i4.ProgressModel>> loadProgresses() => (super.noSuchMethod(
+  _i4.Future<void> sync() => (super.noSuchMethod(
+        Invocation.method(
+          #sync,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+  @override
+  _i4.Future<List<_i2.ProgressModel>> loadProgresses() => (super.noSuchMethod(
         Invocation.method(
           #loadProgresses,
           [],
         ),
         returnValue:
-            _i3.Future<List<_i4.ProgressModel>>.value(<_i4.ProgressModel>[]),
+            _i4.Future<List<_i2.ProgressModel>>.value(<_i2.ProgressModel>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i4.ProgressModel>>.value(<_i4.ProgressModel>[]),
-      ) as _i3.Future<List<_i4.ProgressModel>>);
+            _i4.Future<List<_i2.ProgressModel>>.value(<_i2.ProgressModel>[]),
+      ) as _i4.Future<List<_i2.ProgressModel>>);
   @override
-  _i3.Future<List<_i5.TeachingModel>> loadNewTeachings() => (super.noSuchMethod(
+  _i4.Future<List<_i5.TeachingSummaryModel>> loadNewTeachings() =>
+      (super.noSuchMethod(
         Invocation.method(
           #loadNewTeachings,
           [],
         ),
-        returnValue:
-            _i3.Future<List<_i5.TeachingModel>>.value(<_i5.TeachingModel>[]),
+        returnValue: _i4.Future<List<_i5.TeachingSummaryModel>>.value(
+            <_i5.TeachingSummaryModel>[]),
         returnValueForMissingStub:
-            _i3.Future<List<_i5.TeachingModel>>.value(<_i5.TeachingModel>[]),
-      ) as _i3.Future<List<_i5.TeachingModel>>);
+            _i4.Future<List<_i5.TeachingSummaryModel>>.value(
+                <_i5.TeachingSummaryModel>[]),
+      ) as _i4.Future<List<_i5.TeachingSummaryModel>>);
+  @override
+  _i4.Future<_i2.ProgressModel> startTeaching(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #startTeaching,
+          [id],
+        ),
+        returnValue: _i4.Future<_i2.ProgressModel>.value(_FakeProgressModel_0(
+          this,
+          Invocation.method(
+            #startTeaching,
+            [id],
+          ),
+        )),
+        returnValueForMissingStub:
+            _i4.Future<_i2.ProgressModel>.value(_FakeProgressModel_0(
+          this,
+          Invocation.method(
+            #startTeaching,
+            [id],
+          ),
+        )),
+      ) as _i4.Future<_i2.ProgressModel>);
 }

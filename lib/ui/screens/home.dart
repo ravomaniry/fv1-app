@@ -14,6 +14,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
+  static const syncLoaderKey = Key('syncLoader');
   static const explorerHelpKey = Key('explorerHelp');
   static const searchButtonKey = Key('searchButton');
 
@@ -22,8 +23,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<AppState, BrowserState>(
-        builder: (_, appState, browserState, __) =>
-            _Body(appState, browserState));
+      builder: (_, appState, browserState, __) => _Body(appState, browserState),
+    );
   }
 }
 
@@ -41,6 +42,7 @@ class _Body extends StatelessWidget {
     return ActionButton(
       label: _appState.texts.continueButton,
       icon: Icons.chevron_right,
+      buttonKey: Key('OpenTeaching${teaching.id}'),
       onPressed: () => context.goNamed(
         TeachingSummaryScreen.route,
         pathParameters: {
@@ -52,11 +54,20 @@ class _Body extends StatelessWidget {
 
   Widget _buildProgress(BuildContext context, ProgressModel progress) {
     return HomeCard(
-      title: progress.teaching.title,
+      title: Text(
+        progress.teaching.title,
+        key: Key('HomeTeachingTitle${progress.teaching.id}'),
+      ),
       subtitle: Column(
         children: [
-          Text(progress.teaching.subtitle),
-          LinearProgressIndicator(value: progress.completionPercentage),
+          Text(
+            progress.teaching.subtitle,
+            key: Key('HomeTeachingSubtitle${progress.teaching.id}'),
+          ),
+          LinearProgressIndicator(
+            value: progress.completionPercentage,
+            key: Key('HomeScreenProgress${progress.teaching.id}'),
+          ),
         ],
       ),
       actionButton: _buildActionButton(context, progress.teaching),
@@ -83,13 +94,17 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isReady = _browserState.localProgresses != null;
     return AppContainer(
-      floatingActionButton: SearchButton(
-        key: HomeScreen.searchButtonKey,
-        onPressed: () => _goToExplorer(context),
-      ),
+      backButton: false,
+      floatingActionButton: isReady
+          ? SearchButton(
+              key: HomeScreen.searchButtonKey,
+              onPressed: () => _goToExplorer(context),
+            )
+          : null,
       body: WrapInLoader(
-        isReady: _browserState.localProgresses != null,
+        isReady: isReady,
         builder: () => _browserState.localProgresses!.isEmpty
             ? _buildEmptyScreen()
             : _buildRegularScreen(context),

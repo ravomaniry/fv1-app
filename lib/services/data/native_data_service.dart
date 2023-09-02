@@ -5,6 +5,11 @@ import 'package:fv1/services/data/data_service.dart';
 
 class NativeDataService extends AbstractDataService {
   @override
+  Future<void> sync() async {
+    // Save the local progress to remote
+  }
+
+  @override
   Future<List<ProgressModel>> loadProgresses() async {
     await Future.delayed(const Duration(milliseconds: 400));
     return [
@@ -22,5 +27,11 @@ class NativeDataService extends AbstractDataService {
         completionPercentage: 0.5,
       ),
     ];
+  }
+
+  @override
+  Future<ProgressModel> startTeaching(int id) async {
+    await Future.delayed(const Duration(milliseconds: 400));
+    return ProgressModel(teaching: testTeaching, scores: []);
   }
 }

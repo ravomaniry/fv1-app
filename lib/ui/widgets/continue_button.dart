@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'action_button.dart';
 
 class ContinueButton extends StatelessWidget {
+  static const buttonKey = Key('ContinueButton');
   final String label;
   final void Function() onPressed;
 
@@ -16,6 +17,7 @@ class ContinueButton extends StatelessWidget {
       children: [
         ActionButton(
           label: label,
+          key: buttonKey,
           icon: Icons.chevron_right,
           onPressed: onPressed,
         ),

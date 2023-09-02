@@ -54,6 +54,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final chapter = _state.getActiveChapter(readChapterIndex(context));
     return AppContainer(
+      backButton: true,
       body: WrapInLoader(
         isReady: chapter != null,
         builder: () => Column(

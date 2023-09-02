@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const double borderRadios = 8;
+
 ThemeData createTheme() {
   const bgColor = Color(0xfff4f4f4);
   final primary = _createMaterialColor(const Color(0xff5c4aff));
@@ -20,7 +22,7 @@ ThemeData createTheme() {
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(borderRadios),
         ),
       ),
     ),
