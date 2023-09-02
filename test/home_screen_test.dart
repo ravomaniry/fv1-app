@@ -1,5 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
+import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/progress.dart';
+import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/ui/screens/home.dart';
@@ -32,4 +35,53 @@ void main() {
       expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
     },
   );
+
+  testWidgets('Local progress exists', (tester) async {
+    final dataService = MockAbstractDataService();
+    when(dataService.sync()).thenAnswer((_) async {});
+    when(dataService.loadProgresses()).thenAnswer(
+      (_) async => [
+        ProgressModel(
+          teaching: TeachingModel(
+            1,
+            'T1',
+            'ST1',
+            [
+              ChapterModel('TC11', [], []),
+              ChapterModel('TC12', [], []),
+            ],
+          ),
+          scores: [
+            ChapterScore(correctAnswersPercentage: 0.8),
+            ChapterScore(correctAnswersPercentage: 0.1),
+          ],
+          completionPercentage: 0.5,
+        ),
+        ProgressModel(
+          teaching: TeachingModel(
+            2,
+            'T2',
+            'ST2',
+            [ChapterModel('TC2', [], [])],
+          ),
+          scores: [],
+          completionPercentage: 0.2,
+        ),
+      ],
+    );
+    final providers = createProviders(dataService);
+    await tester.pumpWidget(Fv1App(providers));
+    await tick(tester);
+    // Render buttons
+    expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
+    expect(find.byKey(HomeScreen.syncLoaderKey), findsNothing);
+    // Render teachings
+    expect(find.text('T1'), findsOneWidget);
+    expect(find.text('ST1'), findsOneWidget);
+    expect(find.text('T2'), findsOneWidget);
+    expect(find.text('ST2'), findsOneWidget);
+    // Progress
+    expect(findLPIndicator(tester, 'HomeScreenProgress1').value, 0.5);
+    expect(findLPIndicator(tester, 'HomeScreenProgress2').value, 0.2);
+  });
 }

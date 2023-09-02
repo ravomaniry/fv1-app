@@ -46,3 +46,7 @@ bool isIconBtnEnabled(WidgetTester tester, Finder finder) {
 String? textContent(WidgetTester tester, Finder finder) {
   return tester.widget<Text>(finder).data;
 }
+
+LinearProgressIndicator findLPIndicator(WidgetTester tester, String strKey) {
+  return tester.widget(find.byKey(Key(strKey)));
+}

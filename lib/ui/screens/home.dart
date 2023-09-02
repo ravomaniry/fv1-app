@@ -57,7 +57,10 @@ class _Body extends StatelessWidget {
       subtitle: Column(
         children: [
           Text(progress.teaching.subtitle),
-          LinearProgressIndicator(value: progress.completionPercentage),
+          LinearProgressIndicator(
+            value: progress.completionPercentage,
+            key: Key('HomeScreenProgress${progress.teaching.id}'),
+          ),
         ],
       ),
       actionButton: _buildActionButton(context, progress.teaching),

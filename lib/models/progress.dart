@@ -1,7 +1,7 @@
 import 'package:fv1/models/teaching.dart';
 
 class ChapterScore {
-  final int correctAnswersPercentage;
+  final double correctAnswersPercentage;
 
   ChapterScore({required this.correctAnswersPercentage});
 }
