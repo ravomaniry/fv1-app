@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
+import 'package:fv1/providers/playing_audio.dart';
 import 'package:fv1/services/data/data_service.dart';
 
 class BrowserState extends ChangeNotifier {
@@ -17,6 +18,9 @@ class BrowserState extends ChangeNotifier {
 
   List<TeachingSummaryModel>? _teachingsList;
   List<TeachingSummaryModel>? get teachingsList => _teachingsList;
+
+  PlayingAudio? _playingAudio;
+  PlayingAudio? get playingAudio => _playingAudio;
 
   BrowserState(this._dataService) {
     _loadInitialData();
@@ -76,6 +80,15 @@ class BrowserState extends ChangeNotifier {
   Future<void> loadTeachingsList() async {
     _teachingsList = null;
     _teachingsList = await _dataService.loadNewTeachings();
+    notifyListeners();
+  }
+
+  void playAudio(int chapterIndex, int sectionIndex) {
+    _playingAudio = PlayingAudio(
+      teachingId: _activeProgress!.teaching.id,
+      chapterIndex: chapterIndex,
+      sectionIndex: sectionIndex,
+    );
     notifyListeners();
   }
 }

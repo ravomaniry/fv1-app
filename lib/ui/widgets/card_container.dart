@@ -2,18 +2,30 @@ import 'package:flutter/material.dart';
 
 class CardContainer extends StatelessWidget {
   final Widget child;
+  final bool selected;
 
-  const CardContainer({super.key, required this.child});
+  const CardContainer({
+    super.key,
+    required this.child,
+    this.selected = false,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final color = selected ? const Color(0xfff4f4f4) : null;
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(width: 1, color: Color(0xfff0f0f0)),
+          bottom: BorderSide(
+            width: 1,
+            color: selected ? theme.primaryColor : const Color(0xfff0f0f0),
+          ),
         ),
+        color: color,
       ),
       child: Card(
+        color: color,
         child: child,
       ),
     );
