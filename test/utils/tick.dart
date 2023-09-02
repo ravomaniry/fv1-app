@@ -12,9 +12,9 @@ Future<void> tap(WidgetTester tester, Finder finder, [int s = 0]) async {
   await tick(tester, s);
 }
 
-Future<void> tapByKey(WidgetTester tester, Key key) async {
+Future<void> tapByKey(WidgetTester tester, Key key, [int s = 0]) async {
   await tester.tap(find.byKey(key));
-  await tick(tester);
+  await tick(tester, s);
 }
 
 Future<void> tapByStringKey(WidgetTester tester, String key) async {

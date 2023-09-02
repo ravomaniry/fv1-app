@@ -45,7 +45,7 @@ class _BodyState extends State<_Body> {
   void _onOpen(int id) async {
     await widget._state.startTeaching(id);
     if (context.mounted) {
-      GoRouter.of(context).goNamed(
+      GoRouter.of(context).pushReplacementNamed(
         TeachingSummaryScreen.route,
         pathParameters: {teachingIdKey: id.toString()},
       );
@@ -57,6 +57,7 @@ class _BodyState extends State<_Body> {
   @override
   Widget build(BuildContext context) {
     return AppContainer(
+      backButton: true,
       body: WrapInLoader(
         isReady: widget._state.teachingsList != null,
         builder: () => ListView(

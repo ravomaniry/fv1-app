@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ActionButton extends StatelessWidget {
+  final Key? buttonKey;
   final String label;
   final IconData icon;
   final void Function() onPressed;
 
   const ActionButton({
     super.key,
+    this.buttonKey,
     required this.label,
     required this.icon,
     required this.onPressed,
@@ -16,6 +18,7 @@ class ActionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FilledButton(
       onPressed: onPressed,
+      key: buttonKey,
       child: Row(
         children: [
           Text(label),

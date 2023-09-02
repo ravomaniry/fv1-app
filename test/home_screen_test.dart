@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/models/chapter.dart';
@@ -6,6 +7,8 @@ import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/ui/screens/home.dart';
+import 'package:fv1/ui/screens/teaching_summary.dart';
+import 'package:fv1/ui/widgets/app_bar.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -36,7 +39,7 @@ void main() {
     },
   );
 
-  testWidgets('Local progress exists', (tester) async {
+  testWidgets('Home to teaching summary', (tester) async {
     final dataService = MockAbstractDataService();
     when(dataService.sync()).thenAnswer((_) async {});
     when(dataService.loadProgresses()).thenAnswer(
@@ -73,6 +76,7 @@ void main() {
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Render buttons
+    expect(find.byKey(backButtonKey), findsNothing);
     expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
     expect(find.byKey(HomeScreen.syncLoaderKey), findsNothing);
     // Render teachings
@@ -83,5 +87,25 @@ void main() {
     // Progress
     expect(findLPIndicator(tester, 'HomeScreenProgress1').value, 0.5);
     expect(findLPIndicator(tester, 'HomeScreenProgress2').value, 0.2);
+    // Teaching summary 1
+    await tapByStringKey(tester, 'OpenTeaching1');
+    await tick(tester, 2);
+    expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsOneWidget);
+    expect(find.byKey(backButtonKey), findsOneWidget);
+    expect(find.text('T1'), findsOneWidget);
+    expect(find.text('ST1'), findsOneWidget);
+    expect(find.text('TC11'), findsOneWidget);
+    expect(find.text('TC12'), findsOneWidget);
+    // Done Icon
+    expect(find.byKey(const Key('DoneIcon0')), findsOneWidget);
+    expect(find.byKey(const Key('DoneIcon1')), findsNothing);
+    // Back to home and open teaching 2
+    await tapByKey(tester, backButtonKey, 1);
+    expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsNothing);
+    // Open teaching 2
+    await tapByKey(tester, const Key('OpenTeaching2'));
+    await tick(tester, 2);
+    expect(find.text('T2'), findsOneWidget);
+    expect(find.text('ST2'), findsOneWidget);
   });
 }

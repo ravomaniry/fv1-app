@@ -42,6 +42,7 @@ class _ChapterScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final chapter = _state.getActiveChapter(readChapterIndex(context));
     return AppContainer(
+      backButton: false,
       body: WrapInLoader(
         isReady: chapter != null,
         builder: () {

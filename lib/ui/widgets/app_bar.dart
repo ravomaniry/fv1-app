@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-AppBar buildAppBar(BuildContext context) {
+const backButtonKey = Key('BackButton');
+
+AppBar buildAppBar(BuildContext context, bool backButton) {
   final theme = Theme.of(context);
   return AppBar(
-    centerTitle: false,
-    leadingWidth: 0,
-    leading: BackButton(color: theme.colorScheme.primary),
+    leading: backButton
+        ? BackButton(
+            color: theme.colorScheme.primary,
+            key: backButtonKey,
+            onPressed: () {
+              if (GoRouter.of(context).canPop()) {
+                GoRouter.of(context).pop();
+              } else {
+                GoRouter.of(context).go('/');
+              }
+            },
+          )
+        : null,
     actions: [
       Icon(Icons.more_vert, color: theme.colorScheme.primary),
     ],

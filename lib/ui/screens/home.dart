@@ -23,8 +23,8 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer2<AppState, BrowserState>(
-        builder: (_, appState, browserState, __) =>
-            _Body(appState, browserState));
+      builder: (_, appState, browserState, __) => _Body(appState, browserState),
+    );
   }
 }
 
@@ -42,6 +42,7 @@ class _Body extends StatelessWidget {
     return ActionButton(
       label: _appState.texts.continueButton,
       icon: Icons.chevron_right,
+      buttonKey: Key('OpenTeaching${teaching.id}'),
       onPressed: () => context.goNamed(
         TeachingSummaryScreen.route,
         pathParameters: {
@@ -89,6 +90,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final isReady = _browserState.localProgresses != null;
     return AppContainer(
+      backButton: false,
       floatingActionButton: isReady
           ? SearchButton(
               key: HomeScreen.searchButtonKey,
