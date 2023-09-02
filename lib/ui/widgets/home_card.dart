@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/ui/widgets/card_container.dart';
 
 class HomeCard extends StatelessWidget {
-  final String title;
+  final Widget title;
   final Widget subtitle;
   final Widget actionButton;
 
@@ -19,7 +19,7 @@ class HomeCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            title: Text(title),
+            title: title,
             subtitle: subtitle,
           ),
           Row(

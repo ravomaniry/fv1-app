@@ -80,10 +80,10 @@ void main() {
     expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
     expect(find.byKey(HomeScreen.syncLoaderKey), findsNothing);
     // Render teachings
-    expect(find.text('T1'), findsOneWidget);
-    expect(find.text('ST1'), findsOneWidget);
-    expect(find.text('T2'), findsOneWidget);
-    expect(find.text('ST2'), findsOneWidget);
+    expect(findTextWidget(tester, 'HomeTeachingTitle1').data, 'T1');
+    expect(findTextWidget(tester, 'HomeTeachingSubtitle1').data, 'ST1');
+    expect(findTextWidget(tester, 'HomeTeachingTitle2').data, 'T2');
+    expect(findTextWidget(tester, 'HomeTeachingSubtitle2').data, 'ST2');
     // Progress
     expect(findLPIndicator(tester, 'HomeScreenProgress1').value, 0.5);
     expect(findLPIndicator(tester, 'HomeScreenProgress2').value, 0.2);
@@ -92,8 +92,8 @@ void main() {
     await tick(tester, 2);
     expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsOneWidget);
     expect(find.byKey(backButtonKey), findsOneWidget);
-    expect(find.text('T1'), findsOneWidget);
-    expect(find.text('ST1'), findsOneWidget);
+    expect(findTextWidget(tester, 'TSTitle').data, 'T1');
+    expect(findTextWidget(tester, 'TSSubtitle').data, 'ST1');
     expect(find.text('TC11'), findsOneWidget);
     expect(find.text('TC12'), findsOneWidget);
     // Done Icon
@@ -102,10 +102,10 @@ void main() {
     // Back to home and open teaching 2
     await tapByKey(tester, backButtonKey, 1);
     expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsNothing);
-    // Open teaching 2
+    // Continue teaching 2 goes to first chapter
     await tapByKey(tester, const Key('OpenTeaching2'));
     await tick(tester, 2);
-    expect(find.text('T2'), findsOneWidget);
-    expect(find.text('ST2'), findsOneWidget);
+    expect(findTextWidget(tester, 'TSTitle').data, 'T2');
+    expect(findTextWidget(tester, 'TSSubtitle').data, 'ST2');
   });
 }

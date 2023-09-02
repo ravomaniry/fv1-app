@@ -6,16 +6,13 @@ import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/providers/create.dart';
-import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/app_bar.dart';
 import 'package:fv1/ui/widgets/loader.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<AbstractDataService>()])
-import 'explorer_test.mocks.dart';
+import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
 void main() {

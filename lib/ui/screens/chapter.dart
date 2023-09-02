@@ -48,7 +48,10 @@ class _ChapterScreenBody extends StatelessWidget {
         builder: () {
           return Column(
             children: [
-              ScreenH1(chapter!.title),
+              ScreenH1(
+                chapter!.title,
+                textKey: const Key('ChapterTitle'),
+              ),
               Expanded(
                 child: ListView(
                   children: [

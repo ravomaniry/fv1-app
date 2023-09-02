@@ -69,8 +69,8 @@ class _ScreenBodyState extends State<_ScreenBody> {
         isReady: teaching != null,
         builder: () => Column(
           children: [
-            ScreenH1(teaching!.title),
-            Text(teaching.subtitle),
+            ScreenH1(teaching!.title, textKey: const Key('TSTitle')),
+            Text(teaching.subtitle, key: const Key('TSSubtitle')),
             Expanded(
               child: ListView(
                 children: [

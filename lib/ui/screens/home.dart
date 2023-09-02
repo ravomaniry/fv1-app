@@ -54,10 +54,16 @@ class _Body extends StatelessWidget {
 
   Widget _buildProgress(BuildContext context, ProgressModel progress) {
     return HomeCard(
-      title: progress.teaching.title,
+      title: Text(
+        progress.teaching.title,
+        key: Key('HomeTeachingTitle${progress.teaching.id}'),
+      ),
       subtitle: Column(
         children: [
-          Text(progress.teaching.subtitle),
+          Text(
+            progress.teaching.subtitle,
+            key: Key('HomeTeachingSubtitle${progress.teaching.id}'),
+          ),
           LinearProgressIndicator(
             value: progress.completionPercentage,
             key: Key('HomeScreenProgress${progress.teaching.id}'),

@@ -50,3 +50,7 @@ String? textContent(WidgetTester tester, Finder finder) {
 LinearProgressIndicator findLPIndicator(WidgetTester tester, String strKey) {
   return tester.widget(find.byKey(Key(strKey)));
 }
+
+Text findTextWidget(WidgetTester tester, String strKey) {
+  return tester.widget<Text>(find.byKey(Key(strKey)));
+}
