@@ -54,7 +54,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
     final teachingId = readTeachingId(context);
     if (teachingId != _prevId) {
       _prevId = teachingId;
-      widget._state.loadTeaching(readTeachingId(context));
+      widget._state.loadLocalTeaching(readTeachingId(context));
     }
   }
 
@@ -63,11 +63,13 @@ class _ScreenBodyState extends State<_ScreenBody> {
     final progress = widget._state.activeProgress;
     final teaching = progress?.teaching;
     return AppContainer(
+      key: const Key(TeachingSummaryScreen.route),
       body: WrapInLoader(
         isReady: teaching != null,
         builder: () => Column(
           children: [
             ScreenH1(teaching!.title),
+            Text(teaching.subtitle),
             Expanded(
               child: ListView(
                 children: [

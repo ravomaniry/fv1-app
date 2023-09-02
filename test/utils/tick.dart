@@ -12,7 +12,12 @@ Future<void> tap(WidgetTester tester, Finder finder, [int s = 0]) async {
   await tick(tester, s);
 }
 
-Future<void> tapByKey(WidgetTester tester, String key) async {
+Future<void> tapByKey(WidgetTester tester, Key key) async {
+  await tester.tap(find.byKey(key));
+  await tick(tester);
+}
+
+Future<void> tapByStringKey(WidgetTester tester, String key) async {
   await tester.tap(find.byKey(Key(key)));
   await tick(tester);
 }
@@ -29,7 +34,7 @@ Future<void> enterText(WidgetTester tester, Finder finder, String value,
 }
 
 Future<void> tapBackBtn(WidgetTester tester) async {
-  await tapByKey(tester, 'back_btn');
+  await tester.tap(find.byIcon(Icons.arrow_back));
   await tester.pumpAndSettle(const Duration(seconds: 2));
   await tick(tester, 2);
 }

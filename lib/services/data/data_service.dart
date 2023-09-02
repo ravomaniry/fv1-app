@@ -1,13 +1,18 @@
 import 'package:fv1/models/progress.dart';
-import 'package:fv1/models/teaching.dart';
+import 'package:fv1/models/teaching_summary.dart';
 
 abstract class AbstractDataService {
+  Future<void> sync();
+
   Future<List<ProgressModel>> loadProgresses();
-  Future<List<TeachingModel>> loadNewTeachings() async {
+
+  Future<List<TeachingSummaryModel>> loadNewTeachings() async {
     await Future.delayed(const Duration(milliseconds: 200));
     return [
-      TeachingModel(1, 'Teaching 1', 'Subtitle 1', []),
-      TeachingModel(2, 'Teaching 2', 'Subtitle 2', []),
+      TeachingSummaryModel(1, 'Teaching 1', 'Subtitle 1'),
+      TeachingSummaryModel(2, 'Teaching 2', 'Subtitle 2'),
     ];
   }
+
+  Future<ProgressModel> startTeaching(int id);
 }

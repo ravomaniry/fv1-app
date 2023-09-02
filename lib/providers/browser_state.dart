@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/progress.dart';
+import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/services/data/data_service.dart';
 
 class BrowserState extends ChangeNotifier {
@@ -14,18 +15,34 @@ class BrowserState extends ChangeNotifier {
 
   Map<String, dynamic> _formValue = {};
 
+  List<TeachingSummaryModel>? _teachingsList;
+  List<TeachingSummaryModel>? get teachingsList => _teachingsList;
+
   BrowserState(this._dataService) {
     _loadInitialData();
   }
 
   void _loadInitialData() async {
+    await _dataService.sync();
     _localProgresses = await _dataService.loadProgresses();
     notifyListeners();
   }
 
-  void loadTeaching(int id) async {
+  Future<void> startTeaching(int id) async {
     _activeProgress = null;
-    await Future.delayed(const Duration(milliseconds: 400));
+    // display loader on explorer screen
+    _teachingsList = null;
+    notifyListeners();
+    _localProgresses = _localProgresses ?? [];
+    if (_localProgresses!.where((e) => e.teaching.id == id).isEmpty) {
+      final newProgress = await _dataService.startTeaching(id);
+      _localProgresses!.add(newProgress);
+    }
+  }
+
+  void loadLocalTeaching(int id) async {
+    _activeProgress = null;
+    await Future.delayed(const Duration(milliseconds: 250));
     _activeProgress = _localProgresses!.where((t) => t.teaching.id == id).first;
     notifyListeners();
   }
@@ -53,5 +70,11 @@ class BrowserState extends ChangeNotifier {
             _activeProgress!.teaching.chapters.length <= index
         ? null
         : _activeProgress!.teaching.chapters[index];
+  }
+
+  Future<void> loadTeachingsList() async {
+    _teachingsList = null;
+    _teachingsList = await _dataService.loadNewTeachings();
+    notifyListeners();
   }
 }
