@@ -6,9 +6,9 @@ import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/providers/create.dart';
+import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
-import 'package:fv1/ui/widgets/app_bar.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:mockito/mockito.dart';
 
@@ -31,7 +31,7 @@ void main() {
       ],
     );
     await tapByKey(tester, HomeScreen.searchButtonKey);
-    expect(find.byKey(backButtonKey), findsOneWidget);
+    expect(find.byKey(ExplorerScreen.backButtonKey), findsOneWidget);
     expect(find.text('T1'), findsOneWidget);
     expect(find.text('ST1'), findsOneWidget);
     expect(find.text('T2'), findsOneWidget);

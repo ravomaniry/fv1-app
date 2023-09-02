@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-const backButtonKey = Key('BackButton');
-
-AppBar buildAppBar(BuildContext context, bool backButton) {
+AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
   final theme = Theme.of(context);
   return AppBar(
     leading: backButton

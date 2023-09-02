@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 class TeachingSummaryScreen extends StatelessWidget {
   static const route = '/teaching';
   static const teachingIdKey = 'teachingId';
+  static const backButtonKey = Key('TSBackButton');
 
   const TeachingSummaryScreen({super.key});
 
@@ -64,6 +65,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
     final teaching = progress?.teaching;
     return AppContainer(
       backButton: true,
+      backButtonKey: TeachingSummaryScreen.backButtonKey,
       key: const Key(TeachingSummaryScreen.route),
       body: WrapInLoader(
         isReady: teaching != null,

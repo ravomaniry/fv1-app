@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 class ExplorerScreen extends StatelessWidget {
   static const route = '/explorer';
+  static const backButtonKey = Key('ExplorerBackButton');
 
   const ExplorerScreen({super.key});
 
@@ -58,6 +59,7 @@ class _BodyState extends State<_Body> {
   Widget build(BuildContext context) {
     return AppContainer(
       backButton: true,
+      backButtonKey: ExplorerScreen.backButtonKey,
       body: WrapInLoader(
         isReady: widget._state.teachingsList != null,
         builder: () => ListView(

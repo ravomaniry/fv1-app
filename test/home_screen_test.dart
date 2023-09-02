@@ -8,7 +8,6 @@ import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
-import 'package:fv1/ui/widgets/app_bar.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -76,7 +75,6 @@ void main() {
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Render buttons
-    expect(find.byKey(backButtonKey), findsNothing);
     expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
     expect(find.byKey(HomeScreen.syncLoaderKey), findsNothing);
     // Render teachings
@@ -91,7 +89,7 @@ void main() {
     await tapByStringKey(tester, 'OpenTeaching1');
     await tick(tester, 2);
     expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsOneWidget);
-    expect(find.byKey(backButtonKey), findsOneWidget);
+    expect(find.byKey(TeachingSummaryScreen.backButtonKey), findsOneWidget);
     expect(findTextWidget(tester, 'TSTitle').data, 'T1');
     expect(findTextWidget(tester, 'TSSubtitle').data, 'ST1');
     expect(find.text('TC11'), findsOneWidget);
@@ -100,7 +98,7 @@ void main() {
     expect(find.byKey(const Key('DoneIcon0')), findsOneWidget);
     expect(find.byKey(const Key('DoneIcon1')), findsNothing);
     // Back to home and open teaching 2
-    await tapByKey(tester, backButtonKey, 1);
+    await tapByKey(tester, TeachingSummaryScreen.backButtonKey, 1);
     expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsNothing);
     // Continue teaching 2 goes to first chapter
     await tapByKey(tester, const Key('OpenTeaching2'));

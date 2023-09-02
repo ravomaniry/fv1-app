@@ -14,6 +14,7 @@ import '../widgets/h1.dart';
 
 class ChapterScreen extends StatelessWidget {
   static const route = '/chapter';
+  static const backButtonKey = Key('ChapterBackButton');
 
   const ChapterScreen({super.key});
 
@@ -42,7 +43,8 @@ class _ChapterScreenBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final chapter = _state.getActiveChapter(readChapterIndex(context));
     return AppContainer(
-      backButton: false,
+      backButton: true,
+      backButtonKey: ChapterScreen.backButtonKey,
       body: WrapInLoader(
         isReady: chapter != null,
         builder: () {

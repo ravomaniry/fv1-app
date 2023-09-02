@@ -54,3 +54,8 @@ LinearProgressIndicator findLPIndicator(WidgetTester tester, String strKey) {
 Text findTextWidget(WidgetTester tester, String strKey) {
   return tester.widget<Text>(find.byKey(Key(strKey)));
 }
+
+Future<void> tapBackButton(WidgetTester tester, [int s = 0]) async {
+  await tester.tap(find.byTooltip('Back').last);
+  await tester.pump(Duration(seconds: s));
+}
