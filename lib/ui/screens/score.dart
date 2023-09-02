@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/mocks/test_chapter.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
@@ -59,7 +58,7 @@ class _Body extends StatelessWidget {
         isReady: chapter != null,
         builder: () => Column(
           children: [
-            ScreenH1(testChapter.title),
+            ScreenH1(chapter!.title),
             Expanded(
               child: Center(
                 child: Text('${_appState.texts.score}: 80/10'),

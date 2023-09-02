@@ -16,6 +16,15 @@ class ProgressModel {
         scores[index].correctAnswersPercentage >= 0.75;
   }
 
+  int getNextChapterIndex() {
+    for (int i = 0; i < scores.length; i++) {
+      if (!isChapterDone(i)) {
+        return i;
+      }
+    }
+    return scores.length < teaching.chapters.length ? scores.length : 0;
+  }
+
   ProgressModel({
     required this.teaching,
     required this.scores,

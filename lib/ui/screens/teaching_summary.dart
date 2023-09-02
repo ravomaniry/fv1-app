@@ -38,7 +38,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
   int? _prevId;
 
   void _onContinue() {
-    _onOpenChapter(0);
+    _onOpenChapter(widget._state.activeProgress!.getNextChapterIndex());
   }
 
   void _onOpenChapter(int chapterIndex) {

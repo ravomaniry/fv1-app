@@ -18,7 +18,7 @@ class BrowserState extends ChangeNotifier {
   }
 
   void _loadInitialData() async {
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 400));
     _localProgresses = [
       ProgressModel(teaching: testTeaching, scores: []),
       ProgressModel(
@@ -39,7 +39,7 @@ class BrowserState extends ChangeNotifier {
 
   void loadTeaching(int id) async {
     _activeProgress = null;
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 400));
     _activeProgress = _localProgresses!.where((t) => t.teaching.id == id).first;
     notifyListeners();
   }

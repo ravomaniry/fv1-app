@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:fv1/mocks/test_chapter.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
@@ -54,14 +53,16 @@ class _Body extends StatelessWidget {
         isReady: chapter != null,
         builder: () => Column(
           children: [
-            ScreenH1(testChapter.title),
+            ScreenH1(chapter!.title),
             FormBuilder(
               key: _formKey,
               child: Expanded(
                 child: ListView(
                   children: [
-                    for (final (index, question) in chapter!.questions.indexed)
+                    Text(_appState.texts.quizHelp),
+                    for (final (index, question) in chapter.questions.indexed)
                       QuizItemWidget(
+                        texts: _appState.texts,
                         index: index,
                         question: question,
                         value: _state.getFormValue(question.key),
