@@ -13,7 +13,12 @@ class AudioPlayer extends StatelessWidget {
           onPressed: () {},
           icon: const Icon(Icons.play_arrow),
         ),
-        const Expanded(child: LinearProgressIndicator(value: 0.5)),
+        Expanded(
+          child: LinearProgressIndicator(
+            value: 0.5,
+            color: Theme.of(context).primaryColor,
+          ),
+        ),
       ],
     );
   }

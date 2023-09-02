@@ -60,7 +60,8 @@ class _ScreenBodyState extends State<_ScreenBody> {
 
   @override
   Widget build(BuildContext context) {
-    final teaching = widget._state.activeTeaching;
+    final progress = widget._state.activeProgress;
+    final teaching = progress?.teaching;
     return AppContainer(
       body: WrapInLoader(
         isReady: teaching != null,
@@ -73,6 +74,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
                   for (int i = 0; i < teaching.chapters.length; i++)
                     _ChapterCard(
                       teaching.chapters[i],
+                      progress!.isChapterDone(i),
                       () => _onOpenChapter(i),
                     ),
                 ],
@@ -91,14 +93,21 @@ class _ScreenBodyState extends State<_ScreenBody> {
 
 class _ChapterCard extends StatelessWidget {
   final ChapterModel _chapter;
+  final bool _isDone;
   final void Function() _onTap;
 
-  const _ChapterCard(this._chapter, this._onTap);
+  const _ChapterCard(this._chapter, this._isDone, this._onTap);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       title: Text(_chapter.title),
+      trailing: _isDone
+          ? Icon(
+              Icons.check_circle_outline,
+              color: Theme.of(context).primaryColor,
+            )
+          : null,
       onTap: _onTap,
     );
   }

@@ -50,6 +50,10 @@ ThemeData createTheme() {
     iconButtonTheme: IconButtonThemeData(
       style: IconButton.styleFrom(foregroundColor: primary.shade500),
     ),
+    progressIndicatorTheme: const ProgressIndicatorThemeData(
+      linearTrackColor: Colors.black12,
+      color: accent,
+    ),
   );
 }
 

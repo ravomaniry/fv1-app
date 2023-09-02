@@ -1,14 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:fv1/mocks/test_teaching.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 
 class BrowserState extends ChangeNotifier {
-  List<TeachingModel>? _localTeachings;
-  List<TeachingModel>? get localTeachings => _localTeachings;
+  List<ProgressModel>? _localProgresses;
+  List<ProgressModel>? get localProgresses => _localProgresses;
 
-  TeachingModel? _activeTeaching;
-  TeachingModel? get activeTeaching => _activeTeaching;
+  ProgressModel? _activeProgress;
+  ProgressModel? get activeProgress => _activeProgress;
 
   Map<String, dynamic> _formValue = {};
 
@@ -18,27 +19,28 @@ class BrowserState extends ChangeNotifier {
 
   void _loadInitialData() async {
     await Future.delayed(const Duration(seconds: 1));
-    _localTeachings = [
-      testTeaching,
-      TeachingModel(
-        2,
-        'Teaching 2',
-        testTeaching.subtitle,
-        testTeaching.chapters,
+    _localProgresses = [
+      ProgressModel(teaching: testTeaching, scores: []),
+      ProgressModel(
+        teaching: TeachingModel(
+          2,
+          'Teaching 2',
+          testTeaching.subtitle,
+          testTeaching.chapters,
+        ),
+        scores: [
+          ChapterScore(correctAnswersPercentage: 2),
+        ],
+        completionPercentage: 0.5,
       ),
     ];
     notifyListeners();
   }
 
   void loadTeaching(int id) async {
-    _activeTeaching = null;
+    _activeProgress = null;
     await Future.delayed(const Duration(seconds: 1));
-    _activeTeaching = TeachingModel(
-      id,
-      'Test teaching $id',
-      testTeaching.subtitle,
-      testTeaching.chapters,
-    );
+    _activeProgress = _localProgresses!.where((t) => t.teaching.id == id).first;
     notifyListeners();
   }
 
@@ -61,8 +63,9 @@ class BrowserState extends ChangeNotifier {
 
   // The index is from the url so it must be checked
   ChapterModel? getActiveChapter(int index) {
-    return _activeTeaching == null || _activeTeaching!.chapters.length <= index
+    return _activeProgress == null ||
+            _activeProgress!.teaching.chapters.length <= index
         ? null
-        : _activeTeaching!.chapters[index];
+        : _activeProgress!.teaching.chapters[index];
   }
 }

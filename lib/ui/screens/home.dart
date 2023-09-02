@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
@@ -48,6 +49,19 @@ class _Body extends StatelessWidget {
     );
   }
 
+  Widget _buildProgress(BuildContext context, ProgressModel progress) {
+    return HomeCard(
+      title: progress.teaching.title,
+      subtitle: Column(
+        children: [
+          Text(progress.teaching.subtitle),
+          LinearProgressIndicator(value: progress.completionPercentage),
+        ],
+      ),
+      actionButton: _buildActionButton(context, progress.teaching),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppContainer(
@@ -55,15 +69,11 @@ class _Body extends StatelessWidget {
         onPressed: () => _goToExplorer(context),
       ),
       body: WrapInLoader(
-        isReady: _browserState.localTeachings != null,
+        isReady: _browserState.localProgresses != null,
         builder: () => Column(
           children: [
-            for (final teaching in _browserState.localTeachings!)
-              HomeCard(
-                title: teaching.title,
-                subtitle: teaching.subtitle,
-                actionButton: _buildActionButton(context, teaching),
-              ),
+            for (final progress in _browserState.localProgresses!)
+              _buildProgress(context, progress),
           ],
         ),
       ),
