@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
@@ -18,15 +19,16 @@ class TeachingSummaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(
-        builder: (_, state, __) => _ScreenBody(state));
+    return Consumer2<AppState, BrowserState>(
+        builder: (_, appState, state, __) => _ScreenBody(appState, state));
   }
 }
 
 class _ScreenBody extends StatefulWidget {
+  final AppState _appState;
   final BrowserState _state;
 
-  const _ScreenBody(this._state);
+  const _ScreenBody(this._appState, this._state);
 
   @override
   State<_ScreenBody> createState() => _ScreenBodyState();
@@ -76,7 +78,10 @@ class _ScreenBodyState extends State<_ScreenBody> {
                 ],
               ),
             ),
-            ContinueButton(onPressed: _onContinue),
+            ContinueButton(
+              label: widget._appState.texts.continueButton,
+              onPressed: _onContinue,
+            ),
           ],
         ),
       ),

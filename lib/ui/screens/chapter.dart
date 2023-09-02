@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/quiz.dart';
@@ -18,16 +19,17 @@ class ChapterScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(
-      builder: (_, state, __) => _ChapterScreenBody(state),
+    return Consumer2<AppState, BrowserState>(
+      builder: (_, appState, state, __) => _ChapterScreenBody(appState, state),
     );
   }
 }
 
 class _ChapterScreenBody extends StatelessWidget {
+  final AppState _appState;
   final BrowserState _state;
 
-  const _ChapterScreenBody(this._state);
+  const _ChapterScreenBody(this._appState, this._state);
 
   void _onContinue(BuildContext context) {
     GoRouter.of(context).pushReplacementNamed(
@@ -54,7 +56,10 @@ class _ChapterScreenBody extends StatelessWidget {
                   ],
                 ),
               ),
-              ContinueButton(onPressed: () => _onContinue(context)),
+              ContinueButton(
+                label: _appState.texts.continueButton,
+                onPressed: () => _onContinue(context),
+              ),
             ],
           );
         },

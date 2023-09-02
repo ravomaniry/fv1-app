@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'action_button.dart';
 
 class ContinueButton extends StatelessWidget {
+  final String label;
   final void Function() onPressed;
 
-  const ContinueButton({super.key, required this.onPressed});
+  const ContinueButton(
+      {super.key, required this.label, required this.onPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +15,7 @@ class ContinueButton extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ActionButton(
-          label: 'TOHIZANA',
+          label: label,
           icon: Icons.chevron_right,
           onPressed: onPressed,
         ),

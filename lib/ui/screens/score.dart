@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/mocks/test_chapter.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
@@ -18,16 +19,17 @@ class ScoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(
-      builder: (_, state, __) => _Body(state),
+    return Consumer2<AppState, BrowserState>(
+      builder: (_, appState, state, __) => _Body(appState, state),
     );
   }
 }
 
 class _Body extends StatelessWidget {
+  final AppState _appState;
   final BrowserState _state;
 
-  const _Body(this._state);
+  const _Body(this._appState, this._state);
 
   void _onContinue(BuildContext context) {
     final chapterIndex = readChapterIndex(context);
@@ -58,12 +60,15 @@ class _Body extends StatelessWidget {
         builder: () => Column(
           children: [
             ScreenH1(testChapter.title),
-            const Expanded(
+            Expanded(
               child: Center(
-                child: Text('Score: 80/10'),
+                child: Text('${_appState.texts.score}: 80/10'),
               ),
             ),
-            ContinueButton(onPressed: () => _onContinue(context))
+            ContinueButton(
+              label: _appState.texts.continueButton,
+              onPressed: () => _onContinue(context),
+            ),
           ],
         ),
       ),

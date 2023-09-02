@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/models/teaching.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
@@ -18,14 +19,17 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(builder: (_, state, __) => _Body(state));
+    return Consumer2<AppState, BrowserState>(
+        builder: (_, appState, browserState, __) =>
+            _Body(appState, browserState));
   }
 }
 
 class _Body extends StatelessWidget {
-  final BrowserState _appState;
+  final AppState _appState;
+  final BrowserState _browserState;
 
-  const _Body(this._appState);
+  const _Body(this._appState, this._browserState);
 
   void _goToExplorer(BuildContext context) {
     context.goNamed(ExplorerScreen.route);
@@ -33,7 +37,7 @@ class _Body extends StatelessWidget {
 
   Widget _buildActionButton(BuildContext context, TeachingModel teaching) {
     return ActionButton(
-      label: 'TOHIZANA',
+      label: _appState.texts.continueButton,
       icon: Icons.chevron_right,
       onPressed: () => context.goNamed(
         TeachingSummaryScreen.route,
@@ -51,10 +55,10 @@ class _Body extends StatelessWidget {
         onPressed: () => _goToExplorer(context),
       ),
       body: WrapInLoader(
-        isReady: _appState.localTeachings != null,
+        isReady: _browserState.localTeachings != null,
         builder: () => Column(
           children: [
-            for (final teaching in _appState.localTeachings!)
+            for (final teaching in _browserState.localTeachings!)
               HomeCard(
                 title: teaching.title,
                 subtitle: teaching.subtitle,

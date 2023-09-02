@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fv1/mocks/test_chapter.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/score.dart';
@@ -21,14 +22,17 @@ class QuizScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(builder: (_, state, __) => _Body(state));
+    return Consumer2<AppState, BrowserState>(
+      builder: (_, appState, state, __) => _Body(appState, state),
+    );
   }
 }
 
 class _Body extends StatelessWidget {
+  final AppState _appState;
   final BrowserState _state;
 
-  const _Body(this._state);
+  const _Body(this._appState, this._state);
 
   void _onContinue(BuildContext context) {
     final isValid = _formKey.currentState
@@ -66,7 +70,10 @@ class _Body extends StatelessWidget {
                 ),
               ),
             ),
-            ContinueButton(onPressed: () => _onContinue(context))
+            ContinueButton(
+              label: _appState.texts.continueButton,
+              onPressed: () => _onContinue(context),
+            ),
           ],
         ),
       ),
