@@ -1,7 +1,7 @@
 class SectionModel {
   final String subtitle;
   final String content;
-  final String audioUrl;
+  final int audioId;
 
-  SectionModel(this.subtitle, this.content, this.audioUrl);
+  SectionModel(this.subtitle, this.content, this.audioId);
 }

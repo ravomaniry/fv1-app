@@ -1,12 +1,15 @@
 import 'package:flutter/widgets.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/playing_audio.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
-import 'package:fv1/providers/playing_audio.dart';
+import 'package:fv1/models/wrong_answer.dart';
+import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
 
 class BrowserState extends ChangeNotifier {
   final AbstractDataService _dataService;
+  final AppAudioPlayer audioPlayer;
 
   List<ProgressModel>? _localProgresses;
   List<ProgressModel>? get localProgresses => _localProgresses;
@@ -16,13 +19,16 @@ class BrowserState extends ChangeNotifier {
 
   Map<String, dynamic> _formValue = {};
 
+  List<WrongAnswer>? _wrongAnswers;
+  List<WrongAnswer>? get wrongAnswers => _wrongAnswers;
+
   List<TeachingSummaryModel>? _teachingsList;
   List<TeachingSummaryModel>? get teachingsList => _teachingsList;
 
   PlayingAudio? _playingAudio;
   PlayingAudio? get playingAudio => _playingAudio;
 
-  BrowserState(this._dataService) {
+  BrowserState(this._dataService, this.audioPlayer) {
     _loadInitialData();
   }
 
@@ -65,7 +71,16 @@ class BrowserState extends ChangeNotifier {
     return _formValue[key];
   }
 
-  void submitQuiz(Map<String, dynamic> value) {
+  void submitQuiz(int chapterIndex, Map<String, dynamic> value) {
+    final questions =
+        _activeProgress!.teaching.chapters[chapterIndex].questions;
+    _wrongAnswers = [];
+    for (final q in questions) {
+      final given = value[q.key];
+      if (given != q.response) {
+        _wrongAnswers!.add(WrongAnswer(q.question, given, q.response));
+      }
+    }
     _formValue = {};
   }
 
@@ -83,12 +98,24 @@ class BrowserState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void playAudio(int chapterIndex, int sectionIndex) {
+  void playAudio(int chapterIndex, int sectionIndex) async {
+    final teaching = _activeProgress!.teaching;
     _playingAudio = PlayingAudio(
-      teachingId: _activeProgress!.teaching.id,
+      teachingId: teaching.id,
       chapterIndex: chapterIndex,
       sectionIndex: sectionIndex,
     );
     notifyListeners();
+    await audioPlayer.init();
+    final url = await _dataService.getAudioUrl(
+      teaching.chapters[chapterIndex].sections[sectionIndex].audioId,
+    );
+    audioPlayer.load(url);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    audioPlayer.dispose();
   }
 }

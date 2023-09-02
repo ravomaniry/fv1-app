@@ -5,6 +5,7 @@ import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/quiz.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
+import 'package:fv1/ui/widgets/audio_player.dart';
 import 'package:fv1/ui/widgets/card_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/icon_button.dart';
@@ -68,7 +69,11 @@ class _ChapterScreenBody extends StatelessWidget {
                   style: _calcTitleStyle(context, isPlaying),
                 ),
                 _buildAudioButton(
-                    context, chapterIndex, sectionIndex, isPlaying),
+                  context,
+                  chapterIndex,
+                  sectionIndex,
+                  isPlaying,
+                ),
               ],
             ),
             subtitle: Text(section.content),
@@ -88,10 +93,12 @@ class _ChapterScreenBody extends StatelessWidget {
         ? Icon(
             Icons.surround_sound,
             color: Theme.of(context).colorScheme.secondary,
+            key: Key('PlayingIcon$sectionIndex'),
           )
         : AppIconButton(
             onPressed: () => _state.playAudio(chapterIndex, sectionIndex),
             icon: Icons.play_circle,
+            key: Key('PlayButton$sectionIndex'),
           );
   }
 
@@ -130,6 +137,8 @@ class _ChapterScreenBody extends StatelessWidget {
                   ],
                 ),
               ),
+              if (_state.playingAudio != null)
+                AudioPlayerWidget(player: _state.audioPlayer),
               ContinueButton(
                 label: _appState.texts.continueButton,
                 onPressed: () => _onContinue(context),

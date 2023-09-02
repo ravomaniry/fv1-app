@@ -17,9 +17,13 @@ Future<void> tapByKey(WidgetTester tester, Key key, [int s = 0]) async {
   await tick(tester, s);
 }
 
-Future<void> tapByStringKey(WidgetTester tester, String key) async {
+Future<void> tapByStringKey(
+  WidgetTester tester,
+  String key, [
+  int s = 0,
+]) async {
   await tester.tap(find.byKey(Key(key)));
-  await tick(tester);
+  await tick(tester, s);
 }
 
 Future<void> tapByText(WidgetTester tester, String text, [int s = 0]) async {

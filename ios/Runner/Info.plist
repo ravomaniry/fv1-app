@@ -47,5 +47,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Just audio background -->
+	<key>UIBackgroundModes</key>
+    <array>
+        <string>audio</string>
+    </array
 </dict>
 </plist>
