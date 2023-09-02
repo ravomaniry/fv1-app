@@ -14,7 +14,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatelessWidget {
-  static const route = '';
+  static const explorerHelpKey = Key('explorerHelp');
+  static const searchButtonKey = Key('searchButton');
 
   const HomeScreen({super.key});
 
@@ -62,20 +63,36 @@ class _Body extends StatelessWidget {
     );
   }
 
+  Widget _buildEmptyScreen() {
+    return Center(
+      child: Text(
+        _appState.texts.explorerHelp,
+        key: HomeScreen.explorerHelpKey,
+      ),
+    );
+  }
+
+  Widget _buildRegularScreen(BuildContext context) {
+    return Column(
+      children: [
+        for (final progress in _browserState.localProgresses!)
+          _buildProgress(context, progress),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return AppContainer(
       floatingActionButton: SearchButton(
+        key: HomeScreen.searchButtonKey,
         onPressed: () => _goToExplorer(context),
       ),
       body: WrapInLoader(
         isReady: _browserState.localProgresses != null,
-        builder: () => Column(
-          children: [
-            for (final progress in _browserState.localProgresses!)
-              _buildProgress(context, progress),
-          ],
-        ),
+        builder: () => _browserState.localProgresses!.isEmpty
+            ? _buildEmptyScreen()
+            : _buildRegularScreen(context),
       ),
     );
   }

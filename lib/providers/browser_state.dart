@@ -1,10 +1,11 @@
 import 'package:flutter/widgets.dart';
-import 'package:fv1/mocks/test_teaching.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/progress.dart';
-import 'package:fv1/models/teaching.dart';
+import 'package:fv1/services/data/data_service.dart';
 
 class BrowserState extends ChangeNotifier {
+  final AbstractDataService _dataService;
+
   List<ProgressModel>? _localProgresses;
   List<ProgressModel>? get localProgresses => _localProgresses;
 
@@ -13,27 +14,12 @@ class BrowserState extends ChangeNotifier {
 
   Map<String, dynamic> _formValue = {};
 
-  BrowserState() {
+  BrowserState(this._dataService) {
     _loadInitialData();
   }
 
   void _loadInitialData() async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    _localProgresses = [
-      ProgressModel(teaching: testTeaching, scores: []),
-      ProgressModel(
-        teaching: TeachingModel(
-          2,
-          'Teaching 2',
-          testTeaching.subtitle,
-          testTeaching.chapters,
-        ),
-        scores: [
-          ChapterScore(correctAnswersPercentage: 2),
-        ],
-        completionPercentage: 0.5,
-      ),
-    ];
+    _localProgresses = await _dataService.loadProgresses();
     notifyListeners();
   }
 

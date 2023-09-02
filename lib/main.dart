@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/app.dart';
-import 'package:fv1/providers/app_state.dart';
-import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/providers/explorer_state.dart';
-import 'package:provider/provider.dart';
+import 'package:fv1/providers/create.dart';
+import 'package:fv1/services/data/native_data_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,11 +12,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providers = [
-      ChangeNotifierProvider<AppState>(create: (_) => AppState()),
-      ChangeNotifierProvider<ExplorerState>(create: (_) => ExplorerState()),
-      ChangeNotifierProvider<BrowserState>(create: (_) => BrowserState()),
-    ];
+    final dataService = NativeDataService();
+    final providers = createProviders(dataService);
     return Fv1App(providers);
   }
 }
