@@ -180,4 +180,12 @@ class MockAppAudioPlayer extends _i1.Mock implements _i6.AppAudioPlayer {
         returnValue: _i4.Future<void>.value(),
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
+  @override
+  void onPlayerUnmounted() => super.noSuchMethod(
+        Invocation.method(
+          #onPlayerUnmounted,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

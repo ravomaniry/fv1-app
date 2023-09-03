@@ -114,7 +114,10 @@ void main() {
     expect(find.byKey(const Key('PlayingIcon1')), findsOneWidget);
     verify(audioPlayer.load('http://2.wav')).called(1);
     // Quiz
+    verifyNever(audioPlayer.onPlayerUnmounted());
     await tapByKey(tester, ContinueButton.buttonKey, 5);
+    // Notify audio player
+    verify(audioPlayer.onPlayerUnmounted()).called(1);
     // Render questions
     expect(find.text('1. Q1?'), findsOneWidget);
     expect(find.text('2. Q2?'), findsOneWidget);
