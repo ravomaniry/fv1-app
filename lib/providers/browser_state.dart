@@ -138,7 +138,7 @@ class BrowserState extends ChangeNotifier {
       final url = await _dataService.getAudioUrl(
         teaching.chapters[chapterIndex].sections[sectionIndex].audioId,
       );
-      audioPlayer.load(url);
+      audioPlayer.loadAndPlay(url);
     });
   }
 

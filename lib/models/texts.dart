@@ -6,6 +6,8 @@ class AppTexts {
   final String explorerHelp;
   final String internetError;
   final String unknownError;
+  final String playerError;
+  final String loadingAudio;
 
   AppTexts({
     required this.continueButton,
@@ -15,6 +17,8 @@ class AppTexts {
     required this.explorerHelp,
     required this.internetError,
     required this.unknownError,
+    required this.playerError,
+    required this.loadingAudio,
   });
 }
 
@@ -29,4 +33,7 @@ final mgTexts = AppTexts(
   internetError: 'Misy olana ny internet.',
   unknownError: 'Misy olana. '
       'Akatony ary avereno akatona ny application azafady.',
+  playerError: 'Tsy afaka henoina ny audio. '
+      'Avereno akatona sy sokafana ny application azafady.',
+  loadingAudio: 'Eo am-panokafana ny "audio". Mandrasa kely azafady.',
 );

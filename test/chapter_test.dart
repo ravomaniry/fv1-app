@@ -109,12 +109,15 @@ void main() {
     await tapByStringKey(tester, 'PlayButton0', 5);
     expect(find.byKey(AudioPlayerWidget.playerKey), findsOneWidget);
     expect(find.byKey(const Key('PlayingIcon0')), findsOneWidget);
-    verify(audioPlayer.load('http://1.wav')).called(1);
+    verify(audioPlayer.loadAndPlay('http://1.wav')).called(1);
     await tapByStringKey(tester, 'PlayButton1', 5);
     expect(find.byKey(const Key('PlayingIcon1')), findsOneWidget);
-    verify(audioPlayer.load('http://2.wav')).called(1);
+    verify(audioPlayer.loadAndPlay('http://2.wav')).called(1);
     // Quiz
+    verifyNever(audioPlayer.onPlayerUnmounted());
     await tapByKey(tester, ContinueButton.buttonKey, 5);
+    // Notify audio player
+    verify(audioPlayer.onPlayerUnmounted()).called(1);
     // Render questions
     expect(find.text('1. Q1?'), findsOneWidget);
     expect(find.text('2. Q2?'), findsOneWidget);
@@ -152,7 +155,7 @@ void main() {
     // Play audio
     expect(find.byKey(AudioPlayerWidget.playerKey), findsNothing);
     await tapByStringKey(tester, 'PlayButton0', 5);
-    verify(audioPlayer.load('http://3.wav')).called(1);
+    verify(audioPlayer.loadAndPlay('http://3.wav')).called(1);
     // Submit quiz
     await tapByKey(tester, ContinueButton.buttonKey, 5);
     await tapByText(tester, 'x');

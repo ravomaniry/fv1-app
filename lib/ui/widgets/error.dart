@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/models/app_errors.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
+import 'package:fv1/ui/widgets/error_text.dart';
 
 class AppErrorWidget extends StatelessWidget {
   final AppState appState;
@@ -25,10 +26,7 @@ class AppErrorWidget extends StatelessWidget {
       children: [
         const SizedBox(width: 8),
         Expanded(
-          child: Text(
-            _getErrorMsg(),
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
+          child: ErrorText(_getErrorMsg()),
         ),
         CloseButton(
           onPressed: () => browserState.dismissError(),
