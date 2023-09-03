@@ -7,6 +7,7 @@ import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/models/wrong_answer.dart';
 import 'package:fv1/providers/utils/quiz_utils.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
+import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/services/data/data_service.dart';
 
 class BrowserState extends ChangeNotifier {
@@ -35,6 +36,7 @@ class BrowserState extends ChangeNotifier {
 
   BrowserState(this._dataService, this.audioPlayer) {
     _loadInitialData();
+    _listenToAudioError();
   }
 
   Future<void> _handleError(Future<void> Function() fn) async {
@@ -52,6 +54,16 @@ class BrowserState extends ChangeNotifier {
       await _dataService.sync();
       _localProgresses = await _dataService.loadProgresses();
       notifyListeners();
+    });
+  }
+
+  void _listenToAudioError() {
+    audioPlayer.dataStream?.listen((e) {
+      if (_error != AppErrors.audioPlayer &&
+          e.state() == InternalPlayerState.error) {
+        _error = AppErrors.audioPlayer;
+        notifyListeners();
+      }
     });
   }
 
@@ -143,6 +155,9 @@ class BrowserState extends ChangeNotifier {
   }
 
   void dismissError() {
+    if (_error == AppErrors.audioPlayer) {
+      _playingAudio = null;
+    }
     _error = null;
     notifyListeners();
   }

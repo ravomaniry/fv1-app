@@ -15,9 +15,14 @@ class AppErrorWidget extends StatelessWidget {
   });
 
   String _getErrorMsg() {
-    return browserState.error == AppErrors.internet
-        ? appState.texts.internetError
-        : appState.texts.unknownError;
+    switch (browserState.error) {
+      case AppErrors.internet:
+        return appState.texts.internetError;
+      case AppErrors.audioPlayer:
+        return appState.texts.playerError;
+      default:
+        return appState.texts.unknownError;
+    }
   }
 
   @override

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
@@ -9,6 +11,7 @@ import 'package:fv1/models/section.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/texts.dart';
 import 'package:fv1/providers/create.dart';
+import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/audio_player.dart';
@@ -20,7 +23,10 @@ import 'utils/tick.dart';
 
 void main() {
   testWidgets('Open chapter and complete Quiz', (tester) async {
+    final playerStreamCtr = StreamController<PlayerStreamData>();
+    final playerDataStream = playerStreamCtr.stream.asBroadcastStream();
     final audioPlayer = MockAppAudioPlayer();
+    when(audioPlayer.dataStream).thenAnswer((_) => playerDataStream);
     final dataService = MockAbstractDataService();
     when(dataService.sync()).thenAnswer((_) async {});
     final progresses = [
@@ -113,11 +119,19 @@ void main() {
     await tapByStringKey(tester, 'PlayButton1', 5);
     expect(find.byKey(const Key('PlayingIcon1')), findsOneWidget);
     verify(audioPlayer.loadAndPlay('http://2.wav')).called(1);
-    // Quiz
-    verifyNever(audioPlayer.onPlayerUnmounted());
-    await tapByKey(tester, ContinueButton.buttonKey, 5);
-    // Notify audio player
+    // Audio player error
+    final streamData = JustAudioStreamData();
+    streamData.playerState = InternalPlayerState.error;
+    playerStreamCtr.add(streamData);
+    await tick(tester, 1);
+    expect(find.text(mgTexts.playerError), findsOneWidget);
+    await tapByStringKey(tester, 'DismissErrorButton', 1);
+    expect(find.text(mgTexts.playerError), findsNothing);
+    expect(find.byKey(AudioPlayerWidget.playerKey), findsNothing);
+    // Notify audio player when widget is unmounted
     verify(audioPlayer.onPlayerUnmounted()).called(1);
+    // Quiz
+    await tapByKey(tester, ContinueButton.buttonKey, 5);
     // Render questions
     expect(find.text('1. Q1?'), findsOneWidget);
     expect(find.text('2. Q2?'), findsOneWidget);
@@ -156,8 +170,11 @@ void main() {
     expect(find.byKey(AudioPlayerWidget.playerKey), findsNothing);
     await tapByStringKey(tester, 'PlayButton0', 5);
     verify(audioPlayer.loadAndPlay('http://3.wav')).called(1);
-    // Submit quiz
+    // Go to quiz: notify audio player
+    clearInteractions(dataService);
     await tapByKey(tester, ContinueButton.buttonKey, 5);
+    verify(audioPlayer.onPlayerUnmounted()).called(1);
+    // Submit quiz
     await tapByText(tester, 'x');
     await tapByKey(tester, ContinueButton.buttonKey, 5);
     // Save data and display score

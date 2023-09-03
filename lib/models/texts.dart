@@ -33,7 +33,6 @@ final mgTexts = AppTexts(
   internetError: 'Misy olana ny internet.',
   unknownError: 'Misy olana. '
       'Akatony ary avereno akatona ny application azafady.',
-  playerError: 'Tsy afaka henoina ny audio. '
-      'Avereno akatona sy sokafana ny application azafady.',
+  playerError: 'Tsy afaka henoina ny audio. Avereno vakiana azafady.',
   loadingAudio: 'Eo am-panokafana ny "audio". Mandrasa kely azafady.',
 );

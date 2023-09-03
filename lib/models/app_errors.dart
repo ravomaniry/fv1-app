@@ -1,3 +1,4 @@
 enum AppErrors {
   internet,
+  audioPlayer,
 }
