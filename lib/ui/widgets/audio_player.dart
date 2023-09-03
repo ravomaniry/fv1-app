@@ -32,18 +32,31 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     return data.state() == InternalPlayerState.playing
         ? IconButton(
             color: color,
+            key: const Key('PauseButton'),
             onPressed: () => widget.player.pause(),
             icon: const Icon(Icons.pause_circle_outline),
           )
         : IconButton(
             color: color,
+            key: const Key('PlayButton'),
             onPressed: () => widget.player.play(),
             icon: const Icon(Icons.play_circle_outline),
           );
   }
 
   Widget _buildLoader() {
-    return const CircularProgressIndicator();
+    return Container(
+      padding: const EdgeInsets.all(4),
+      child: Row(
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Text(widget.texts.loadingAudio),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildErrorMessage(BuildContext context) {
@@ -92,6 +105,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
               const SizedBox(width: 4),
               Expanded(
                 child: ProgressBar(
+                  key: const Key('PlayerProgressBar'),
                   timeLabelLocation: TimeLabelLocation.sides,
                   progress: data.position() ?? Duration.zero,
                   total: data.totalDuration() ?? Duration.zero,
