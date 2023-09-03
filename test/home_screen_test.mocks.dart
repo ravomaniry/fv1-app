@@ -8,6 +8,7 @@ import 'dart:async' as _i4;
 import 'package:fv1/models/progress.dart' as _i2;
 import 'package:fv1/models/teaching_summary.dart' as _i5;
 import 'package:fv1/services/audio_player/audio_player.dart' as _i6;
+import 'package:fv1/services/audio_player/player_stream_data.dart' as _i7;
 import 'package:fv1/services/data/data_service.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -118,17 +119,14 @@ class MockAbstractDataService extends _i1.Mock
 /// See the documentation for Mockito's code generation for more information.
 class MockAppAudioPlayer extends _i1.Mock implements _i6.AppAudioPlayer {
   @override
-  _i4.Stream<Duration> get position => (super.noSuchMethod(
-        Invocation.getter(#position),
-        returnValue: _i4.Stream<Duration>.empty(),
-        returnValueForMissingStub: _i4.Stream<Duration>.empty(),
-      ) as _i4.Stream<Duration>);
-  @override
-  _i4.Stream<Duration> get totalDuration => (super.noSuchMethod(
-        Invocation.getter(#totalDuration),
-        returnValue: _i4.Stream<Duration>.empty(),
-        returnValueForMissingStub: _i4.Stream<Duration>.empty(),
-      ) as _i4.Stream<Duration>);
+  set dataStream(_i4.Stream<_i7.PlayerStreamData>? _dataStream) =>
+      super.noSuchMethod(
+        Invocation.setter(
+          #dataStream,
+          _dataStream,
+        ),
+        returnValueForMissingStub: null,
+      );
   @override
   _i4.Future<void> init() => (super.noSuchMethod(
         Invocation.method(
@@ -139,9 +137,9 @@ class MockAppAudioPlayer extends _i1.Mock implements _i6.AppAudioPlayer {
         returnValueForMissingStub: _i4.Future<void>.value(),
       ) as _i4.Future<void>);
   @override
-  _i4.Future<void> load(String? url) => (super.noSuchMethod(
+  _i4.Future<void> loadAndPlay(String? url) => (super.noSuchMethod(
         Invocation.method(
-          #load,
+          #loadAndPlay,
           [url],
         ),
         returnValue: _i4.Future<void>.value(),

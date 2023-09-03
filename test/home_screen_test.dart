@@ -89,7 +89,7 @@ void main() {
     expect(findTextWidget(tester, 'HomeTeachingSubtitle2').data, 'ST2');
     // Progress
     expect(findLPIndicator(tester, 'HomeScreenProgress1').value, 0.5);
-    expect(findLPIndicator(tester, 'HomeScreenProgress2').value, 0.2);
+    expect(findLPIndicator(tester, 'HomeScreenProgress2').value, 0);
     // Teaching summary 1
     await tapByStringKey(tester, 'OpenTeaching1');
     await tick(tester, 2);

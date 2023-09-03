@@ -6,7 +6,8 @@
     <application
         android:label="fv1"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:usesCleartextTraffic="true">
         <!-- android:name changed to work with just_audio -->
         <activity
             android:name="com.ryanheise.audioservice.AudioServiceActivity"

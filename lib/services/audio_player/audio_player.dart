@@ -1,11 +1,13 @@
+import 'package:fv1/services/audio_player/player_stream_data.dart';
+
 abstract class AppAudioPlayer {
   Future<void> init();
-  Future<void> load(String url);
+  Future<void> loadAndPlay(String url);
   void play();
   void pause();
   void seek(Duration position);
-  Stream<Duration> get position;
-  Stream<Duration> get totalDuration;
   Future<void> dispose();
   void onPlayerUnmounted() {}
+
+  Stream<PlayerStreamData>? dataStream;
 }
