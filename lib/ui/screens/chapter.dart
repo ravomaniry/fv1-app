@@ -137,12 +137,15 @@ class _ChapterScreenBody extends StatelessWidget {
                   ],
                 ),
               ),
-              if (_state.playingAudio?.chapterIndex == chapterIndex)
-                AudioPlayerWidget(player: _state.audioPlayer),
               ContinueButton(
                 label: _appState.texts.continueButton,
                 onPressed: () => _onContinue(context),
               ),
+              if (_state.playingAudio?.chapterIndex == chapterIndex)
+                AudioPlayerWidget(
+                  player: _state.audioPlayer,
+                  texts: _appState.texts,
+                ),
             ],
           );
         },

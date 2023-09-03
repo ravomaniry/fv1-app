@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:just_audio/just_audio.dart';
@@ -68,16 +69,24 @@ abstract class JustAudioPlayer extends AppAudioPlayer {
     }
   }
 
-  @override
-  void play() async {
-    _player.play();
+  @protected
+  Future<void> handleError(Future<void> Function() fn) async {
+    try {
+      await fn();
+    } catch (e) {
+      _streamData.playerState = InternalPlayerState.error;
+      _dataStreamController.add(_streamData);
+    }
   }
 
   @override
-  void pause() => _player.pause();
+  void play() => handleError(() => _player.play());
 
   @override
-  void seek(Duration position) => _player.seek(position);
+  void pause() => handleError(() => _player.pause());
+
+  @override
+  void seek(Duration position) => handleError(() => _player.seek(position));
 
   @override
   Future<void> dispose() async {

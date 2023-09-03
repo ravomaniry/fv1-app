@@ -6,6 +6,7 @@ class AppTexts {
   final String explorerHelp;
   final String internetError;
   final String unknownError;
+  final String playerError;
 
   AppTexts({
     required this.continueButton,
@@ -15,6 +16,7 @@ class AppTexts {
     required this.explorerHelp,
     required this.internetError,
     required this.unknownError,
+    required this.playerError,
   });
 }
 
@@ -29,4 +31,6 @@ final mgTexts = AppTexts(
   internetError: 'Misy olana ny internet.',
   unknownError: 'Misy olana. '
       'Akatony ary avereno akatona ny application azafady.',
+  playerError: 'Tsy afaka henoina ny audio. '
+      'Avereno akatona sy sokafana ny application azafady.',
 );

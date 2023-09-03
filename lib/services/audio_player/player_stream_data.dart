@@ -2,6 +2,7 @@ enum InternalPlayerState {
   playing,
   busy,
   idle,
+  error,
 }
 
 abstract class PlayerStreamData {

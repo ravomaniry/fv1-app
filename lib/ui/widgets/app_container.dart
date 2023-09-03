@@ -64,7 +64,7 @@ class _Body extends StatelessWidget {
       floatingActionButton: floatingActionButton,
       bottomSheet: _buildBottomSheet(),
       body: Container(
-        padding: const EdgeInsets.only(top: 4, left: 8, right: 8),
+        padding: const EdgeInsets.only(top: 4),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
