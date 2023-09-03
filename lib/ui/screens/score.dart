@@ -35,8 +35,9 @@ class _Body extends StatelessWidget {
   void _onContinue(BuildContext context) {
     final chapterIndex = readChapterIndex(context);
     final nextChapter = _state.getActiveChapter(chapterIndex + 1);
-    final params =
-        Map<String, String>.from(GoRouterState.of(context).pathParameters);
+    final params = Map<String, String>.from(
+      GoRouterState.of(context).pathParameters,
+    );
     params.remove(chapterIndexKey);
     if (nextChapter == null) {
       GoRouter.of(context).pushReplacementNamed(

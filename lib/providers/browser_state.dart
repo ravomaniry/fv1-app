@@ -1,9 +1,11 @@
 import 'package:flutter/widgets.dart';
+import 'package:fv1/models/app_errors.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/playing_audio.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/models/wrong_answer.dart';
+import 'package:fv1/providers/utils/quiz_utils.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
 
@@ -28,14 +30,29 @@ class BrowserState extends ChangeNotifier {
   PlayingAudio? _playingAudio;
   PlayingAudio? get playingAudio => _playingAudio;
 
+  AppErrors? _error;
+  AppErrors? get error => _error;
+
   BrowserState(this._dataService, this.audioPlayer) {
     _loadInitialData();
   }
 
-  void _loadInitialData() async {
-    await _dataService.sync();
-    _localProgresses = await _dataService.loadProgresses();
-    notifyListeners();
+  Future<void> _handleError(Future<void> Function() fn) async {
+    _error = null;
+    try {
+      await fn();
+    } catch (e) {
+      _error = AppErrors.internet;
+      notifyListeners();
+    }
+  }
+
+  void _loadInitialData() {
+    _handleError(() async {
+      await _dataService.sync();
+      _localProgresses = await _dataService.loadProgresses();
+      notifyListeners();
+    });
   }
 
   Future<void> startTeaching(int id) async {
@@ -45,8 +62,10 @@ class BrowserState extends ChangeNotifier {
     notifyListeners();
     _localProgresses = _localProgresses ?? [];
     if (_localProgresses!.where((e) => e.teaching.id == id).isEmpty) {
-      final newProgress = await _dataService.startTeaching(id);
-      _localProgresses!.add(newProgress);
+      await _handleError(() async {
+        final newProgress = await _dataService.startTeaching(id);
+        _localProgresses!.add(newProgress);
+      });
     }
   }
 
@@ -58,10 +77,6 @@ class BrowserState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void resetFormValue() {
-    _formValue = {};
-  }
-
   void onFormValueChanged(String key, dynamic value) {
     _formValue[key] = value;
     notifyListeners();
@@ -71,17 +86,27 @@ class BrowserState extends ChangeNotifier {
     return _formValue[key];
   }
 
-  void submitQuiz(int chapterIndex, Map<String, dynamic> value) {
+  void submitQuiz(int chapterIndex, Map<String, dynamic> value) async {
     final questions =
         _activeProgress!.teaching.chapters[chapterIndex].questions;
-    _wrongAnswers = [];
-    for (final q in questions) {
-      final given = value[q.key];
-      if (given != q.response) {
-        _wrongAnswers!.add(WrongAnswer(q.question, given, q.response));
-      }
-    }
-    _formValue = {};
+    _wrongAnswers = calculateWrongAnswers(questions, value);
+    _activeProgress = updateProgress(
+      _activeProgress!,
+      chapterIndex,
+      _wrongAnswers!,
+    );
+    _localProgresses = _localProgresses!
+        .map(
+          (e) => e.teaching.id == _activeProgress!.teaching.id
+              ? _activeProgress!
+              : e,
+        )
+        .toList();
+    await _handleError(() async {
+      _dataService.saveProgress(_activeProgress!);
+      _formValue = {};
+    });
+    notifyListeners();
   }
 
   // The index is from the url so it must be checked
@@ -94,8 +119,10 @@ class BrowserState extends ChangeNotifier {
 
   Future<void> loadTeachingsList() async {
     _teachingsList = null;
-    _teachingsList = await _dataService.loadNewTeachings();
-    notifyListeners();
+    await _handleError(() async {
+      _teachingsList = await _dataService.loadNewTeachings();
+      notifyListeners();
+    });
   }
 
   void playAudio(int chapterIndex, int sectionIndex) async {
@@ -106,11 +133,18 @@ class BrowserState extends ChangeNotifier {
       sectionIndex: sectionIndex,
     );
     notifyListeners();
-    await audioPlayer.init();
-    final url = await _dataService.getAudioUrl(
-      teaching.chapters[chapterIndex].sections[sectionIndex].audioId,
-    );
-    audioPlayer.load(url);
+    await _handleError(() async {
+      await audioPlayer.init();
+      final url = await _dataService.getAudioUrl(
+        teaching.chapters[chapterIndex].sections[sectionIndex].audioId,
+      );
+      audioPlayer.load(url);
+    });
+  }
+
+  void dismissError() {
+    _error = null;
+    notifyListeners();
   }
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
@@ -63,7 +64,6 @@ void main() {
             ChapterScore(correctAnswersPercentage: 0.8),
             ChapterScore(correctAnswersPercentage: 0.1),
           ],
-          completionPercentage: 0.5,
         ),
         ProgressModel(
           teaching: TeachingModel(
@@ -73,7 +73,6 @@ void main() {
             [ChapterModel('TC2', [], [])],
           ),
           scores: [],
-          completionPercentage: 0.2,
         ),
       ],
     );

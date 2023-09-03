@@ -4,6 +4,8 @@ class AppTexts {
   final String quizHelp;
   final String requiredFieldMessage;
   final String explorerHelp;
+  final String internetError;
+  final String unknownError;
 
   AppTexts({
     required this.continueButton,
@@ -11,6 +13,8 @@ class AppTexts {
     required this.quizHelp,
     required this.requiredFieldMessage,
     required this.explorerHelp,
+    required this.internetError,
+    required this.unknownError,
   });
 }
 
@@ -22,4 +26,7 @@ final mgTexts = AppTexts(
   requiredFieldMessage: 'Valio ity fanontaniana ity azafady.',
   explorerHelp: 'Mbola tsy manaraka fampianarana ianao.\n'
       '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.',
+  internetError: 'Misy olana ny internet.',
+  unknownError: 'Misy olana. '
+      'Akatony ary avereno akatona ny application azafady.',
 );

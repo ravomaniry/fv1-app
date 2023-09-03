@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/quiz_question.dart';
 import 'package:fv1/models/section.dart';
@@ -22,54 +23,59 @@ void main() {
     final audioPlayer = MockAppAudioPlayer();
     final dataService = MockAbstractDataService();
     when(dataService.sync()).thenAnswer((_) async {});
-    when(dataService.loadProgresses()).thenAnswer(
-      (_) async => [
-        ProgressModel(
-          teaching: TeachingModel(
-            1,
-            'T1',
-            'ST1',
-            [
-              ChapterModel('TC11', [], []),
-              ChapterModel('TC12', [], []),
-            ],
-          ),
-          scores: [
-            ChapterScore(correctAnswersPercentage: 1),
-            ChapterScore(correctAnswersPercentage: 2),
+    final progresses = [
+      ProgressModel(
+        teaching: TeachingModel(
+          1,
+          'T1',
+          'ST1',
+          [
+            ChapterModel('TC11', [], []),
+            ChapterModel('TC12', [], []),
           ],
-          completionPercentage: 1,
         ),
-        ProgressModel(
-          teaching: TeachingModel(
-            2,
-            'T2',
-            'ST2',
-            [
-              ChapterModel('TC21', [], []),
-              ChapterModel(
-                'TC22',
-                [
-                  SectionModel('SC211 title', 'SC211 content', 1),
-                  SectionModel('SC212 title', 'SC212 content', 2),
-                ],
-                [
-                  QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 'c1'),
-                  QuizQuestionModel('q2', 'Q2?', ['c2', 'c22'], 'c2'),
-                  QuizQuestionModel('q3', 'Q3?', ['c3', 'c33'], 'c33'),
-                ],
-              ),
-              ChapterModel('TC23', [], []),
-            ],
-          ),
-          scores: [
-            ChapterScore(correctAnswersPercentage: 0.8),
-            ChapterScore(correctAnswersPercentage: 0.1),
+        scores: [
+          ChapterScore(correctAnswersPercentage: 1),
+          ChapterScore(correctAnswersPercentage: 1),
+        ],
+      ),
+      ProgressModel(
+        teaching: TeachingModel(
+          2,
+          'T2',
+          'ST2',
+          [
+            ChapterModel('TC21', [], []),
+            ChapterModel(
+              'TC22',
+              [
+                SectionModel('SC211 title', 'SC211 content', 1),
+                SectionModel('SC212 title', 'SC212 content', 2),
+              ],
+              [
+                QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 'c1'),
+                QuizQuestionModel('q2', 'Q2?', ['c2', 'c22'], 'c2'),
+                QuizQuestionModel('q3', 'Q3?', ['c3', 'c33'], 'c33'),
+              ],
+            ),
+            ChapterModel(
+              'TC23',
+              [
+                SectionModel('SC231 title', 'SC231 content', 3),
+              ],
+              [
+                QuizQuestionModel('a', 'A?', ['x', 'y'], 'x'),
+              ],
+            ),
           ],
-          completionPercentage: 0.5,
         ),
-      ],
-    );
+        scores: [
+          ChapterScore(correctAnswersPercentage: 0.8),
+          ChapterScore(correctAnswersPercentage: 0.1),
+        ],
+      ),
+    ];
+    when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
     final providers = createProviders(dataService, audioPlayer);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
@@ -130,5 +136,43 @@ void main() {
     expect(findTextWidget(tester, 'WAQuestion1').data, 'Q3?');
     expect(findTextWidget(tester, 'WAGivenAnswer1').data, 'c3');
     expect(findTextWidget(tester, 'WACorrectAnswer1').data, 'c33');
+    // Save progress
+    verify(dataService.saveProgress(ProgressModel(
+      teaching: progresses[1].teaching,
+      scores: [
+        ChapterScore(correctAnswersPercentage: 0.8),
+        ChapterScore(correctAnswersPercentage: 0.33),
+      ],
+    ))).called(1);
+    // Go to next chapter
+    when(dataService.getAudioUrl(3)).thenAnswer((_) async => 'http://3.wav');
+    await tapByKey(tester, ContinueButton.buttonKey, 5);
+    expect(findTextWidget(tester, 'ChapterTitle').data, 'TC23');
+    expect(find.text('SC231 title'), findsOneWidget);
+    // Play audio
+    expect(find.byKey(AudioPlayerWidget.playerKey), findsNothing);
+    await tapByStringKey(tester, 'PlayButton0', 5);
+    verify(audioPlayer.load('http://3.wav')).called(1);
+    // Submit quiz
+    await tapByKey(tester, ContinueButton.buttonKey, 5);
+    await tapByText(tester, 'x');
+    await tapByKey(tester, ContinueButton.buttonKey, 5);
+    // Save data and display score
+    verify(dataService.saveProgress(ProgressModel(
+      teaching: progresses[1].teaching,
+      scores: [
+        ChapterScore(correctAnswersPercentage: 0.8),
+        ChapterScore(correctAnswersPercentage: 0.33),
+        ChapterScore(correctAnswersPercentage: 1),
+      ],
+    ))).called(1);
+    expect(findTextWidget(tester, 'Score').data, '${mgTexts.score}: 1/1');
+    // Teaching is finished -> Continue goes to summary
+    await tapByKey(tester, ContinueButton.buttonKey, 5);
+    expect(find.byKey(TeachingSummaryScreen.backButtonKey), findsOneWidget);
+    // Update statistics
+    expect(find.byKey(const Key('DoneIcon0')), findsOneWidget);
+    expect(find.byKey(const Key('DoneIcon1')), findsNothing);
+    expect(find.byKey(const Key('DoneIcon2')), findsOneWidget);
   });
 }
