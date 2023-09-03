@@ -7,7 +7,7 @@ abstract class AppAudioPlayer {
   void pause();
   void seek(Duration position);
   Future<void> dispose();
-  void onPlayerUnmounted() {}
+  void onPlayerUnmounted();
 
   Stream<PlayerStreamData>? dataStream;
 }

@@ -14,8 +14,13 @@ abstract class JustAudioPlayer extends AppAudioPlayer {
   final _dataStreamController = StreamController<PlayerStreamData>();
   final _streamData = JustAudioStreamData();
 
+  late Stream<PlayerStreamData>? _dataStream;
   @override
-  Stream<PlayerStreamData>? get dataStream => _dataStreamController.stream;
+  Stream<PlayerStreamData>? get dataStream => _dataStream;
+
+  JustAudioPlayer() {
+    _dataStream = _dataStreamController.stream.asBroadcastStream();
+  }
 
   @override
   Future<void> init() async {
@@ -87,6 +92,11 @@ abstract class JustAudioPlayer extends AppAudioPlayer {
 
   @override
   void seek(Duration position) => handleError(() => _player.seek(position));
+
+  @override
+  void onPlayerUnmounted() {
+    _player.stop();
+  }
 
   @override
   Future<void> dispose() async {

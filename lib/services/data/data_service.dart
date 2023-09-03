@@ -17,7 +17,7 @@ abstract class AbstractDataService {
   Future<ProgressModel> startTeaching(int id);
 
   Future<String> getAudioUrl(int id) async {
-    return 'http://10.0.2.2:3000/$id.mp3';
+    return 'http://192.168.0.128:3000/audios/$id.mp3';
   }
 
   Future<void> saveProgress(ProgressModel progress) async {}
