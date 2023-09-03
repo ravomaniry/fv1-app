@@ -1,34 +1,25 @@
 import 'package:fv1/models/chapter.dart';
-import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/quiz_question.dart';
 import 'package:fv1/models/section.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/services/data/data_service.dart';
+import 'package:fv1/services/data/http_client.dart';
 
 class NativeDataService extends AbstractDataService {
+  final AppHttpClient _httpClient;
+
+  NativeDataService(this._httpClient);
+
   @override
   Future<void> sync() async {
     // Save the local progress to remote
   }
 
   @override
-  Future<List<ProgressModel>> loadProgresses() async {
-    await Future.delayed(const Duration(milliseconds: 400));
-    return [
-      ProgressModel(teaching: _testTeaching, scores: []),
-      ProgressModel(
-        teaching: TeachingModel(
-          2,
-          'Teaching 2',
-          _testTeaching.subtitle,
-          _testTeaching.chapters,
-        ),
-        scores: [
-          ChapterScore(correctAnswersPercentage: 1),
-        ],
-      ),
-    ];
+  Future<List<ProgressModel>> loadProgresses() {
+    // native client should read the local progress
+    return _httpClient.getProgresses();
   }
 
   @override

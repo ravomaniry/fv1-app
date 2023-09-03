@@ -5,7 +5,8 @@ class ChapterScore {
 
   factory ChapterScore.fromJson(Map<dynamic, dynamic> json) {
     return ChapterScore(
-      correctAnswersPercentage: json[' correctAnswersPercentage'],
+      correctAnswersPercentage:
+          (json['correctAnswersPercentage'] as int).toDouble(),
     );
   }
 

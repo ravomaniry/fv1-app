@@ -10,12 +10,13 @@ class TeachingModel {
   TeachingModel(this.id, this.title, this.subtitle, this.chapters);
 
   factory TeachingModel.fromJson(Map<String, dynamic> json) {
-    final List<Map<String, dynamic>> chapters = json['chapters'];
     return TeachingModel(
       json['id'],
       json['title'],
       json['subtitle'],
-      chapters.map((e) => ChapterModel.fromJson(e)).toList(growable: false),
+      List<ChapterModel>.from(
+        json['chapters'].map((e) => ChapterModel.fromJson(e)),
+      ),
     );
   }
 
@@ -24,7 +25,7 @@ class TeachingModel {
       'id': id,
       'title': title,
       'subtitle': subtitle,
-      'chapters': chapters.map((e) => e.toJson()),
+      'chapters': chapters.map((e) => e.toJson()).toList(growable: false),
     };
   }
 

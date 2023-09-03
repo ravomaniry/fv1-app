@@ -16,11 +16,11 @@ class ProgressModel {
   }
 
   factory ProgressModel.fromJson(Map<dynamic, dynamic> json) {
-    final List<Map<dynamic, dynamic>> scores = json['scores'];
     return ProgressModel(
       teaching: TeachingModel.fromJson(json['teaching']),
-      scores:
-          scores.map((e) => ChapterScore.fromJson(e)).toList(growable: false),
+      scores: List<ChapterScore>.from(
+        json['scores'].map((e) => ChapterScore.fromJson(e)),
+      ),
     );
   }
 

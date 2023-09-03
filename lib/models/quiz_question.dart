@@ -12,7 +12,7 @@ class QuizQuestionModel {
     return QuizQuestionModel(
       json['key'],
       json['question'],
-      json['options'],
+      List<String>.from(json['options']),
       json['response'],
     );
   }

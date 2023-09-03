@@ -10,14 +10,14 @@ class ChapterModel {
   ChapterModel(this.title, this.sections, this.questions);
 
   factory ChapterModel.fromJson(Map<dynamic, dynamic> json) {
-    final List<Map<dynamic, dynamic>> questions = json['questions'];
-    final List<Map<dynamic, dynamic>> sections = json['sections'];
     return ChapterModel(
       json['title'],
-      sections.map((e) => SectionModel.fromJson(e)).toList(growable: false),
-      questions
-          .map((e) => QuizQuestionModel.fromJson(e))
-          .toList(growable: false),
+      List<SectionModel>.from(
+        json['sections'].map((e) => SectionModel.fromJson(e)),
+      ),
+      List<QuizQuestionModel>.from(
+        json['questions'].map((e) => QuizQuestionModel.fromJson(e)),
+      ),
     );
   }
 
