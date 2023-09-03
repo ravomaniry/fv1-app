@@ -56,6 +56,10 @@ ThemeData createTheme() {
       linearTrackColor: Colors.black12,
       color: accent,
     ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      shape: RoundedRectangleBorder(),
+      backgroundColor: Colors.black,
+    ),
   );
 }
 

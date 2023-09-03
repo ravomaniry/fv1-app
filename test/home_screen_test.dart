@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
+import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
@@ -12,11 +14,16 @@ import 'package:fv1/ui/widgets/loader.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-@GenerateNiceMocks([MockSpec<AbstractDataService>()])
+@GenerateNiceMocks([
+  MockSpec<AbstractDataService>(),
+  MockSpec<AppAudioPlayer>(),
+])
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
 void main() {
+  final audioPlayer = MockAppAudioPlayer();
+
   testWidgets(
     'No saved progress: Display button to go to explorer',
     (tester) async {
@@ -25,7 +32,7 @@ void main() {
         (_) => Future.delayed(const Duration(seconds: 1)),
       );
       when(dataService.loadProgresses()).thenAnswer((_) async => []);
-      final providers = createProviders(dataService);
+      final providers = createProviders(dataService, audioPlayer);
       await tester.pumpWidget(Fv1App(providers));
       // Display loader before sync is done
       expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
@@ -57,7 +64,6 @@ void main() {
             ChapterScore(correctAnswersPercentage: 0.8),
             ChapterScore(correctAnswersPercentage: 0.1),
           ],
-          completionPercentage: 0.5,
         ),
         ProgressModel(
           teaching: TeachingModel(
@@ -67,11 +73,10 @@ void main() {
             [ChapterModel('TC2', [], [])],
           ),
           scores: [],
-          completionPercentage: 0.2,
         ),
       ],
     );
-    final providers = createProviders(dataService);
+    final providers = createProviders(dataService, audioPlayer);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Render buttons

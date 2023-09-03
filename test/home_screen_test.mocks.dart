@@ -7,6 +7,7 @@ import 'dart:async' as _i4;
 
 import 'package:fv1/models/progress.dart' as _i2;
 import 'package:fv1/models/teaching_summary.dart' as _i5;
+import 'package:fv1/services/audio_player/audio_player.dart' as _i6;
 import 'package:fv1/services/data/data_service.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -91,4 +92,92 @@ class MockAbstractDataService extends _i1.Mock
           ),
         )),
       ) as _i4.Future<_i2.ProgressModel>);
+  @override
+  _i4.Future<String> getAudioUrl(int? id) => (super.noSuchMethod(
+        Invocation.method(
+          #getAudioUrl,
+          [id],
+        ),
+        returnValue: _i4.Future<String>.value(''),
+        returnValueForMissingStub: _i4.Future<String>.value(''),
+      ) as _i4.Future<String>);
+  @override
+  _i4.Future<void> saveProgress(_i2.ProgressModel? progress) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #saveProgress,
+          [progress],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+}
+
+/// A class which mocks [AppAudioPlayer].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockAppAudioPlayer extends _i1.Mock implements _i6.AppAudioPlayer {
+  @override
+  _i4.Stream<Duration> get position => (super.noSuchMethod(
+        Invocation.getter(#position),
+        returnValue: _i4.Stream<Duration>.empty(),
+        returnValueForMissingStub: _i4.Stream<Duration>.empty(),
+      ) as _i4.Stream<Duration>);
+  @override
+  _i4.Stream<Duration> get totalDuration => (super.noSuchMethod(
+        Invocation.getter(#totalDuration),
+        returnValue: _i4.Stream<Duration>.empty(),
+        returnValueForMissingStub: _i4.Stream<Duration>.empty(),
+      ) as _i4.Stream<Duration>);
+  @override
+  _i4.Future<void> init() => (super.noSuchMethod(
+        Invocation.method(
+          #init,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+  @override
+  _i4.Future<void> load(String? url) => (super.noSuchMethod(
+        Invocation.method(
+          #load,
+          [url],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+  @override
+  void play() => super.noSuchMethod(
+        Invocation.method(
+          #play,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void pause() => super.noSuchMethod(
+        Invocation.method(
+          #pause,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void seek(Duration? position) => super.noSuchMethod(
+        Invocation.method(
+          #seek,
+          [position],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  _i4.Future<void> dispose() => (super.noSuchMethod(
+        Invocation.method(
+          #dispose,
+          [],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/services/audio_player/audio_player.dart';
 
-class AudioPlayer extends StatelessWidget {
-  const AudioPlayer({super.key});
+class AudioPlayerWidget extends StatelessWidget {
+  static const playerKey = Key('AudioPlayer');
+  final AppAudioPlayer player;
+
+  const AudioPlayerWidget({super.key, required this.player});
 
   @override
   Widget build(BuildContext context) {
     return Row(
+      key: playerKey,
       children: [
         IconButton(
           onPressed: () {},

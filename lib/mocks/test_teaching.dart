@@ -8,19 +8,19 @@ final List<QuizQuestionModel> _testQuestions = [
     '0',
     'Ny fahasoavana dia:',
     [
-      'Valisoa noho ny asa tsara natao.',
+      'Valisoa noho ny asa tsara natao',
       'Fanomezana oman\'Andriamanitra izay hitany fa miezaka',
     ],
-    'Valisoa noho ny asa tsara natao.',
+    'Valisoa noho ny asa tsara natao',
   ),
   QuizQuestionModel(
     '1',
     'Ny famonjena dia:',
     [
       'Valisoa ho an\'izay mitandrina ny lalàna.',
-      'Fanomezana omena izay mino an\'i Jesosy.',
+      'Fanomezana omena izay mino an\'i Jesosy',
     ],
-    'Fanomezana omena izay mino an\'i Jesosy.',
+    'Fanomezana omena izay mino an\'i Jesosy',
   ),
 ];
 
@@ -32,14 +32,14 @@ ChapterModel _testChapter(int i) {
         'Efesiana 2:8',
         'Fa fahasoanava\n'
             'No namonjena anareo.',
-        'https://test.com/1',
+        1,
       ),
       SectionModel(
         'Romana 5:2',
         'Ao aminy no hananantsika fanatonana\n'
             'amin\'ny finiana izao fahasoavana\n'
             'itoerantsika izao.',
-        'https://test.com/2',
+        2,
       ),
     ],
     _testQuestions,

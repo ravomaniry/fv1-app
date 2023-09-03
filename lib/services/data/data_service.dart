@@ -15,4 +15,10 @@ abstract class AbstractDataService {
   }
 
   Future<ProgressModel> startTeaching(int id);
+
+  Future<String> getAudioUrl(int id) async {
+    return 'http://fv1.com/$id.wav';
+  }
+
+  Future<void> saveProgress(ProgressModel progress) async {}
 }

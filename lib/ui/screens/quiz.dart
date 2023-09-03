@@ -37,7 +37,10 @@ class _Body extends StatelessWidget {
     final isValid = _formKey.currentState
         ?.saveAndValidate(autoScrollWhenFocusOnInvalid: true);
     if (isValid == true) {
-      _state.submitQuiz(_formKey.currentState!.value);
+      _state.submitQuiz(
+        readChapterIndex(context),
+        _formKey.currentState!.value,
+      );
       GoRouter.of(context).pushReplacementNamed(
         ScoreScreen.route,
         pathParameters: GoRouterState.of(context).pathParameters,

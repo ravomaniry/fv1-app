@@ -1,4 +1,5 @@
 import 'package:fv1/mocks/test_teaching.dart';
+import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/services/data/data_service.dart';
@@ -22,9 +23,8 @@ class NativeDataService extends AbstractDataService {
           testTeaching.chapters,
         ),
         scores: [
-          ChapterScore(correctAnswersPercentage: 2),
+          ChapterScore(correctAnswersPercentage: 1),
         ],
-        completionPercentage: 0.5,
       ),
     ];
   }

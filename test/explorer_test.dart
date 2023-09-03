@@ -16,10 +16,12 @@ import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
 void main() {
+  final audioPlayer = MockAppAudioPlayer();
+
   testWidgets('Go to explorer screen and download metadata', (tester) async {
     final dataService = MockAbstractDataService();
     when(dataService.loadProgresses()).thenAnswer((_) async => []);
-    final providers = createProviders(dataService);
+    final providers = createProviders(dataService, audioPlayer);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester, 1);
     // Go to explorer screen
