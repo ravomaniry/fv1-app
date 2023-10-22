@@ -10,6 +10,8 @@ import 'package:fv1/services/config/config_service.dart';
 import 'package:fv1/services/data/native_data_service.dart';
 import 'package:fv1/services/storage/native_storage_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/retry.dart';
 import 'package:logging/logging.dart';
 
 void main() async {
@@ -24,8 +26,9 @@ void main() async {
   final storage = NativeStorageService();
   await Future.wait([config.init(), storage.init()]);
   final apiRoutes = ApiRoutes(config.api);
-  final authService = AuthService(storage, apiRoutes);
-  final httpClient = ApiClient(authService, apiRoutes);
+  final baseHttpClient = RetryClient(http.Client());
+  final authService = AuthService(storage, apiRoutes, baseHttpClient);
+  final httpClient = ApiClient(authService, apiRoutes, baseHttpClient);
   final dataService = NativeDataService(httpClient);
   final audioPlayer = createAudioPlayer();
   final providers = createProviders(dataService, audioPlayer);

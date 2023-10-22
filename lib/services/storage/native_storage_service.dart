@@ -24,6 +24,6 @@ class NativeStorageService extends StorageService {
 
   @override
   void saveTokens(UserTokens tokens) {
-    _prefs.setString(_refreshTokenKey, tokens.toJson());
+    _prefs.setString(_refreshTokenKey, jsonEncode(tokens));
   }
 }

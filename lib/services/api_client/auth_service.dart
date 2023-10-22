@@ -1,14 +1,15 @@
 import 'package:fv1/models/user_tokens.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
-import 'package:fv1/services/api_client/utils.dart';
+import 'package:fv1/services/api_client/dtos.dart';
 import 'package:fv1/services/storage/storage_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/retry.dart';
 import 'package:logging/logging.dart';
 
 class _AuthClient extends http.BaseClient {
   final _logger = Logger('_AuthClient');
-  final _inner = RetryClient(http.Client());
+  final http.BaseClient _inner;
+
+  _AuthClient(this._inner);
 
   @override
   Future<http.StreamedResponse> send(http.BaseRequest request) {
@@ -21,32 +22,29 @@ class AuthService {
   final StorageService _storage;
   final ApiRoutes _routes;
   final _logger = Logger('AuthService');
-  final _client = _AuthClient();
+  final _AuthClient _client;
   UserTokens? _tokens;
 
-  AuthService(this._storage, this._routes);
+  AuthService(this._storage, this._routes, http.BaseClient baseClient)
+      : _client = _AuthClient(baseClient);
 
   Future<void> _register() async {
-    final resp = await parseJsonResponse(_client.post(_routes.registerGuest),
-        (d) => _LoginResponseDto.fromJson(d));
-    _updateToken(resp.tokens);
+    final tokens = await LoginDto().parse(_client.post(_routes.registerGuest));
+    _updateToken(tokens);
     _logger.info('Registered as guest user');
   }
 
   Future<void> _refreshExpiredToken() async {
-    const buffer = 120; // 2 minutes
-    final now = DateTime.now().millisecondsSinceEpoch ~/ 1000;
-    if (_tokens!.expirationOn <= now - buffer) {
+    if (_tokens!.isAccessTokenExpired) {
       try {
-        final token = await parseJsonResponse(
+        final token = await RefreshTokenDto().parse(
           _client.post(
             _routes.refreshToken,
             body: {'token': _tokens!.refreshToken},
           ),
-          (d) => d['token'] as String,
         );
         _tokens?.updateAccessToken(token);
-        _logger.info('Access token refreshed ${_tokens?.expirationOn}');
+        _logger.info('Access token refreshed');
         _updateToken(_tokens!);
       } catch (e) {
         _logger.shout('Failed to refresh token $e');
@@ -72,15 +70,5 @@ class AuthService {
     }
     await _refreshExpiredToken();
     return _tokens!.accessToken;
-  }
-}
-
-class _LoginResponseDto {
-  final UserTokens tokens;
-
-  _LoginResponseDto(this.tokens);
-
-  factory _LoginResponseDto.fromJson(Map<String, dynamic> json) {
-    return _LoginResponseDto(UserTokens.fromJson(json['tokens']));
   }
 }
