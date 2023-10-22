@@ -24,4 +24,12 @@ class ApiRoutes {
   Uri audioUrl(String id) {
     return _createUri(_config, 'api/audio/url/$id');
   }
+
+  Uri saveProgress(int id) {
+    return _createUri(_config, 'api/progress/save/$id');
+  }
+
+  Uri syncProgress(int id) {
+    return _createUri(_config, 'api/progress/sync/$id');
+  }
 }

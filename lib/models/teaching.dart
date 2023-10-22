@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/serializable.dart';
 
-class TeachingModel {
+class TeachingModel implements Serializable {
   final int id;
   final String title;
   final String subtitle;
@@ -15,23 +16,30 @@ class TeachingModel {
       json['title'],
       json['subtitle'],
       List<ChapterModel>.from(
-        json['chapters'].map((e) => ChapterModel.fromJson(e)),
+        json['chapters'].map(
+          (e) => ChapterModel.fromJson(e),
+        ),
       ),
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
       'subtitle': subtitle,
-      'chapters': chapters.map((e) => e.toJson()).toList(growable: false),
+      'chapters': chapters,
     };
   }
 
   @override
   int get hashCode =>
-      id.hashCode ^ title.hashCode ^ subtitle.hashCode ^ chapters.hashCode;
+      id.hashCode ^
+      title.hashCode ^
+      subtitle.hashCode ^
+      chapters.hashCode ^
+      chapters.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -40,4 +48,7 @@ class TeachingModel {
       title == other.title &&
       subtitle == other.subtitle &&
       listEquals(chapters, other.chapters);
+
+  @override
+  String toString() => 'TeachingModel<${toJson().toString()}>';
 }

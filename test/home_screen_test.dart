@@ -8,6 +8,7 @@ import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
+import 'package:fv1/services/datetime/datetime_service.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/loader.dart';
@@ -17,12 +18,14 @@ import 'package:mockito/mockito.dart';
 @GenerateNiceMocks([
   MockSpec<AbstractDataService>(),
   MockSpec<AppAudioPlayer>(),
+  MockSpec<DateTimeService>(),
 ])
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
 void main() {
   final audioPlayer = MockAppAudioPlayer();
+  final dtService = MockDateTimeService();
 
   testWidgets(
     'No saved progress: Display button to go to explorer',
@@ -32,7 +35,7 @@ void main() {
         (_) => Future.delayed(const Duration(seconds: 1)),
       );
       when(dataService.loadProgresses()).thenAnswer((_) async => []);
-      final providers = createProviders(dataService, audioPlayer);
+      final providers = createProviders(dataService, audioPlayer, dtService);
       await tester.pumpWidget(Fv1App(providers));
       // Display loader before sync is done
       expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
@@ -51,6 +54,8 @@ void main() {
     when(dataService.loadProgresses()).thenAnswer(
       (_) async => [
         ProgressModel(
+          id: 10,
+          clientTimestamp: 1000,
           teaching: TeachingModel(
             1,
             'T1',
@@ -66,6 +71,8 @@ void main() {
           ],
         ),
         ProgressModel(
+          id: 20,
+          clientTimestamp: 1000,
           teaching: TeachingModel(
             2,
             'T2',
@@ -76,7 +83,7 @@ void main() {
         ),
       ],
     );
-    final providers = createProviders(dataService, audioPlayer);
+    final providers = createProviders(dataService, audioPlayer, dtService);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Render buttons

@@ -21,6 +21,7 @@ ProgressModel updateProgress(
   ProgressModel progress,
   int chapterIndex,
   List<WrongAnswer> wrongAnswers,
+  int clientTimestamp,
 ) {
   final questionsCount =
       progress.teaching.chapters[chapterIndex].questions.length;
@@ -33,7 +34,12 @@ ProgressModel updateProgress(
     nextScores.add(ChapterScore.zero());
   }
   nextScores[chapterIndex] = score;
-  return ProgressModel(teaching: progress.teaching, scores: nextScores);
+  return ProgressModel(
+    id: progress.id,
+    teaching: progress.teaching,
+    scores: nextScores,
+    clientTimestamp: clientTimestamp,
+  );
 }
 
 double _roundedPercentage(int n, int total) {

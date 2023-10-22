@@ -19,5 +19,5 @@ abstract class AbstractDataService {
 
   Future<String> getAudioUrl(String id);
 
-  Future<void> saveProgress(ProgressModel progress) async {}
+  Future<void> saveProgress(ProgressModel progress);
 }

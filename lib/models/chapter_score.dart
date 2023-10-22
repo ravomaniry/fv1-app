@@ -1,17 +1,19 @@
-class ChapterScore {
+import 'package:fv1/models/serializable.dart';
+
+class ChapterScore implements Serializable {
   final double correctAnswersPercentage;
 
   ChapterScore({required this.correctAnswersPercentage});
 
   factory ChapterScore.fromJson(Map<dynamic, dynamic> json) {
     return ChapterScore(
-      correctAnswersPercentage:
-          (json['correctAnswersPercentage'] as int).toDouble(),
+      correctAnswersPercentage: json['correctAnswersPercentage'].toDouble(),
     );
   }
 
   factory ChapterScore.zero() => ChapterScore(correctAnswersPercentage: 0);
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'correctAnswersPercentage': correctAnswersPercentage,

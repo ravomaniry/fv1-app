@@ -10,6 +10,7 @@ import 'package:fv1/models/teaching_summary.dart' as _i5;
 import 'package:fv1/services/audio_player/audio_player.dart' as _i6;
 import 'package:fv1/services/audio_player/player_stream_data.dart' as _i7;
 import 'package:fv1/services/data/data_service.dart' as _i3;
+import 'package:fv1/services/datetime/datetime_service.dart' as _i8;
 import 'package:mockito/mockito.dart' as _i1;
 
 // ignore_for_file: type=lint
@@ -25,6 +26,16 @@ import 'package:mockito/mockito.dart' as _i1;
 
 class _FakeProgressModel_0 extends _i1.SmartFake implements _i2.ProgressModel {
   _FakeProgressModel_0(
+    Object parent,
+    Invocation parentInvocation,
+  ) : super(
+          parent,
+          parentInvocation,
+        );
+}
+
+class _FakeDateTime_1 extends _i1.SmartFake implements DateTime {
+  _FakeDateTime_1(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -186,4 +197,31 @@ class MockAppAudioPlayer extends _i1.Mock implements _i6.AppAudioPlayer {
         ),
         returnValueForMissingStub: null,
       );
+}
+
+/// A class which mocks [DateTimeService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockDateTimeService extends _i1.Mock implements _i8.DateTimeService {
+  @override
+  DateTime now() => (super.noSuchMethod(
+        Invocation.method(
+          #now,
+          [],
+        ),
+        returnValue: _FakeDateTime_1(
+          this,
+          Invocation.method(
+            #now,
+            [],
+          ),
+        ),
+        returnValueForMissingStub: _FakeDateTime_1(
+          this,
+          Invocation.method(
+            #now,
+            [],
+          ),
+        ),
+      ) as DateTime);
 }

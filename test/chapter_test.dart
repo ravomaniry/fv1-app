@@ -27,10 +27,15 @@ void main() {
     final playerDataStream = playerStreamCtr.stream.asBroadcastStream();
     final audioPlayer = MockAppAudioPlayer();
     when(audioPlayer.dataStream).thenAnswer((_) => playerDataStream);
+    final dtService = MockDateTimeService();
+    final now = DateTime.now();
+    when(dtService.now()).thenReturn(now);
     final dataService = MockAbstractDataService();
     when(dataService.sync()).thenAnswer((_) async {});
     final progresses = [
       ProgressModel(
+        id: 10,
+        clientTimestamp: 0,
         teaching: TeachingModel(
           1,
           'T1',
@@ -46,6 +51,8 @@ void main() {
         ],
       ),
       ProgressModel(
+        id: 20,
+        clientTimestamp: 0,
         teaching: TeachingModel(
           2,
           'T2',
@@ -82,7 +89,7 @@ void main() {
       ),
     ];
     when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
-    final providers = createProviders(dataService, audioPlayer);
+    final providers = createProviders(dataService, audioPlayer, dtService);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Open teaching
@@ -155,7 +162,9 @@ void main() {
     expect(findTextWidget(tester, 'WACorrectAnswer1').data, 'c33');
     // Save progress
     verify(dataService.saveProgress(ProgressModel(
+      id: 20,
       teaching: progresses[1].teaching,
+      clientTimestamp: now.millisecondsSinceEpoch ~/ 1000,
       scores: [
         ChapterScore(correctAnswersPercentage: 0.8),
         ChapterScore(correctAnswersPercentage: 0.33),
@@ -179,7 +188,9 @@ void main() {
     await tapByKey(tester, ContinueButton.buttonKey, 5);
     // Save data and display score
     verify(dataService.saveProgress(ProgressModel(
+      id: 20,
       teaching: progresses[1].teaching,
+      clientTimestamp: now.millisecondsSinceEpoch ~/ 1000,
       scores: [
         ChapterScore(correctAnswersPercentage: 0.8),
         ChapterScore(correctAnswersPercentage: 0.33),

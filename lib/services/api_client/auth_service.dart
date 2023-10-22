@@ -1,6 +1,6 @@
 import 'package:fv1/models/user_tokens.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
-import 'package:fv1/services/api_client/dtos.dart';
+import 'package:fv1/services/api_client/response_dtos.dart';
 import 'package:fv1/services/storage/storage_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';

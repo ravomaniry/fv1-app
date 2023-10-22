@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
+import 'package:fv1/models/serializable.dart';
 
-class SectionModel {
+class SectionModel implements Serializable {
   final String subtitle;
   final String content;
   final String audioId;
@@ -15,6 +15,7 @@ class SectionModel {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'subtitle': subtitle,
@@ -28,8 +29,11 @@ class SectionModel {
 
   @override
   bool operator ==(Object other) =>
-      other is SectionModel && mapEquals(toJson(), other.toJson());
+      other is SectionModel &&
+      other.content == content &&
+      other.subtitle == subtitle &&
+      other.audioId == audioId;
 
   @override
-  String toString() => 'SectionModel${toJson().toString()}';
+  String toString() => 'SectionModel<${toJson().toString()}>';
 }

@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "clientTimestamp": 0,
+    "scores": [
+      {
+        "correctAnswersPercentage": 0.5
+      }
+    ],
+    "teaching": {
+      "id": 1,
+      "title": "T1",
+      "subtitle": "ST1",
+      "chapters": [
+        {
+          "title": "C1",
+          "sections": [
+            {
+              "audioId": "1.mp3",
+              "content": "Content 1",
+              "subtitle": "Efesiana 1:4-6"
+            },
+            {
+              "audioId": "2.mp3",
+              "content": "Content 2",
+              "subtitle": "Efesiana 2:10"
+            }
+          ],
+          "questions": [
+            {
+              "key": "1",
+              "options": [
+                "Option 1",
+                "Option 2"
+              ],
+              "question": "Question 1",
+              "response": "Response 1"
+            },
+            {
+              "key": "2",
+              "options": [
+                "Option 3",
+                "Option 4"
+              ],
+              "question": "Question 2",
+              "response": "Response 2"
+            }
+          ]
+        }
+      ]
+    }
+  }
+]

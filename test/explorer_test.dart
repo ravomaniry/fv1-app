@@ -21,7 +21,8 @@ void main() {
   testWidgets('Go to explorer screen and download metadata', (tester) async {
     final dataService = MockAbstractDataService();
     when(dataService.loadProgresses()).thenAnswer((_) async => []);
-    final providers = createProviders(dataService, audioPlayer);
+    final dtService = MockDateTimeService();
+    final providers = createProviders(dataService, audioPlayer, dtService);
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester, 1);
     // Go to explorer screen
@@ -45,6 +46,8 @@ void main() {
     when(dataService.startTeaching(1)).thenAnswer((_) async {
       await Future.delayed(const Duration(seconds: 1));
       return ProgressModel(
+        id: 10,
+        clientTimestamp: 1000,
         teaching: TeachingModel(1, 'T1', 'ST1', [ChapterModel('CH1', [], [])]),
         scores: [],
       );

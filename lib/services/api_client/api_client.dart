@@ -4,7 +4,8 @@ import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
 import 'package:fv1/services/api_client/auth_service.dart';
-import 'package:fv1/services/api_client/dtos.dart';
+import 'package:fv1/services/api_client/request_dtos.dart';
+import 'package:fv1/services/api_client/response_dtos.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 
@@ -24,11 +25,15 @@ class _ClientWithAuth extends http.BaseClient {
   }
 
   Future<http.Response> postJson(Uri uri, Map<String, dynamic> body) {
-    return post(
-      uri,
-      body: jsonEncode(body),
-      headers: {'Content-Type': 'application/json'},
-    );
+    return post(uri, body: jsonEncode(body), headers: _jsonHeader());
+  }
+
+  Future<http.Response> putJson(Uri uri, Map<String, dynamic> body) {
+    return put(uri, body: jsonEncode(body), headers: _jsonHeader());
+  }
+
+  Map<String, String> _jsonHeader() {
+    return {'Content-Type': 'application/json'};
   }
 }
 
@@ -54,5 +59,19 @@ class ApiClient {
 
   Future<List<TeachingSummaryModel>> loadNewTeachings() async {
     return await GetNewTeachingsDto().parse(_client.get(_routes.teachingNew));
+  }
+
+  Future<void> saveProgress(ProgressModel progress) async {
+    await _client.putJson(
+      _routes.saveProgress(progress.id),
+      SaveProgressReqDto(progress).data,
+    );
+  }
+
+  Future<void> syncProgress(ProgressModel progress) async {
+    await _client.putJson(
+      _routes.syncProgress(progress.id),
+      SaveProgressReqDto(progress).data,
+    );
   }
 }

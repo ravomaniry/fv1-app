@@ -1,7 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_test/flutter_test.dart';
+import 'package:fv1/models/chapter.dart';
+import 'package:fv1/models/chapter_score.dart';
+import 'package:fv1/models/progress.dart';
+import 'package:fv1/models/quiz_question.dart';
+import 'package:fv1/models/section.dart';
+import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/user_tokens.dart';
 import 'package:fv1/services/api_client/api_client.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
@@ -131,5 +138,52 @@ void main() {
     final call2 = verify(apiBaseClient.send(captureAny));
     verifyNoMoreInteractions(apiBaseClient);
     expect(_getAuthHeader(call2.captured.single), 'Bearer $newAccessTk');
+  });
+
+  test('Parse progress and teaching', () async {
+    final file = File('test_resources/progresses.json').readAsStringSync();
+    final accessTk = _createAccessToken(
+      DateTime.now().add(const Duration(seconds: 1)),
+    );
+    cachedTokens = UserTokens('rt', accessTk);
+    when(apiBaseClient.send(any)).thenAnswer(
+      (_) async => _createStreamedResponse(http.Response(file, 200)),
+    );
+    final progresses = await apiClient.getProgresses();
+    expect(progresses, [
+      ProgressModel(
+        id: 1,
+        scores: [ChapterScore(correctAnswersPercentage: 0.5)],
+        clientTimestamp: 0,
+        teaching: TeachingModel(
+          1,
+          'T1',
+          'ST1',
+          [
+            ChapterModel(
+              'C1',
+              [
+                SectionModel('Efesiana 1:4-6', 'Content 1', '1.mp3'),
+                SectionModel('Efesiana 2:10', 'Content 2', '2.mp3'),
+              ],
+              [
+                QuizQuestionModel(
+                  '1',
+                  'Question 1',
+                  ['Option 1', 'Option 2'],
+                  'Response 1',
+                ),
+                QuizQuestionModel(
+                  '2',
+                  'Question 2',
+                  ['Option 3', 'Option 4'],
+                  'Response 2',
+                ),
+              ],
+            ),
+          ],
+        ),
+      )
+    ]);
   });
 }
