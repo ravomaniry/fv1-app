@@ -85,7 +85,10 @@ class BrowserState extends ChangeNotifier {
     _activeProgress = null;
     // wait to avoid flutter setState error message
     await Future.delayed(const Duration(milliseconds: 250));
-    _activeProgress = _localProgresses!.where((t) => t.teaching.id == id).first;
+    final match = _localProgresses!.where((t) => t.teaching.id == id);
+    if (match.isNotEmpty) {
+      _activeProgress = match.first;
+    }
     notifyListeners();
   }
 

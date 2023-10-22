@@ -45,3 +45,6 @@ app.*.map.json
 
 # Test converate
 /coverage/
+
+#Env
+.env

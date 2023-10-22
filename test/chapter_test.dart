@@ -55,8 +55,8 @@ void main() {
             ChapterModel(
               'TC22',
               [
-                SectionModel('SC211 title', 'SC211 content', 1),
-                SectionModel('SC212 title', 'SC212 content', 2),
+                SectionModel('SC211 title', 'SC211 content', '1'),
+                SectionModel('SC212 title', 'SC212 content', '2'),
               ],
               [
                 QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 'c1'),
@@ -67,7 +67,7 @@ void main() {
             ChapterModel(
               'TC23',
               [
-                SectionModel('SC231 title', 'SC231 content', 3),
+                SectionModel('SC231 title', 'SC231 content', '3'),
               ],
               [
                 QuizQuestionModel('a', 'A?', ['x', 'y'], 'x'),
@@ -110,8 +110,8 @@ void main() {
     expect(find.text('SC212 title'), findsOneWidget);
     expect(find.text('SC212 content'), findsOneWidget);
     // Audio player
-    when(dataService.getAudioUrl(1)).thenAnswer((_) async => 'http://1.wav');
-    when(dataService.getAudioUrl(2)).thenAnswer((_) async => 'http://2.wav');
+    when(dataService.getAudioUrl('1')).thenAnswer((_) async => 'http://1.wav');
+    when(dataService.getAudioUrl('2')).thenAnswer((_) async => 'http://2.wav');
     await tapByStringKey(tester, 'PlayButton0', 5);
     expect(find.byKey(AudioPlayerWidget.playerKey), findsOneWidget);
     expect(find.byKey(const Key('PlayingIcon0')), findsOneWidget);
@@ -162,7 +162,7 @@ void main() {
       ],
     ))).called(1);
     // Go to next chapter
-    when(dataService.getAudioUrl(3)).thenAnswer((_) async => 'http://3.wav');
+    when(dataService.getAudioUrl('3')).thenAnswer((_) async => 'http://3.wav');
     await tapByKey(tester, ContinueButton.buttonKey, 5);
     expect(findTextWidget(tester, 'ChapterTitle').data, 'TC23');
     expect(find.text('SC231 title'), findsOneWidget);

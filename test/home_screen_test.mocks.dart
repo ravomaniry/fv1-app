@@ -94,7 +94,7 @@ class MockAbstractDataService extends _i1.Mock
         )),
       ) as _i4.Future<_i2.ProgressModel>);
   @override
-  _i4.Future<String> getAudioUrl(int? id) => (super.noSuchMethod(
+  _i4.Future<String> getAudioUrl(String? id) => (super.noSuchMethod(
         Invocation.method(
           #getAudioUrl,
           [id],

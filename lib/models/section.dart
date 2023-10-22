@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 class SectionModel {
   final String subtitle;
   final String content;
-  final int audioId;
+  final String audioId;
 
   SectionModel(this.subtitle, this.content, this.audioId);
 
