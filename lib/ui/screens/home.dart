@@ -9,6 +9,7 @@ import 'package:fv1/ui/widgets/action_button.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:fv1/ui/widgets/search_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -75,11 +76,9 @@ class _Body extends StatelessWidget {
   }
 
   Widget _buildEmptyScreen() {
-    return Center(
-      child: Text(
-        _appState.texts.explorerHelp,
-        key: HomeScreen.explorerHelpKey,
-      ),
+    return NoDataMessage(
+      _appState.texts.explorerHelp,
+      key: HomeScreen.explorerHelpKey,
     );
   }
 

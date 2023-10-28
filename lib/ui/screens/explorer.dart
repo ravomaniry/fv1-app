@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
-import 'package:fv1/ui/widgets/icon_button.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -16,14 +17,16 @@ class ExplorerScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<BrowserState>(builder: (_, state, __) => _Body(state));
+    return Consumer2<AppState, BrowserState>(
+        builder: (_, appState, state, __) => _Body(appState, state));
   }
 }
 
 class _Body extends StatefulWidget {
   final BrowserState _state;
+  final AppState _appState;
 
-  const _Body(this._state);
+  const _Body(this._appState, this._state);
 
   @override
   State<_Body> createState() => _BodyState();
@@ -36,13 +39,6 @@ class _BodyState extends State<_Body> {
     widget._state.loadTeachingsList();
   }
 
-  Widget _buildActionButton() {
-    return AppIconButton(
-      onPressed: () => _onDownload(),
-      icon: Icons.download_rounded,
-    );
-  }
-
   void _onOpen(int id) async {
     await widget._state.startTeaching(id);
     if (context.mounted) {
@@ -53,8 +49,6 @@ class _BodyState extends State<_Body> {
     }
   }
 
-  void _onDownload() {}
-
   @override
   Widget build(BuildContext context) {
     return AppContainer(
@@ -62,17 +56,22 @@ class _BodyState extends State<_Body> {
       backButtonKey: ExplorerScreen.backButtonKey,
       body: WrapInLoader(
         isReady: widget._state.teachingsList != null,
-        builder: () => ListView(
-          children: [
-            for (final teaching in widget._state.teachingsList!)
-              ListTile(
-                title: Text(teaching.title),
-                subtitle: Text(teaching.subtitle),
-                trailing: _buildActionButton(),
-                onTap: () => _onOpen(teaching.id),
+        builder: () => widget._state.teachingsList!.isEmpty
+            ? NoDataMessage(widget._appState.texts.noNewTeaching)
+            : ListView(
+                children: [
+                  for (final teaching in widget._state.teachingsList!)
+                    ListTile(
+                      title: Text(teaching.title),
+                      subtitle: Text(teaching.subtitle),
+                      trailing: Icon(
+                        Icons.chevron_right,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
+                      onTap: () => _onOpen(teaching.id),
+                    ),
+                ],
               ),
-          ],
-        ),
       ),
     );
   }

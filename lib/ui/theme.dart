@@ -26,7 +26,7 @@ ThemeData createTheme() {
         ),
       ),
     ),
-    cardTheme: const CardTheme(elevation: 0),
+    cardTheme: const CardTheme(elevation: 0, margin: EdgeInsets.all(8)),
     listTileTheme: const ListTileThemeData(
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.bold,

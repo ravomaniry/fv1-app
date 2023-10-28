@@ -107,15 +107,16 @@ class _ChapterCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final primColor = Theme.of(context).primaryColor;
     return ListTile(
       title: Text(_chapter.title),
       trailing: _isDone
           ? Icon(
               key: Key('DoneIcon$_index'),
               Icons.check_circle_outline,
-              color: Theme.of(context).primaryColor,
+              color: primColor,
             )
-          : null,
+          : Icon(Icons.chevron_right, color: primColor),
       onTap: _onTap,
     );
   }

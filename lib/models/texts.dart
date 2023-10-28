@@ -8,6 +8,7 @@ class AppTexts {
   final String unknownError;
   final String playerError;
   final String loadingAudio;
+  final String noNewTeaching;
 
   AppTexts({
     required this.continueButton,
@@ -19,20 +20,23 @@ class AppTexts {
     required this.unknownError,
     required this.playerError,
     required this.loadingAudio,
+    required this.noNewTeaching,
   });
 }
 
 final mgTexts = AppTexts(
-  continueButton: 'TOHIZANA',
-  score: 'Isa',
-  quizHelp: 'Valio ireto fanontaniana manaraka ireto '
-      'araka ny fahazoanao ny fampianarana:',
-  requiredFieldMessage: 'Valio ity fanontaniana ity azafady.',
-  explorerHelp: 'Mbola tsy manaraka fampianarana ianao.\n'
-      '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.',
-  internetError: 'Misy olana ny internet.',
-  unknownError: 'Misy olana. '
-      'Akatony ary avereno akatona ny application azafady.',
-  playerError: 'Tsy afaka henoina ny audio. Avereno vakiana azafady.',
-  loadingAudio: 'Eo am-panokafana ny "audio". Mandrasa kely azafady.',
-);
+    continueButton: 'TOHIZANA',
+    score: 'Isa',
+    quizHelp: 'Valio ireto fanontaniana manaraka ireto '
+        'araka ny fahazoanao ny fampianarana:',
+    requiredFieldMessage: 'Valio ity fanontaniana ity azafady.',
+    explorerHelp: 'Mbola tsy manaraka fampianarana ianao.\n'
+        '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.',
+    internetError: 'Misy olana ny internet.',
+    unknownError: 'Misy olana. '
+        'Akatony ary avereno akatona ny application azafady.',
+    playerError: 'Tsy afaka henoina ny audio. Avereno vakiana azafady.',
+    loadingAudio: 'Eo am-panokafana ny "audio". Mandrasa kely azafady.',
+    noNewTeaching: 'Mbola tsy misy fampianarana vaovao. '
+        'Raha hijery ireo fampianarana efa natombokao dia '
+        'jereo ny pejy voalohany azafady.');
