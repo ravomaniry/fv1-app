@@ -25,19 +25,27 @@ AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'FITIAVANA',
+          'fitia',
           style: TextStyle(
+            fontFamily: 'JbMono',
             fontWeight: FontWeight.bold,
             color: theme.colorScheme.primary,
-            fontSize: 24,
+            fontSize: 20,
           ),
         ),
-        Text(
-          'V1',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: theme.colorScheme.secondary,
-            fontSize: 20,
+        Container(
+          padding: const EdgeInsets.only(left: 8, right: 8),
+          margin: const EdgeInsets.only(left: 4),
+          decoration: BoxDecoration(
+              color: theme.colorScheme.secondary,
+              borderRadius: const BorderRadius.all(Radius.circular(12))),
+          child: const Text(
+            'v1',
+            style: TextStyle(
+              fontFamily: 'JbMono',
+              color: Colors.white,
+              fontSize: 14,
+            ),
           ),
         ),
       ],

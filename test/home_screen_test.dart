@@ -8,31 +8,41 @@ import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
+import 'package:fv1/services/datetime/datetime_service.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import 'package:provider/provider.dart';
 
 @GenerateNiceMocks([
   MockSpec<AbstractDataService>(),
   MockSpec<AppAudioPlayer>(),
+  MockSpec<DateTimeService>(),
 ])
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
 void main() {
+  List<ProgressModel> progresses = [];
+  late MockAbstractDataService dataService;
+  late List<ChangeNotifierProvider<ChangeNotifier>> providers;
   final audioPlayer = MockAppAudioPlayer();
+  final dtService = MockDateTimeService();
+
+  setUp(() {
+    dataService = MockAbstractDataService();
+    when(dataService.sync()).thenAnswer(
+      (_) => Future.delayed(const Duration(seconds: 1)),
+    );
+    when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
+    providers = createProviders(dataService, audioPlayer, dtService);
+  });
 
   testWidgets(
     'No saved progress: Display button to go to explorer',
     (tester) async {
-      final dataService = MockAbstractDataService();
-      when(dataService.sync()).thenAnswer(
-        (_) => Future.delayed(const Duration(seconds: 1)),
-      );
-      when(dataService.loadProgresses()).thenAnswer((_) async => []);
-      final providers = createProviders(dataService, audioPlayer);
       await tester.pumpWidget(Fv1App(providers));
       // Display loader before sync is done
       expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
@@ -46,39 +56,38 @@ void main() {
   );
 
   testWidgets('Home to teaching summary', (tester) async {
-    final dataService = MockAbstractDataService();
-    when(dataService.sync()).thenAnswer((_) async {});
-    when(dataService.loadProgresses()).thenAnswer(
-      (_) async => [
-        ProgressModel(
-          teaching: TeachingModel(
-            1,
-            'T1',
-            'ST1',
-            [
-              ChapterModel('TC11', [], []),
-              ChapterModel('TC12', [], []),
-            ],
-          ),
-          scores: [
-            ChapterScore(correctAnswersPercentage: 0.8),
-            ChapterScore(correctAnswersPercentage: 0.1),
+    progresses = [
+      ProgressModel(
+        id: 10,
+        clientTimestamp: 1000,
+        teaching: TeachingModel(
+          1,
+          'T1',
+          'ST1',
+          [
+            ChapterModel('TC11', [], []),
+            ChapterModel('TC12', [], []),
           ],
         ),
-        ProgressModel(
-          teaching: TeachingModel(
-            2,
-            'T2',
-            'ST2',
-            [ChapterModel('TC2', [], [])],
-          ),
-          scores: [],
+        scores: [
+          ChapterScore(correctAnswersPercentage: 0.8),
+          ChapterScore(correctAnswersPercentage: 0.1),
+        ],
+      ),
+      ProgressModel(
+        id: 20,
+        clientTimestamp: 1000,
+        teaching: TeachingModel(
+          2,
+          'T2',
+          'ST2',
+          [ChapterModel('TC2', [], [])],
         ),
-      ],
-    );
-    final providers = createProviders(dataService, audioPlayer);
+        scores: [],
+      ),
+    ];
     await tester.pumpWidget(Fv1App(providers));
-    await tick(tester);
+    await tick(tester, 2);
     // Render buttons
     expect(find.byKey(HomeScreen.searchButtonKey), findsOneWidget);
     expect(find.byKey(HomeScreen.syncLoaderKey), findsNothing);

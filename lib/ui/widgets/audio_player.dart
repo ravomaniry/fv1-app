@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fv1/models/texts.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/audio_player/player_stream_data.dart';
-import 'package:fv1/ui/widgets/error_text.dart';
 
 class AudioPlayerWidget extends StatefulWidget {
   static const playerKey = Key('AudioPlayer');
@@ -59,21 +58,6 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     );
   }
 
-  Widget _buildErrorMessage(BuildContext context) {
-    final color = Theme.of(context).colorScheme.error;
-    return Row(
-      children: [
-        Icon(
-          Icons.error,
-          color: color,
-        ),
-        Expanded(
-          child: ErrorText(widget.texts.playerError),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
@@ -82,10 +66,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       stream: widget.player.dataStream,
       builder: (_, snapshot) {
         final data = snapshot.data;
-        if (data == null || data.state() == InternalPlayerState.busy) {
+        if (data == null ||
+            data.state() == InternalPlayerState.busy ||
+            data.state() == InternalPlayerState.error) {
           return _buildLoader();
-        } else if (data.state() == InternalPlayerState.error) {
-          return _buildErrorMessage(context);
         }
         return Container(
           margin: const EdgeInsets.only(top: 4),

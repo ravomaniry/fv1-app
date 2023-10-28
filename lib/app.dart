@@ -10,55 +10,60 @@ import 'package:fv1/ui/theme.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-final _routeConfig = GoRouter(
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (_, __) => const HomeScreen(),
-      routes: [
-        GoRoute(
-          name: TeachingSummaryScreen.route,
-          path: 'teaching/:$teachingIdKey',
-          builder: (_, __) => const TeachingSummaryScreen(),
-          routes: [
-            GoRoute(
-              name: ChapterScreen.route,
-              path: 'chapter/:$chapterIndexKey',
-              builder: (_, __) => const ChapterScreen(),
-              routes: [
-                GoRoute(
-                  name: QuizScreen.route,
-                  path: 'quiz',
-                  builder: (_, __) => const QuizScreen(),
-                ),
-                GoRoute(
-                  name: ScoreScreen.route,
-                  path: 'score',
-                  builder: (_, __) => const ScoreScreen(),
-                ),
-              ],
-            ),
-          ],
-        ),
-        GoRoute(
-          name: ExplorerScreen.route,
-          path: 'explorer',
-          builder: (_, __) => const ExplorerScreen(),
-        ),
-      ],
-    ),
-  ],
-);
-
-class Fv1App extends StatelessWidget {
+class Fv1App extends StatefulWidget {
   final List<ChangeNotifierProvider<ChangeNotifier>> _providers;
 
   const Fv1App(this._providers, {super.key});
 
   @override
+  State<Fv1App> createState() => _Fv1AppState();
+}
+
+class _Fv1AppState extends State<Fv1App> {
+  final _routeConfig = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (_, __) => const HomeScreen(),
+        routes: [
+          GoRoute(
+            name: TeachingSummaryScreen.route,
+            path: 'teaching/:$teachingIdKey',
+            builder: (_, __) => const TeachingSummaryScreen(),
+            routes: [
+              GoRoute(
+                name: ChapterScreen.route,
+                path: 'chapter/:$chapterIndexKey',
+                builder: (_, __) => const ChapterScreen(),
+                routes: [
+                  GoRoute(
+                    name: QuizScreen.route,
+                    path: 'quiz',
+                    builder: (_, __) => const QuizScreen(),
+                  ),
+                  GoRoute(
+                    name: ScoreScreen.route,
+                    path: 'score',
+                    builder: (_, __) => const ScoreScreen(),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          GoRoute(
+            name: ExplorerScreen.route,
+            path: 'explorer',
+            builder: (_, __) => const ExplorerScreen(),
+          ),
+        ],
+      ),
+    ],
+  );
+
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: _providers,
+      providers: widget._providers,
       child: MaterialApp.router(
         title: 'Fitiavana voalohany',
         theme: createTheme(),

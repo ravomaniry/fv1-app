@@ -1,26 +1,33 @@
 import 'package:flutter/foundation.dart';
 import 'package:fv1/models/chapter_score.dart';
+import 'package:fv1/models/serializable.dart';
 import 'package:fv1/models/teaching.dart';
 
-class ProgressModel {
+class ProgressModel implements Serializable {
+  final int id;
   final TeachingModel teaching;
   final List<ChapterScore> scores;
+  final int clientTimestamp;
   double _completionPercentage = 0;
   double get completionPercentage => _completionPercentage;
 
   ProgressModel({
+    required this.id,
     required this.teaching,
     required this.scores,
+    required this.clientTimestamp,
   }) {
     _calculateCompletionPercentage();
   }
 
   factory ProgressModel.fromJson(Map<dynamic, dynamic> json) {
-    final List<Map<dynamic, dynamic>> scores = json['scores'];
     return ProgressModel(
+      id: json['id'],
       teaching: TeachingModel.fromJson(json['teaching']),
-      scores:
-          scores.map((e) => ChapterScore.fromJson(e)).toList(growable: false),
+      clientTimestamp: json['clientTimestamp'],
+      scores: List<ChapterScore>.from(
+        json['scores'].map((e) => ChapterScore.fromJson(e)),
+      ),
     );
   }
 
@@ -48,20 +55,25 @@ class ProgressModel {
     return scores.length < teaching.chapters.length ? scores.length : 0;
   }
 
-  Map<dynamic, dynamic> toJson() {
+  @override
+  Map<String, dynamic> toJson() {
     return {
-      'teaching': teaching.toJson(),
-      'scores': scores.map((e) => e.toJson()),
+      'id': id,
+      'teaching': teaching,
+      'scores': scores,
+      'clientTimestamp': clientTimestamp,
     };
   }
 
   @override
-  int get hashCode => teaching.hashCode ^ scores.hashCode;
+  int get hashCode => teaching.hashCode ^ scores.hashCode ^ id.hashCode;
 
   @override
   bool operator ==(Object other) =>
       other is ProgressModel &&
-      teaching == other.teaching &&
+      other.id == id &&
+      other.teaching == teaching &&
+      other.clientTimestamp == clientTimestamp &&
       listEquals(scores, other.scores);
 
   @override

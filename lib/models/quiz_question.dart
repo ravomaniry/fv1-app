@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
+import 'package:fv1/models/serializable.dart';
 
-class QuizQuestionModel {
+class QuizQuestionModel implements Serializable {
   final String key;
   final String question;
   final List<String> options;
@@ -12,11 +13,12 @@ class QuizQuestionModel {
     return QuizQuestionModel(
       json['key'],
       json['question'],
-      json['options'],
+      List<String>.from(json['options']),
       json['response'],
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'key': key,
@@ -32,7 +34,11 @@ class QuizQuestionModel {
 
   @override
   bool operator ==(Object other) =>
-      other is QuizQuestionModel && mapEquals(toJson(), other.toJson());
+      other is QuizQuestionModel &&
+      other.key == key &&
+      other.question == question &&
+      other.response == response &&
+      listEquals(other.options, options);
 
   @override
   String toString() => 'QuizQuestionModel${toJson().toString()}';

@@ -7,11 +7,14 @@ import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/models/wrong_answer.dart';
 import 'package:fv1/providers/utils/quiz_utils.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
+import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/services/data/data_service.dart';
+import 'package:fv1/services/datetime/datetime_service.dart';
 
 class BrowserState extends ChangeNotifier {
   final AbstractDataService _dataService;
   final AppAudioPlayer audioPlayer;
+  final DateTimeService _dateTimeService;
 
   List<ProgressModel>? _localProgresses;
   List<ProgressModel>? get localProgresses => _localProgresses;
@@ -33,8 +36,9 @@ class BrowserState extends ChangeNotifier {
   AppErrors? _error;
   AppErrors? get error => _error;
 
-  BrowserState(this._dataService, this.audioPlayer) {
+  BrowserState(this._dataService, this.audioPlayer, this._dateTimeService) {
     _loadInitialData();
+    _listenToAudioError();
   }
 
   Future<void> _handleError(Future<void> Function() fn) async {
@@ -52,6 +56,16 @@ class BrowserState extends ChangeNotifier {
       await _dataService.sync();
       _localProgresses = await _dataService.loadProgresses();
       notifyListeners();
+    });
+  }
+
+  void _listenToAudioError() {
+    audioPlayer.dataStream?.listen((e) {
+      if (_error != AppErrors.audioPlayer &&
+          e.state() == InternalPlayerState.error) {
+        _error = AppErrors.audioPlayer;
+        notifyListeners();
+      }
     });
   }
 
@@ -73,7 +87,10 @@ class BrowserState extends ChangeNotifier {
     _activeProgress = null;
     // wait to avoid flutter setState error message
     await Future.delayed(const Duration(milliseconds: 250));
-    _activeProgress = _localProgresses!.where((t) => t.teaching.id == id).first;
+    final match = _localProgresses!.where((t) => t.teaching.id == id);
+    if (match.isNotEmpty) {
+      _activeProgress = match.first;
+    }
     notifyListeners();
   }
 
@@ -94,6 +111,7 @@ class BrowserState extends ChangeNotifier {
       _activeProgress!,
       chapterIndex,
       _wrongAnswers!,
+      _dateTimeService.now().millisecondsSinceEpoch ~/ 1000,
     );
     _localProgresses = _localProgresses!
         .map(
@@ -143,6 +161,9 @@ class BrowserState extends ChangeNotifier {
   }
 
   void dismissError() {
+    if (_error == AppErrors.audioPlayer) {
+      _playingAudio = null;
+    }
     _error = null;
     notifyListeners();
   }

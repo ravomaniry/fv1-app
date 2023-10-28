@@ -1,8 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:fv1/models/quiz_question.dart';
 import 'package:fv1/models/section.dart';
+import 'package:fv1/models/serializable.dart';
 
-class ChapterModel {
+class ChapterModel implements Serializable {
   final String title;
   final List<SectionModel> sections;
   final List<QuizQuestionModel> questions;
@@ -10,22 +11,25 @@ class ChapterModel {
   ChapterModel(this.title, this.sections, this.questions);
 
   factory ChapterModel.fromJson(Map<dynamic, dynamic> json) {
-    final List<Map<dynamic, dynamic>> questions = json['questions'];
-    final List<Map<dynamic, dynamic>> sections = json['sections'];
     return ChapterModel(
       json['title'],
-      sections.map((e) => SectionModel.fromJson(e)).toList(growable: false),
-      questions
-          .map((e) => QuizQuestionModel.fromJson(e))
-          .toList(growable: false),
+      List<SectionModel>.from(
+        json['sections'].map((e) => SectionModel.fromJson(e)),
+      ),
+      List<QuizQuestionModel>.from(
+        json['questions'].map(
+          (e) => QuizQuestionModel.fromJson(e),
+        ),
+      ),
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
       'title': title,
-      'sections': sections.map((e) => e.toJson()).toList(),
-      'questions': questions.map((e) => e.toJson()).toList(),
+      'sections': sections,
+      'questions': questions,
     };
   }
 

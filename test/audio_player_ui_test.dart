@@ -36,7 +36,7 @@ void main() {
     streamData.playerState = InternalPlayerState.error;
     streamCtr.add(streamData);
     await tick(tester, 1);
-    expect(find.text(mgTexts.playerError), findsOneWidget);
+    expect(find.text(mgTexts.loadingAudio), findsOneWidget);
     // Playing
     streamData.playerState = InternalPlayerState.playing;
     streamData.playerTotalDuration = const Duration(seconds: 10);

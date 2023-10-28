@@ -4,7 +4,7 @@ const double borderRadios = 8;
 
 ThemeData createTheme() {
   const bgColor = Color(0xfff4f4f4);
-  final primary = _createMaterialColor(const Color(0xff5c4aff));
+  final primary = _createMaterialColor(const Color(0xff402bff));
   const accent = Colors.deepOrange;
   return ThemeData(
     unselectedWidgetColor: Colors.black38,
@@ -26,7 +26,7 @@ ThemeData createTheme() {
         ),
       ),
     ),
-    cardTheme: const CardTheme(elevation: 0),
+    cardTheme: const CardTheme(elevation: 0, margin: EdgeInsets.all(8)),
     listTileTheme: const ListTileThemeData(
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.bold,

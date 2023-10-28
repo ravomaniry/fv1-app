@@ -67,10 +67,7 @@ class _Body extends StatelessWidget {
         padding: const EdgeInsets.only(top: 4),
         decoration: const BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(24),
-            topRight: Radius.circular(24),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(24)),
         ),
         child: SafeArea(child: body),
       ),

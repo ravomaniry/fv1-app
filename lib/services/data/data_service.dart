@@ -1,24 +1,23 @@
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
+import 'package:fv1/services/api_client/api_client.dart';
 
 abstract class AbstractDataService {
+  final ApiClient _apiClient;
+
+  AbstractDataService(this._apiClient);
+
   Future<void> sync();
 
   Future<List<ProgressModel>> loadProgresses();
 
   Future<List<TeachingSummaryModel>> loadNewTeachings() async {
-    await Future.delayed(const Duration(milliseconds: 200));
-    return [
-      TeachingSummaryModel(1, 'Teaching 1', 'Subtitle 1'),
-      TeachingSummaryModel(2, 'Teaching 2', 'Subtitle 2'),
-    ];
+    return _apiClient.loadNewTeachings();
   }
 
   Future<ProgressModel> startTeaching(int id);
 
-  Future<String> getAudioUrl(int id) async {
-    return 'http://10.0.2.2:3000/$id.mp3';
-  }
+  Future<String> getAudioUrl(String id);
 
-  Future<void> saveProgress(ProgressModel progress) async {}
+  Future<void> saveProgress(ProgressModel progress);
 }
