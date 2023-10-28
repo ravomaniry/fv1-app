@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 
 class NoDataMessage extends StatelessWidget {
   static const Key widgetKey = Key('NoDataMessage');
@@ -8,7 +9,8 @@ class NoDataMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return AppCard(
+      padding: 16,
       child: Text(
         _message,
         key: widgetKey,

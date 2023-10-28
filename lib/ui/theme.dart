@@ -4,7 +4,7 @@ const double borderRadios = 8;
 
 ThemeData createTheme() {
   const bgColor = Color(0xfff4f4f4);
-  final primary = _createMaterialColor(const Color(0xff5c4aff));
+  final primary = _createMaterialColor(const Color(0xff402bff));
   const accent = Colors.deepOrange;
   return ThemeData(
     unselectedWidgetColor: Colors.black38,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 
 class CardContainer extends StatelessWidget {
   final Widget child;
@@ -24,7 +25,7 @@ class CardContainer extends StatelessWidget {
         ),
         color: color,
       ),
-      child: Card(
+      child: AppCard(
         color: color,
         child: child,
       ),
