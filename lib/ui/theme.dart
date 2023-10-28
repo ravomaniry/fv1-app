@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const double borderRadios = 8;
 
 ThemeData createTheme() {
-  const bgColor = Color(0xfff4f4f4);
+  const bgColor = Color(0xffececec);
   final primary = _createMaterialColor(const Color(0xff402bff));
   const accent = Colors.deepOrange;
   return ThemeData(
@@ -26,11 +26,19 @@ ThemeData createTheme() {
         ),
       ),
     ),
-    cardTheme: const CardTheme(elevation: 0, margin: EdgeInsets.all(8)),
-    listTileTheme: const ListTileThemeData(
+    cardTheme: const CardTheme(
+      elevation: 1,
+      margin: EdgeInsets.only(left: 8, right: 8, bottom: 4),
+    ),
+    listTileTheme: ListTileThemeData(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      selectedTileColor: Colors.white,
+      selectedColor: Colors.black,
       titleTextStyle: TextStyle(
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: primary.shade600,
       ),
     ),
     radioTheme: RadioThemeData(
@@ -60,6 +68,7 @@ ThemeData createTheme() {
       shape: RoundedRectangleBorder(),
       backgroundColor: Colors.black,
     ),
+    dividerTheme: DividerThemeData(thickness: 1, color: accent.shade500),
   );
 }
 

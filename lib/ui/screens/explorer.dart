@@ -4,6 +4,7 @@ import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
+import 'package:fv1/ui/widgets/card_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:go_router/go_router.dart';
@@ -61,14 +62,16 @@ class _BodyState extends State<_Body> {
             : ListView(
                 children: [
                   for (final teaching in widget._state.teachingsList!)
-                    ListTile(
-                      title: Text(teaching.title),
-                      subtitle: Text(teaching.subtitle),
-                      trailing: Icon(
-                        Icons.chevron_right,
-                        color: Theme.of(context).colorScheme.primary,
+                    CardContainer(
+                      child: ListTile(
+                        title: Text(teaching.title),
+                        subtitle: Text(teaching.subtitle),
+                        trailing: Icon(
+                          Icons.chevron_right,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        onTap: () => _onOpen(teaching.id),
                       ),
-                      onTap: () => _onOpen(teaching.id),
                     ),
                 ],
               ),

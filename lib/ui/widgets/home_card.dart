@@ -4,13 +4,17 @@ import 'package:fv1/ui/widgets/card_container.dart';
 class HomeCard extends StatelessWidget {
   final Widget title;
   final Widget subtitle;
-  final Widget actionButton;
+  final Widget? actionButton;
+  final Widget? trailing;
+  final void Function()? onTap;
 
   const HomeCard({
     super.key,
     required this.title,
     required this.subtitle,
-    required this.actionButton,
+    this.actionButton,
+    this.onTap,
+    this.trailing,
   });
 
   @override
@@ -21,11 +25,14 @@ class HomeCard extends StatelessWidget {
           ListTile(
             title: title,
             subtitle: subtitle,
+            onTap: onTap,
+            trailing: trailing,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [actionButton],
-          ),
+          if (actionButton != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [actionButton!],
+            ),
         ],
       ),
     );

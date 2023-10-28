@@ -4,11 +4,10 @@ import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/quiz.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/audio_player.dart';
-import 'package:fv1/ui/widgets/card_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
-import 'package:fv1/ui/widgets/icon_button.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -54,13 +53,17 @@ class _ChapterScreenBody extends StatelessWidget {
     int sectionIndex,
     bool isPlaying,
   ) {
-    return CardContainer(
-      selected: isPlaying,
+    final onTap =
+        isPlaying ? null : () => _state.playAudio(chapterIndex, sectionIndex);
+    return AppCard(
       key: Key(sectionIndex.toString()),
+      selected: isPlaying,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            onTap: onTap,
+            selected: isPlaying,
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -68,7 +71,7 @@ class _ChapterScreenBody extends StatelessWidget {
                   section.subtitle,
                   style: _calcTitleStyle(context, isPlaying),
                 ),
-                _buildAudioButton(
+                _buildAudioIcon(
                   context,
                   chapterIndex,
                   sectionIndex,
@@ -83,7 +86,7 @@ class _ChapterScreenBody extends StatelessWidget {
     );
   }
 
-  Widget _buildAudioButton(
+  Widget _buildAudioIcon(
     BuildContext context,
     int chapterIndex,
     int sectionIndex,
@@ -92,12 +95,12 @@ class _ChapterScreenBody extends StatelessWidget {
     return isPlaying
         ? Icon(
             Icons.surround_sound,
-            color: Theme.of(context).colorScheme.secondary,
+            color: Theme.of(context).colorScheme.primary,
             key: Key('PlayingIcon$sectionIndex'),
           )
-        : AppIconButton(
-            onPressed: () => _state.playAudio(chapterIndex, sectionIndex),
-            icon: Icons.play_circle,
+        : Icon(
+            Icons.play_circle,
+            color: Colors.black45,
             key: Key('PlayButton$sectionIndex'),
           );
   }

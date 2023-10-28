@@ -4,15 +4,24 @@ class AppCard extends StatelessWidget {
   final Widget child;
   final Color? color;
   final double? padding;
+  final bool? selected;
 
-  const AppCard({super.key, required this.child, this.color, this.padding});
+  const AppCard({
+    super.key,
+    required this.child,
+    this.color,
+    this.padding,
+    this.selected,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final selectedColor =
+        selected == true ? Theme.of(context).primaryColor : null;
     return Card(
-      color: color,
+      color: color ?? selectedColor,
       child: Padding(
-        padding: EdgeInsets.all(padding ?? 4),
+        padding: EdgeInsets.all(padding ?? 2),
         child: child,
       ),
     );

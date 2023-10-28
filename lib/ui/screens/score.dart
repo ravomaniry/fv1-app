@@ -5,6 +5,7 @@ import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
@@ -105,16 +106,19 @@ class _Body extends StatelessWidget {
       backButton: true,
       body: WrapInLoader(
         isReady: chapter != null && _state.wrongAnswers != null,
-        builder: () => Column(
-          children: [
-            ScreenH1(chapter!.title),
-            _buildScore(chapter),
-            _buildWrongAnswers(context, chapter),
-            ContinueButton(
-              label: _appState.texts.continueButton,
-              onPressed: () => _onContinue(context),
-            ),
-          ],
+        builder: () => AppCard(
+          padding: 8,
+          child: Column(
+            children: [
+              ScreenH1(chapter!.title),
+              _buildScore(chapter),
+              _buildWrongAnswers(context, chapter),
+              ContinueButton(
+                label: _appState.texts.continueButton,
+                onPressed: () => _onContinue(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

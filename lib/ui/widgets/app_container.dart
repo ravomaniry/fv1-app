@@ -63,12 +63,8 @@ class _Body extends StatelessWidget {
       appBar: buildAppBar(context, backButton, backButtonKey),
       floatingActionButton: floatingActionButton,
       bottomSheet: _buildBottomSheet(),
-      body: Container(
+      body: Padding(
         padding: const EdgeInsets.only(top: 4),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(24)),
-        ),
         child: SafeArea(child: body),
       ),
     );

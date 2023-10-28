@@ -4,6 +4,7 @@ import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/chapter.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
@@ -69,28 +70,31 @@ class _ScreenBodyState extends State<_ScreenBody> {
       key: const Key(TeachingSummaryScreen.route),
       body: WrapInLoader(
         isReady: teaching != null,
-        builder: () => Column(
-          children: [
-            ScreenH1(teaching!.title, textKey: const Key('TSTitle')),
-            Text(teaching.subtitle, key: const Key('TSSubtitle')),
-            Expanded(
-              child: ListView(
-                children: [
-                  for (int i = 0; i < teaching.chapters.length; i++)
-                    _ChapterCard(
-                      teaching.chapters[i],
-                      i,
-                      progress!.isChapterDone(i),
-                      () => _onOpenChapter(i),
-                    ),
-                ],
+        builder: () => AppCard(
+          padding: 12,
+          child: Column(
+            children: [
+              ScreenH1(teaching!.title, textKey: const Key('TSTitle')),
+              Text(teaching.subtitle, key: const Key('TSSubtitle')),
+              Expanded(
+                child: ListView(
+                  children: [
+                    for (int i = 0; i < teaching.chapters.length; i++)
+                      _ChapterCard(
+                        teaching.chapters[i],
+                        i,
+                        progress!.isChapterDone(i),
+                        () => _onOpenChapter(i),
+                      ),
+                  ],
+                ),
               ),
-            ),
-            ContinueButton(
-              label: widget._appState.texts.continueButton,
-              onPressed: _onContinue,
-            ),
-          ],
+              ContinueButton(
+                label: widget._appState.texts.continueButton,
+                onPressed: _onContinue,
+              ),
+            ],
+          ),
         ),
       ),
     );

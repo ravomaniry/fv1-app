@@ -4,6 +4,7 @@ import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/router_utils.dart';
 import 'package:fv1/ui/screens/score.dart';
+import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
@@ -55,31 +56,34 @@ class _Body extends StatelessWidget {
       backButton: true,
       body: WrapInLoader(
         isReady: chapter != null,
-        builder: () => Column(
-          children: [
-            ScreenH1(chapter!.title),
-            FormBuilder(
-              key: _formKey,
-              child: Expanded(
-                child: ListView(
-                  children: [
-                    Text(_appState.texts.quizHelp),
-                    for (final (index, question) in chapter.questions.indexed)
-                      QuizItemWidget(
-                        texts: _appState.texts,
-                        index: index,
-                        question: question,
-                        value: _state.getFormValue(question.key),
-                      ),
-                  ],
+        builder: () => AppCard(
+          padding: 12,
+          child: Column(
+            children: [
+              ScreenH1(chapter!.title),
+              FormBuilder(
+                key: _formKey,
+                child: Expanded(
+                  child: ListView(
+                    children: [
+                      Text(_appState.texts.quizHelp),
+                      for (final (index, question) in chapter.questions.indexed)
+                        QuizItemWidget(
+                          texts: _appState.texts,
+                          index: index,
+                          question: question,
+                          value: _state.getFormValue(question.key),
+                        ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            ContinueButton(
-              label: _appState.texts.continueButton,
-              onPressed: () => _onContinue(context),
-            ),
-          ],
+              ContinueButton(
+                label: _appState.texts.continueButton,
+                onPressed: () => _onContinue(context),
+              ),
+            ],
+          ),
         ),
       ),
     );

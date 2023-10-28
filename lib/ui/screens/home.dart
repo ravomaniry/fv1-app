@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/models/progress.dart';
-import 'package:fv1/models/teaching.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
-import 'package:fv1/ui/widgets/action_button.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
@@ -38,22 +36,14 @@ class _Body extends StatelessWidget {
     context.goNamed(ExplorerScreen.route);
   }
 
-  Widget _buildActionButton(BuildContext context, TeachingModel teaching) {
-    return ActionButton(
-      label: _appState.texts.continueButton,
-      icon: Icons.chevron_right,
-      buttonKey: Key('OpenTeaching${teaching.id}'),
-      onPressed: () => context.goNamed(
-        TeachingSummaryScreen.route,
-        pathParameters: {
-          TeachingSummaryScreen.teachingIdKey: teaching.id.toString(),
-        },
-      ),
-    );
-  }
-
   Widget _buildProgress(BuildContext context, ProgressModel progress) {
     return HomeCard(
+      onTap: () => context.goNamed(
+        TeachingSummaryScreen.route,
+        pathParameters: {
+          TeachingSummaryScreen.teachingIdKey: progress.teaching.id.toString(),
+        },
+      ),
       title: Text(
         progress.teaching.title,
         key: Key('HomeTeachingTitle${progress.teaching.id}'),
@@ -70,7 +60,11 @@ class _Body extends StatelessWidget {
           ),
         ],
       ),
-      actionButton: _buildActionButton(context, progress.teaching),
+      trailing: Icon(
+        key: Key('OpenTeaching${progress.teaching.id}'),
+        Icons.chevron_right,
+        color: Theme.of(context).primaryColor,
+      ),
     );
   }
 

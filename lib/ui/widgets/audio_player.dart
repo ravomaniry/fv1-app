@@ -27,7 +27,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   }
 
   Widget _buildPlayPauseButton(BuildContext context, PlayerStreamData data) {
-    final color = Theme.of(context).colorScheme.secondary;
+    final color = Theme.of(context).primaryColorLight;
     return data.state() == InternalPlayerState.playing
         ? IconButton(
             color: color,
@@ -60,7 +60,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
     return StreamBuilder(
       key: AudioPlayerWidget.playerKey,
       stream: widget.player.dataStream,
@@ -74,15 +74,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         return Container(
           margin: const EdgeInsets.only(top: 4),
           padding: const EdgeInsets.only(left: 4, right: 4),
-          decoration: BoxDecoration(
-            color: const Color(0xfff4f4f4),
-            border: Border(
-              top: BorderSide(
-                width: 2,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ),
+          color: Colors.black87,
           child: Row(
             children: [
               _buildPlayPauseButton(context, data),
@@ -94,8 +86,10 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   progress: data.position() ?? Duration.zero,
                   total: data.totalDuration() ?? Duration.zero,
                   onSeek: (position) => widget.player.seek(position),
-                  progressBarColor: colors.secondary,
-                  thumbColor: colors.secondary,
+                  progressBarColor: theme.primaryColorLight,
+                  thumbColor: theme.primaryColorLight,
+                  baseBarColor: Colors.white,
+                  timeLabelTextStyle: const TextStyle(color: Colors.white),
                 ),
               ),
             ],

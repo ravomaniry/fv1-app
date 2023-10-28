@@ -28,7 +28,6 @@ AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
           'fitia',
           style: TextStyle(
             fontFamily: 'JbMono',
-            fontWeight: FontWeight.bold,
             color: theme.colorScheme.primary,
             fontSize: 20,
           ),
