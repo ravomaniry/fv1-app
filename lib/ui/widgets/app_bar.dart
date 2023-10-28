@@ -6,8 +6,8 @@ AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
   return AppBar(
     leading: backButton
         ? BackButton(
-            color: theme.colorScheme.primary,
             key: backButtonKey,
+            color: Colors.white,
             onPressed: () {
               if (GoRouter.of(context).canPop()) {
                 GoRouter.of(context).pop();
@@ -17,18 +17,15 @@ AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
             },
           )
         : null,
-    actions: [
-      Icon(Icons.more_vert, color: theme.colorScheme.primary),
-    ],
     title: Row(
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
+        const Text(
           'fitia',
           style: TextStyle(
             fontFamily: 'JbMono',
-            color: theme.colorScheme.primary,
+            color: Colors.white,
             fontSize: 20,
           ),
         ),

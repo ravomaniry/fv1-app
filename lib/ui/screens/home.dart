@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/providers/app_state.dart';
@@ -7,6 +9,7 @@ import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
+import 'package:fv1/ui/widgets/responsive_padding.dart';
 import 'package:fv1/ui/widgets/search_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -132,7 +135,7 @@ class _HomePageContainer extends StatelessWidget {
   }
 
   Widget _buildSmallCircle(Size size) {
-    final diameter = size.width * 0.15;
+    final diameter = min(size.height, size.width) * 0.15;
     const double margin = 16;
     const alpha = 30;
     return Positioned(
@@ -150,7 +153,7 @@ class _HomePageContainer extends StatelessWidget {
   }
 
   Widget _buildBigCircle(Size size) {
-    final diameter = size.width * 0.4;
+    final diameter = min(size.height, size.width) * 0.4;
     const double margin = 16;
     const alpha = 20;
     return Positioned(
@@ -172,7 +175,7 @@ class _HomePageContainer extends StatelessWidget {
     return SizedBox(
       width: size.width,
       height: _calcColorBoxHeight(size),
-      child: SafeArea(
+      child: ResponsivePadding(
         child: Padding(
           padding: const EdgeInsets.only(left: 16),
           child: Column(
@@ -231,10 +234,10 @@ class _HomePageContainer extends StatelessWidget {
           SizedBox(
             width: size.width,
             height: size.height,
-            child: SafeArea(
+            child: ResponsivePadding(
               child: Column(
                 children: [
-                  SizedBox(height: coloredBoxHeight),
+                  SizedBox(height: coloredBoxHeight + 16),
                   body,
                 ],
               ),

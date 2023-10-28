@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const double borderRadios = 8;
@@ -9,10 +10,9 @@ ThemeData createTheme() {
   return ThemeData(
     unselectedWidgetColor: Colors.black38,
     useMaterial3: true,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: bgColor,
+    appBarTheme: AppBarTheme(
+      backgroundColor: primary.shade500,
       elevation: 0,
-      titleTextStyle: TextStyle(color: Colors.black),
     ),
     scaffoldBackgroundColor: bgColor,
     colorScheme: ColorScheme.fromSwatch(
@@ -21,6 +21,7 @@ ThemeData createTheme() {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
+        padding: kIsWeb ? const EdgeInsets.all(24) : null,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadios),
         ),

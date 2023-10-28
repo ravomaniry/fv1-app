@@ -3,6 +3,7 @@ import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/widgets/app_bar.dart';
 import 'package:fv1/ui/widgets/error.dart';
+import 'package:fv1/ui/widgets/responsive_padding.dart';
 import 'package:provider/provider.dart';
 
 class AppContainer extends StatelessWidget {
@@ -65,7 +66,7 @@ class _Body extends StatelessWidget {
       bottomSheet: _buildBottomSheet(),
       body: Padding(
         padding: const EdgeInsets.only(top: 4),
-        child: SafeArea(child: body),
+        child: ResponsivePadding(child: body),
       ),
     );
   }
