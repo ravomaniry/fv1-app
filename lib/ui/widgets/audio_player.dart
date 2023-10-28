@@ -89,7 +89,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   progressBarColor: theme.primaryColorLight,
                   thumbColor: theme.primaryColorLight,
                   baseBarColor: Colors.white,
-                  timeLabelTextStyle: const TextStyle(color: Colors.white),
+                  timeLabelTextStyle: TextStyle(color: theme.primaryColorLight),
                 ),
               ),
             ],

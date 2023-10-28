@@ -117,8 +117,8 @@ class _ChapterCard extends StatelessWidget {
       trailing: _isDone
           ? Icon(
               key: Key('DoneIcon$_index'),
-              Icons.check_circle_outline,
-              color: primColor,
+              Icons.check,
+              color: Colors.black45,
             )
           : Icon(Icons.chevron_right, color: primColor),
       onTap: _onTap,
