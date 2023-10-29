@@ -13,18 +13,20 @@ import 'package:fv1/models/user_tokens.dart';
 import 'package:fv1/services/api_client/api_client.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
 import 'package:fv1/services/api_client/auth_service.dart';
-import 'package:fv1/services/config/api_config.dart';
+import 'package:fv1/services/api_client/http_client.dart';
 import 'package:fv1/services/storage/storage_service.dart';
+import 'package:fv1/types/exceptions.dart';
 import 'package:http/http.dart' as http;
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([
-  MockSpec<http.BaseClient>(),
+  MockSpec<CustomHttpClient>(),
   MockSpec<StorageService>(),
-  MockSpec<ApiConfig>(),
 ])
 import 'api_client_test.mocks.dart';
+import 'utils/jwt.dart';
+import 'utils/mock_api_config.dart';
 
 http.StreamedResponse _createStreamedResponse(http.Response response) {
   final streamCtr = StreamController<List<int>>();
@@ -37,78 +39,46 @@ String? _getAuthHeader(http.BaseRequest request) {
   return request.headers['Authorization'];
 }
 
-String _getReqPath(http.BaseRequest request) {
-  return request.url.path;
-}
-
-String _createAccessToken(DateTime expireOn) {
-  return 'header.${base64.encode(utf8.encode(jsonEncode({
-        'exp': expireOn.millisecondsSinceEpoch ~/ 1000
-      })))}.footer';
-}
-
 void main() {
   const oneHour = Duration(hours: 1);
   UserTokens? cachedTokens;
   late StorageService storage;
-  late ApiRoutes routes;
-  late MockBaseClient authBaseClient;
-  late MockBaseClient apiBaseClient;
+  final routes = ApiRoutes(MockApiConfig());
+  late MockCustomHttpClient authBaseClient;
+  late MockCustomHttpClient apiBaseClient;
   late ApiClient apiClient;
   http.Response? authResponse;
 
   setUp(() {
-    authBaseClient = MockBaseClient();
-    apiBaseClient = MockBaseClient();
-    when(authBaseClient.send(any)).thenAnswer(
-      (_) async => _createStreamedResponse(authResponse!),
+    authBaseClient = MockCustomHttpClient();
+    apiBaseClient = MockCustomHttpClient();
+    when(authBaseClient.postJson(routes.refreshToken, any)).thenAnswer(
+      (_) async => authResponse!,
     );
     when(apiBaseClient.send(any)).thenAnswer(
       (_) async => _createStreamedResponse(http.Response('[]', 200)),
     );
-    final config = MockApiConfig();
-    when(config.scheme).thenReturn(HttpScheme.http);
-    when(config.apiUrl).thenReturn('10.0.2.2:3000');
     storage = MockStorageService();
     when(storage.getTokens()).thenAnswer((_) async => cachedTokens);
-    routes = ApiRoutes(config);
     final authService = AuthService(storage, routes, authBaseClient);
-    apiClient = ApiClient(authService, routes, apiBaseClient);
+    apiClient = ApiClient(
+      authService,
+      routes,
+      HttpClientWithAuth(authService, apiBaseClient),
+    );
   });
 
-  test('Refresh token and set headers', () async {
-    // Register when token is null
+  test('Fails if there is no token', () async {
     cachedTokens = null;
-    final accessToken = _createAccessToken(DateTime.now().add(oneHour));
-    final tokens = UserTokens('rt', accessToken);
-    authResponse = http.Response(jsonEncode({'tokens': tokens}), 200);
-    final progresses = await apiClient.getProgresses();
-    expect(progresses, []);
-    // Register
-    final authReq = verify(authBaseClient.send(captureAny));
-    expect(authReq.callCount, 1);
-    expect(_getReqPath(authReq.captured.single), routes.registerGuest.path);
-    // Call get progress with access token
-    final getProgressReq = verify(apiBaseClient.send(captureAny));
-    expect(_getReqPath(getProgressReq.captured.single), routes.progress.path);
+    createAccessToken(DateTime.now().add(oneHour));
     expect(
-      _getAuthHeader(getProgressReq.captured.single),
-      'Bearer $accessToken',
+      () => apiClient.getProgresses(),
+      throwsA(isA<NotConnectedException>()),
     );
-    // Attempt to get cached token and store the token locally
-    verify(storage.getTokens()).called(1);
-    verify(storage.saveTokens(tokens)).called(1);
-    // Subsequent calls does not ask for token refresh
-    await apiClient.getProgresses();
-    verifyNoMoreInteractions(authBaseClient);
-    verifyNoMoreInteractions(storage);
-    final call2 = verify(apiBaseClient.send(captureAny));
-    expect(call2.callCount, 1);
-    expect(_getAuthHeader(call2.captured.single), 'Bearer $accessToken');
   });
 
   test('Cached token is still valid', () async {
-    final accessTk = _createAccessToken(
+    final accessTk = createAccessToken(
       DateTime.now().add(const Duration(seconds: 1)),
     );
     cachedTokens = UserTokens('rt', accessTk);
@@ -121,11 +91,11 @@ void main() {
   });
 
   test('Cached token is expired', () async {
-    final accessTk = _createAccessToken(
+    final accessTk = createAccessToken(
       DateTime.now().subtract(const Duration(seconds: 1)),
     );
     cachedTokens = UserTokens('rt', accessTk);
-    final newAccessTk = _createAccessToken(DateTime.now().add(oneHour));
+    final newAccessTk = createAccessToken(DateTime.now().add(oneHour));
     authResponse = http.Response(jsonEncode({'token': newAccessTk}), 200);
     await apiClient.loadNewTeachings();
     // Refresh access token and store it locally
@@ -142,7 +112,7 @@ void main() {
 
   test('Parse progress and teaching', () async {
     final file = File('test_resources/progresses.json').readAsStringSync();
-    final accessTk = _createAccessToken(
+    final accessTk = createAccessToken(
       DateTime.now().add(const Duration(seconds: 1)),
     );
     cachedTokens = UserTokens('rt', accessTk);

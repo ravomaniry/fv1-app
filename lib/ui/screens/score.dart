@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/ui/router_utils.dart';
-import 'package:fv1/ui/screens/chapter.dart';
-import 'package:fv1/ui/screens/teaching_summary.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
@@ -15,8 +13,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ScoreScreen extends StatelessWidget {
-  static const route = '/score';
-
   const ScoreScreen({super.key});
 
   @override
@@ -39,16 +35,16 @@ class _Body extends StatelessWidget {
     final params = Map<String, String>.from(
       GoRouterState.of(context).pathParameters,
     );
-    params.remove(chapterIndexKey);
+    params.remove(Routes.chapterIndexKey);
     if (nextChapter == null) {
       GoRouter.of(context).pushReplacementNamed(
-        TeachingSummaryScreen.route,
+        Routes.teachingSummary,
         pathParameters: params,
       );
     } else {
-      params[chapterIndexKey] = '${chapterIndex + 1}';
+      params[Routes.chapterIndexKey] = '${chapterIndex + 1}';
       GoRouter.of(context).pushReplacementNamed(
-        ChapterScreen.route,
+        Routes.chapter,
         pathParameters: params,
       );
     }

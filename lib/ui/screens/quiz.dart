@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/ui/router_utils.dart';
-import 'package:fv1/ui/screens/score.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
@@ -16,8 +15,6 @@ import 'package:provider/provider.dart';
 final _formKey = GlobalKey<FormBuilderState>();
 
 class QuizScreen extends StatelessWidget {
-  static const route = '/quiz';
-
   const QuizScreen({super.key});
 
   @override
@@ -43,7 +40,7 @@ class _Body extends StatelessWidget {
         _formKey.currentState!.value,
       );
       GoRouter.of(context).pushReplacementNamed(
-        ScoreScreen.route,
+        Routes.score,
         pathParameters: GoRouterState.of(context).pathParameters,
       );
     }

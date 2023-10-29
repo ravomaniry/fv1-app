@@ -5,13 +5,15 @@ import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/api_client/api_client.dart';
 import 'package:fv1/services/api_client/api_routes.dart';
 import 'package:fv1/services/api_client/auth_service.dart';
-import 'package:fv1/services/api_client/custom_client.dart';
+import 'package:fv1/services/api_client/http_client.dart';
 import 'package:fv1/services/audio_player/create.dart';
 import 'package:fv1/services/config/config_service.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/services/datetime/datetime_service.dart';
 import 'package:fv1/services/storage/native_storage_service.dart';
 import 'package:go_router/go_router.dart';
+import 'package:http/http.dart';
+import 'package:http/retry.dart';
 import 'package:logging/logging.dart';
 
 void main() async {
@@ -26,12 +28,23 @@ void main() async {
   final storage = NativeStorageService();
   await Future.wait([config.init(), storage.init()]);
   final apiRoutes = ApiRoutes(config.api);
-  final baseHttpClient = CustomHttpClient();
-  final authService = AuthService(storage, apiRoutes, baseHttpClient);
-  final httpClient = ApiClient(authService, apiRoutes, baseHttpClient);
-  final dataService = createDataService(httpClient);
+  final baseHttpClient = RetryClient(Client());
+  final httpClient = CustomHttpClient(baseHttpClient);
+  final authService = AuthService(storage, apiRoutes, httpClient);
+  final apiClient = ApiClient(
+    authService,
+    apiRoutes,
+    HttpClientWithAuth(authService, baseHttpClient),
+  );
+  final dataService = createDataService(apiClient);
   final audioPlayer = createAudioPlayer();
   final dateTimeService = DateTimeService();
-  final providers = createProviders(dataService, audioPlayer, dateTimeService);
+  final providers = createProviders(
+    dataService,
+    audioPlayer,
+    dateTimeService,
+    storage,
+    authService,
+  );
   runApp(Fv1App(providers));
 }

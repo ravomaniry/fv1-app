@@ -1,4 +1,0 @@
-enum AppErrors {
-  internet,
-  audioPlayer,
-}

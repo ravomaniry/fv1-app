@@ -41,4 +41,9 @@ class UserTokens implements Serializable {
         other.accessToken == accessToken &&
         other.refreshToken == refreshToken;
   }
+
+  @override
+  String toString() {
+    return 'UserTokens<${toJson()}>';
+  }
 }

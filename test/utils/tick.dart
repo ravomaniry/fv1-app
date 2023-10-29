@@ -8,13 +8,14 @@ Future<void> tick(WidgetTester tester, [int s = 0]) async {
 }
 
 Future<void> tap(WidgetTester tester, Finder finder, [int s = 0]) async {
+  await tester.ensureVisible(finder);
+  await tester.pump(Duration(seconds: s));
   await tester.tap(finder);
   await tick(tester, s);
 }
 
 Future<void> tapByKey(WidgetTester tester, Key key, [int s = 0]) async {
-  await tester.tap(find.byKey(key));
-  await tick(tester, s);
+  await tap(tester, find.byKey(key), s);
 }
 
 Future<void> tapByStringKey(
@@ -22,13 +23,11 @@ Future<void> tapByStringKey(
   String key, [
   int s = 0,
 ]) async {
-  await tester.tap(find.byKey(Key(key)));
-  await tick(tester, s);
+  await tap(tester, find.byKey(Key(key)), s);
 }
 
 Future<void> tapByText(WidgetTester tester, String text, [int s = 0]) async {
-  await tester.tap(find.text(text));
-  await tick(tester, s);
+  await tap(tester, find.text(text), s);
 }
 
 Future<void> enterText(WidgetTester tester, Finder finder, String value,

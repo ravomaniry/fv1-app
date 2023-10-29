@@ -5,15 +5,17 @@ import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/teaching_summary.dart';
+import 'package:fv1/models/user.dart';
 import 'package:fv1/providers/create.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/screens/explorer.dart';
 import 'package:fv1/ui/screens/home.dart';
-import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import 'api_client_test.mocks.dart';
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
@@ -24,13 +26,17 @@ void main() {
 
   setUp(() {
     dataService = MockAbstractDataService();
+    final storage = MockStorageService();
     when(dataService.loadProgresses()).thenAnswer((_) async => []);
     when(dataService.loadNewTeachings()).thenAnswer((_) async => teachings);
     when(dataService.sync()).thenAnswer((_) async {});
+    when(storage.getUser()).thenAnswer((_) => UserModel(1, 'User1'));
     providers = createProviders(
       dataService,
       MockAppAudioPlayer(),
       MockDateTimeService(),
+      storage,
+      MockAuthService(),
     );
   });
 
@@ -76,7 +82,7 @@ void main() {
     expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
     await tick(tester, 2);
     await tick(tester, 2);
-    expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsOneWidget);
+    expect(find.byKey(const Key(Routes.teachingSummary)), findsOneWidget);
     expect(find.text('ST1'), findsOneWidget);
     expect(find.text('CH1'), findsOneWidget);
   });

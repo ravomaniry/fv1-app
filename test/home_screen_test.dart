@@ -5,10 +5,13 @@ import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
+import 'package:fv1/models/user.dart';
 import 'package:fv1/providers/create.dart';
+import 'package:fv1/services/api_client/auth_service.dart';
 import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/services/datetime/datetime_service.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/loader.dart';
@@ -16,10 +19,12 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 
+import 'api_client_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<AbstractDataService>(),
   MockSpec<AppAudioPlayer>(),
   MockSpec<DateTimeService>(),
+  MockSpec<AuthService>(),
 ])
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
@@ -28,16 +33,22 @@ void main() {
   List<ProgressModel> progresses = [];
   late MockAbstractDataService dataService;
   late List<ChangeNotifierProvider<ChangeNotifier>> providers;
-  final audioPlayer = MockAppAudioPlayer();
-  final dtService = MockDateTimeService();
 
   setUp(() {
     dataService = MockAbstractDataService();
+    final storage = MockStorageService();
     when(dataService.sync()).thenAnswer(
       (_) => Future.delayed(const Duration(seconds: 1)),
     );
     when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
-    providers = createProviders(dataService, audioPlayer, dtService);
+    when(storage.getUser()).thenAnswer((_) => UserModel(1, 'User1'));
+    providers = createProviders(
+      dataService,
+      MockAppAudioPlayer(),
+      MockDateTimeService(),
+      storage,
+      MockAuthService(),
+    );
   });
 
   testWidgets(
@@ -102,7 +113,7 @@ void main() {
     // Teaching summary 1
     await tapByStringKey(tester, 'OpenTeaching1');
     await tick(tester, 2);
-    expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsOneWidget);
+    expect(find.byKey(const Key(Routes.teachingSummary)), findsOneWidget);
     expect(find.byKey(TeachingSummaryScreen.backButtonKey), findsOneWidget);
     expect(findTextWidget(tester, 'TSTitle').data, 'T1');
     expect(findTextWidget(tester, 'TSSubtitle').data, 'ST1');
@@ -113,7 +124,7 @@ void main() {
     expect(find.byKey(const Key('DoneIcon1')), findsNothing);
     // Back to home and open teaching 2
     await tapByKey(tester, TeachingSummaryScreen.backButtonKey, 1);
-    expect(find.byKey(const Key(TeachingSummaryScreen.route)), findsNothing);
+    expect(find.byKey(const Key(Routes.teachingSummary)), findsNothing);
     // Continue teaching 2 goes to first chapter
     await tapByKey(tester, const Key('OpenTeaching2'));
     await tick(tester, 2);

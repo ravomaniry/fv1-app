@@ -27,6 +27,14 @@ ThemeData createTheme() {
         ),
       ),
     ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: primary),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(borderRadios),
+        ),
+      ),
+    ),
     cardTheme: const CardTheme(
       elevation: 1,
       margin: EdgeInsets.only(left: 8, right: 8, bottom: 4),
@@ -69,7 +77,18 @@ ThemeData createTheme() {
       shape: RoundedRectangleBorder(),
       backgroundColor: Colors.black,
     ),
-    dividerTheme: DividerThemeData(thickness: 1, color: accent.shade500),
+    dividerTheme: const DividerThemeData(
+      thickness: 2,
+      color: Colors.black12,
+    ),
+    inputDecorationTheme: const InputDecorationTheme(
+      enabledBorder: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.black38),
+      ),
+      border: UnderlineInputBorder(
+        borderSide: BorderSide(color: Colors.black38),
+      ),
+    ),
   );
 }
 

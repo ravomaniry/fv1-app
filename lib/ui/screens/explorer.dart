@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/ui/router_utils.dart';
-import 'package:fv1/ui/screens/teaching_summary.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/card_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
@@ -11,7 +10,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class ExplorerScreen extends StatelessWidget {
-  static const route = '/explorer';
   static const backButtonKey = Key('ExplorerBackButton');
 
   const ExplorerScreen({super.key});
@@ -44,8 +42,8 @@ class _BodyState extends State<_Body> {
     await widget._state.startTeaching(id);
     if (context.mounted) {
       GoRouter.of(context).pushReplacementNamed(
-        TeachingSummaryScreen.route,
-        pathParameters: {teachingIdKey: id.toString()},
+        Routes.teachingSummary,
+        pathParameters: {Routes.teachingIdKey: id.toString()},
       );
     }
   }

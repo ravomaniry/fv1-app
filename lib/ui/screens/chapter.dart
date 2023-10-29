@@ -2,20 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fv1/models/section.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/ui/router_utils.dart';
-import 'package:fv1/ui/screens/quiz.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/audio_player.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
+import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/h1.dart';
-
 class ChapterScreen extends StatelessWidget {
-  static const route = '/chapter';
   static const backButtonKey = Key('ChapterBackButton');
 
   const ChapterScreen({super.key});
@@ -36,7 +33,7 @@ class _ChapterScreenBody extends StatelessWidget {
 
   void _onContinue(BuildContext context) {
     GoRouter.of(context).pushReplacementNamed(
-      QuizScreen.route,
+      Routes.quiz,
       pathParameters: GoRouterState.of(context).pathParameters,
     );
   }
@@ -64,6 +61,7 @@ class _ChapterScreenBody extends StatelessWidget {
           ListTile(
             onTap: onTap,
             selected: isPlaying,
+            key: Key('PlayButton$sectionIndex'),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -98,11 +96,7 @@ class _ChapterScreenBody extends StatelessWidget {
             color: Theme.of(context).colorScheme.primary,
             key: Key('PlayingIcon$sectionIndex'),
           )
-        : Icon(
-            Icons.play_circle,
-            color: Colors.black45,
-            key: Key('PlayButton$sectionIndex'),
-          );
+        : const Icon(Icons.play_circle, color: Colors.black45);
   }
 
   @override

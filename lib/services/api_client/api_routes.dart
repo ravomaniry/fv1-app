@@ -8,6 +8,8 @@ Uri _createUri(ApiConfig config, String endpoint) {
 
 class ApiRoutes {
   final ApiConfig _config;
+  final Uri login;
+  final Uri register;
   final Uri registerGuest;
   final Uri refreshToken;
   final Uri progress;
@@ -15,7 +17,9 @@ class ApiRoutes {
   final Uri teachingNew;
 
   ApiRoutes(this._config)
-      : registerGuest = _createUri(_config, 'api/auth/register-guest'),
+      : login = _createUri(_config, 'api/auth/login'),
+        registerGuest = _createUri(_config, 'api/auth/register-guest'),
+        register = _createUri(_config, 'api/auth/register'),
         refreshToken = _createUri(_config, 'api/auth/refresh-token'),
         progress = _createUri(_config, 'api/progress'),
         startTeaching = _createUri(_config, 'api/progress/start'),

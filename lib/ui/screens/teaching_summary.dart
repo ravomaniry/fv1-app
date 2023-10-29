@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
-import 'package:fv1/ui/router_utils.dart';
-import 'package:fv1/ui/screens/chapter.dart';
+import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_card.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
@@ -13,7 +12,6 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class TeachingSummaryScreen extends StatelessWidget {
-  static const route = '/teaching';
   static const teachingIdKey = 'teachingId';
   static const backButtonKey = Key('TSBackButton');
 
@@ -47,7 +45,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
     final params =
         Map<String, String>.from(GoRouterState.of(context).pathParameters);
     params['chapterIndex'] = chapterIndex.toString();
-    GoRouter.of(context).goNamed(ChapterScreen.route, pathParameters: params);
+    GoRouter.of(context).goNamed(Routes.chapter, pathParameters: params);
   }
 
   @override
@@ -67,7 +65,7 @@ class _ScreenBodyState extends State<_ScreenBody> {
     return AppContainer(
       backButton: true,
       backButtonKey: TeachingSummaryScreen.backButtonKey,
-      key: const Key(TeachingSummaryScreen.route),
+      key: const Key(Routes.teachingSummary),
       body: WrapInLoader(
         isReady: teaching != null,
         builder: () => AppCard(

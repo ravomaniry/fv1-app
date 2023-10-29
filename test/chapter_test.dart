@@ -10,6 +10,7 @@ import 'package:fv1/models/quiz_question.dart';
 import 'package:fv1/models/section.dart';
 import 'package:fv1/models/teaching.dart';
 import 'package:fv1/models/texts.dart';
+import 'package:fv1/models/user.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/ui/screens/chapter.dart';
@@ -18,6 +19,7 @@ import 'package:fv1/ui/widgets/audio_player.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:mockito/mockito.dart';
 
+import 'api_client_test.mocks.dart';
 import 'home_screen_test.mocks.dart';
 import 'utils/tick.dart';
 
@@ -89,7 +91,15 @@ void main() {
       ),
     ];
     when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
-    final providers = createProviders(dataService, audioPlayer, dtService);
+    final storage = MockStorageService();
+    when(storage.getUser()).thenAnswer((_) => UserModel(1, 'A'));
+    final providers = createProviders(
+      dataService,
+      audioPlayer,
+      dtService,
+      storage,
+      MockAuthService(),
+    );
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester);
     // Open teaching
@@ -131,9 +141,9 @@ void main() {
     streamData.playerState = InternalPlayerState.error;
     playerStreamCtr.add(streamData);
     await tick(tester, 1);
-    expect(find.text(mgTexts.playerError), findsOneWidget);
+    expect(find.text(mgTexts.errorAudioPlayer), findsOneWidget);
     await tapByStringKey(tester, 'DismissErrorButton', 1);
-    expect(find.text(mgTexts.playerError), findsNothing);
+    expect(find.text(mgTexts.errorAudioPlayer), findsNothing);
     expect(find.byKey(AudioPlayerWidget.playerKey), findsNothing);
     // Notify audio player when widget is unmounted
     verify(audioPlayer.onPlayerUnmounted()).called(1);

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/models/app_errors.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
+import 'package:fv1/types/exceptions.dart';
 import 'package:fv1/ui/widgets/error_text.dart';
 
 class AppErrorWidget extends StatelessWidget {
@@ -15,14 +15,9 @@ class AppErrorWidget extends StatelessWidget {
   });
 
   String _getErrorMsg() {
-    switch (browserState.error) {
-      case AppErrors.internet:
-        return appState.texts.internetError;
-      case AppErrors.audioPlayer:
-        return appState.texts.playerError;
-      default:
-        return appState.texts.unknownError;
-    }
+    return browserState.error is AppException
+        ? (browserState.error as AppException).getMessage(appState.texts)
+        : appState.texts.errorUnknown;
   }
 
   @override

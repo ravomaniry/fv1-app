@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:fv1/models/app_errors.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/playing_audio.dart';
 import 'package:fv1/models/progress.dart';
@@ -10,6 +9,7 @@ import 'package:fv1/services/audio_player/audio_player.dart';
 import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/services/datetime/datetime_service.dart';
+import 'package:fv1/types/exceptions.dart';
 
 class BrowserState extends ChangeNotifier {
   final AbstractDataService _dataService;
@@ -33,8 +33,8 @@ class BrowserState extends ChangeNotifier {
   PlayingAudio? _playingAudio;
   PlayingAudio? get playingAudio => _playingAudio;
 
-  AppErrors? _error;
-  AppErrors? get error => _error;
+  dynamic _error;
+  dynamic get error => _error;
 
   BrowserState(this._dataService, this.audioPlayer, this._dateTimeService) {
     _loadInitialData();
@@ -46,7 +46,7 @@ class BrowserState extends ChangeNotifier {
     try {
       await fn();
     } catch (e) {
-      _error = AppErrors.internet;
+      _error = e;
       notifyListeners();
     }
   }
@@ -61,9 +61,9 @@ class BrowserState extends ChangeNotifier {
 
   void _listenToAudioError() {
     audioPlayer.dataStream?.listen((e) {
-      if (_error != AppErrors.audioPlayer &&
+      if (_error is! AudioPlayerErrorException &&
           e.state() == InternalPlayerState.error) {
-        _error = AppErrors.audioPlayer;
+        _error = AudioPlayerErrorException();
         notifyListeners();
       }
     });
@@ -161,7 +161,7 @@ class BrowserState extends ChangeNotifier {
   }
 
   void dismissError() {
-    if (_error == AppErrors.audioPlayer) {
+    if (_error is AudioPlayerErrorException) {
       _playingAudio = null;
     }
     _error = null;
