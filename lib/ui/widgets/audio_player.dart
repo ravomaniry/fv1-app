@@ -46,12 +46,16 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
   Widget _buildLoader() {
     return Container(
       padding: const EdgeInsets.all(4),
+      color: Colors.black87,
       child: Row(
         children: [
           const CircularProgressIndicator(),
           const SizedBox(width: 8),
           Expanded(
-            child: Text(widget.texts.loadingAudio),
+            child: Text(
+              widget.texts.loadingAudio,
+              style: const TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
