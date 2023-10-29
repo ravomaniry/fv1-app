@@ -30,7 +30,11 @@ void main() async {
   final apiRoutes = ApiRoutes(config.api);
   final baseHttpClient = RetryClient(Client());
   final httpClient = CustomHttpClient(baseHttpClient);
-  final authService = AuthService(storage, apiRoutes, httpClient);
+  final authService = AuthService(
+    storage,
+    apiRoutes,
+    AuthServiceHttpClient(httpClient),
+  );
   final apiClient = ApiClient(
     authService,
     apiRoutes,

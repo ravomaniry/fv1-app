@@ -37,6 +37,11 @@ class AuthService {
     return _handleLogin(LoginDto().parse(_client.post(_routes.registerGuest)));
   }
 
+  void logOut() {
+    _storage.deleteToken();
+    _storage.deleteUser();
+  }
+
   Future<UserModel> _handleLogin(Future<LoginResponseModel> future) async {
     final resp = await future;
     _saveTokens(resp.tokens);

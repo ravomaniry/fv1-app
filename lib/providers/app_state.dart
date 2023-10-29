@@ -42,8 +42,16 @@ class AppState extends ChangeNotifier {
     });
   }
 
+  void logOut() async {
+    _authService.logOut();
+    _user = null;
+    // Avoid UI glitch
+    await Future.delayed(const Duration(milliseconds: 400));
+    notifyListeners();
+  }
+
   void _wrapApiCall(Future<void> Function() call) async {
-    _isBusy = false;
+    _isBusy = true;
     _error = null;
     notifyListeners();
     try {

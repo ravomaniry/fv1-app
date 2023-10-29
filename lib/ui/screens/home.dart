@@ -3,6 +3,7 @@ import 'package:fv1/models/progress.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/routes.dart';
+import 'package:fv1/ui/screens/app_bar_menu.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/home_page_container.dart';
@@ -89,6 +90,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final isReady = _browserState.localProgresses != null;
     return HomePageContainer(
+      appBarActions: const [AppBarActionButton()],
       floatingActionButton: isReady
           ? SearchButton(
               key: HomeScreen.searchButtonKey,

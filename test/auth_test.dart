@@ -11,6 +11,7 @@ import 'package:fv1/services/api_client/api_routes.dart';
 import 'package:fv1/services/api_client/auth_service.dart';
 import 'package:fv1/services/storage/storage_service.dart';
 import 'package:fv1/types/exceptions.dart';
+import 'package:fv1/ui/screens/app_bar_menu.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/form/password_field.dart';
@@ -93,6 +94,14 @@ void main() {
     verify(storageService.saveUser(UserModel(1, 'user1'))).called(1);
     verify(storageService.saveTokens(UserTokens('rt', accessTk))).called(1);
     expect(find.byKey(HomeScreen.explorerHelpKey), findsOneWidget);
+    // Log out:
+    // Delete stored values
+    // Go to login page
+    await tapByKey(tester, AppBarActionButton.userButtonKey, 2);
+    await tapByKey(tester, AppBarActionButton.logoutButtonKey, 2);
+    verify(storageService.deleteToken());
+    verify(storageService.deleteUser());
+    expect(find.byKey(UsernameFormField.fieldKey), findsOneWidget);
   });
 
   testWidgets('Register with new account', (tester) async {

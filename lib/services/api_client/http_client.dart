@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fv1/services/api_client/auth_service.dart';
+import 'package:fv1/types/exceptions.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -14,22 +15,48 @@ class CustomHttpClient extends BaseClient {
   Future<StreamedResponse> send(BaseRequest request) async {
     final resp = await _inner.send(request);
     if (resp.statusCode >= 400) {
-      final msg = await resp.stream.bytesToString();
-      throw HttpException('Status ${resp.statusCode}; details: $msg');
+      final body = await resp.stream.bytesToString();
+      _convertResponseToException(resp.statusCode, body);
     }
     return resp;
   }
 
-  Future<Response> postJson(Uri uri, Map<String, dynamic> body) {
-    return post(uri, body: jsonEncode(body), headers: _jsonHeader());
+  Future<Response> postJson(Uri uri, Map<String, dynamic> body) async {
+    return _handleErrorCodes(
+      post(uri, body: jsonEncode(body), headers: _jsonHeader()),
+    );
   }
 
   Future<Response> putJson(Uri uri, Map<String, dynamic> body) {
-    return put(uri, body: jsonEncode(body), headers: _jsonHeader());
+    return _handleErrorCodes(
+      put(uri, body: jsonEncode(body), headers: _jsonHeader()),
+    );
   }
 
   Map<String, String> _jsonHeader() {
     return {'Content-Type': 'application/json'};
+  }
+
+  Future<Response> _handleErrorCodes(Future<Response> futureResponse) async {
+    final resp = await futureResponse;
+    if (resp.statusCode >= 400) {
+      _convertResponseToException(resp.statusCode, resp.body);
+    }
+    return resp;
+  }
+
+  _convertResponseToException(int code, String body) {
+    final data = jsonDecode(body);
+    switch (data['code']) {
+      case 'invalidCredentials':
+        throw InvalidCredentialException();
+      case 'userExists':
+        throw DuplicateUsernameException();
+      case 'weakPassword':
+        throw WeakPasswordException();
+      default:
+        throw HttpException('Request failed with status $code');
+    }
   }
 }
 

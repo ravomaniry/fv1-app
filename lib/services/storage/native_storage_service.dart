@@ -39,4 +39,14 @@ class NativeStorageService extends StorageService {
     final raw = _prefs.getString(key);
     return raw == null ? null : create(jsonDecode(raw));
   }
+
+  @override
+  void deleteToken() {
+    _prefs.remove(_refreshTokenKey);
+  }
+
+  @override
+  void deleteUser() {
+    _prefs.remove(_userKey);
+  }
 }

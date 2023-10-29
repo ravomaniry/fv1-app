@@ -21,6 +21,7 @@ class AppTexts {
   final String username;
   final String password;
   final String or;
+  final String logOut;
 
   AppTexts({
     required this.continueButton,
@@ -45,6 +46,7 @@ class AppTexts {
     required this.createAccount,
     required this.noAccountYet,
     required this.or,
+    required this.logOut,
   });
 }
 
@@ -79,4 +81,5 @@ final mgTexts = AppTexts(
   createAccount: 'HANOKATRA KAONTY VAOVAO',
   noAccountYet: 'Mbola tsy manana kaonty ve ianao?',
   or: 'na',
+  logOut: 'HIALA',
 );

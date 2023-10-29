@@ -6,11 +6,13 @@ import 'package:fv1/ui/widgets/responsive_padding.dart';
 class HomePageContainer extends StatelessWidget {
   final Widget body;
   final Widget? floatingActionButton;
+  final List<Widget>? appBarActions;
 
   const HomePageContainer({
     super.key,
     required this.body,
     this.floatingActionButton,
+    this.appBarActions,
   });
 
   double _calcColoredBoxHeight(Size size) {
@@ -115,6 +117,13 @@ class HomePageContainer extends StatelessWidget {
     );
   }
 
+  Widget _buildAppBarAction() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: appBarActions!,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -134,6 +143,7 @@ class HomePageContainer extends StatelessWidget {
             child: ResponsivePadding(
               child: Column(
                 children: [
+                  if (appBarActions != null) _buildAppBarAction(),
                   SizedBox(height: coloredBoxHeight + 16),
                   body,
                 ],

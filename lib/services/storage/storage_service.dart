@@ -11,4 +11,8 @@ abstract class StorageService {
   UserModel? getUser();
 
   void saveUser(UserModel user);
+
+  void deleteToken();
+
+  void deleteUser();
 }
