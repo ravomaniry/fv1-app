@@ -17,7 +17,7 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final selectedColor =
-        selected == true ? Theme.of(context).primaryColor : null;
+        selected == true ? Theme.of(context).colorScheme.secondary : null;
     return Card(
       color: color ?? selectedColor,
       child: Padding(

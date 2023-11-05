@@ -52,9 +52,11 @@ class _ChapterScreenBody extends StatelessWidget {
   ) {
     final onTap =
         isPlaying ? null : () => _state.playAudio(chapterIndex, sectionIndex);
+    final colors = Theme.of(context).colorScheme;
     return AppCard(
       key: Key(sectionIndex.toString()),
       selected: isPlaying,
+      padding: 1,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -81,11 +83,29 @@ class _ChapterScreenBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
-                  padding: const EdgeInsets.only(left: 4),
-                  margin: const EdgeInsets.only(bottom: 8),
-                  decoration: const BoxDecoration(
+                  padding: const EdgeInsets.only(
+                    left: 8,
+                    top: 4,
+                    bottom: 4,
+                    right: 4,
+                  ),
+                  margin: const EdgeInsets.only(bottom: 8, top: 8),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(2, 2),
+                        blurRadius: 2,
+                        blurStyle: BlurStyle.normal,
+                        spreadRadius: 2,
+                      ),
+                    ],
                     border: Border(
-                      left: BorderSide(color: Color(0xbbbbbbff), width: 3),
+                      left: BorderSide(
+                        color: isPlaying ? colors.secondary : colors.primary,
+                        width: 2,
+                      ),
                     ),
                   ),
                   child: Text(
