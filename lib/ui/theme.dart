@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 const double borderRadios = 8;
@@ -21,7 +20,6 @@ ThemeData createTheme() {
     ),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
-        padding: kIsWeb ? const EdgeInsets.all(24) : null,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(borderRadios),
         ),

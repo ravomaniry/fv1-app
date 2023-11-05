@@ -17,13 +17,15 @@
           "sections": [
             {
               "audioId": "1.mp3",
-              "content": "Content 1",
-              "subtitle": "Efesiana 1:4-6"
+              "subtitle": "Efesiana 1:4-6",
+              "verses": "Verses 1",
+              "comment": "Comment 1"
             },
             {
               "audioId": "2.mp3",
-              "content": "Content 2",
-              "subtitle": "Efesiana 2:10"
+              "subtitle": "Efesiana 2:10",
+              "verses": "Verses 2",
+              "comment": "Comment 2"
             }
           ],
           "questions": [

@@ -29,12 +29,8 @@ void main() async {
   await Future.wait([config.init(), storage.init()]);
   final apiRoutes = ApiRoutes(config.api);
   final baseHttpClient = RetryClient(Client());
-  final httpClient = CustomHttpClient(baseHttpClient);
-  final authService = AuthService(
-    storage,
-    apiRoutes,
-    AuthServiceHttpClient(httpClient),
-  );
+  final httpClient = CustomHttpClient(baseHttpClient, null);
+  final authService = AuthService(storage, apiRoutes, httpClient);
   final apiClient = ApiClient(
     authService,
     apiRoutes,

@@ -64,8 +64,18 @@ void main() {
             ChapterModel(
               'TC22',
               [
-                SectionModel('SC211 title', 'SC211 content', '1'),
-                SectionModel('SC212 title', 'SC212 content', '2'),
+                SectionModel(
+                  subtitle: 'SC211 title',
+                  verses: 'SC211 verses',
+                  comment: 'SC211 content',
+                  audioId: '1',
+                ),
+                SectionModel(
+                  subtitle: 'SC212 title',
+                  comment: 'SC212 content',
+                  verses: 'SC212 verses',
+                  audioId: '2',
+                ),
               ],
               [
                 QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 'c1'),
@@ -76,7 +86,12 @@ void main() {
             ChapterModel(
               'TC23',
               [
-                SectionModel('SC231 title', 'SC231 content', '3'),
+                SectionModel(
+                  subtitle: 'SC231 title',
+                  verses: 'SC231 verses',
+                  comment: 'SC231 content',
+                  audioId: '3',
+                ),
               ],
               [
                 QuizQuestionModel('a', 'A?', ['x', 'y'], 'x'),
@@ -123,6 +138,7 @@ void main() {
     expect(findTextWidget(tester, 'ChapterTitle').data, 'TC22');
     // Render content
     expect(find.text('SC211 title'), findsOneWidget);
+    expect(find.text('SC211 verses'), findsOneWidget);
     expect(find.text('SC211 content'), findsOneWidget);
     expect(find.text('SC212 title'), findsOneWidget);
     expect(find.text('SC212 content'), findsOneWidget);

@@ -12,14 +12,28 @@ void main() {
   test('ProgressModel compare', () {
     final chapter = ChapterModel(
       'CT1',
-      [SectionModel('S1', 'SC1', '1.audio')],
+      [
+        SectionModel(
+          subtitle: 'S1',
+          comment: 'SC1',
+          audioId: '1.audio',
+          verses: 'SV1',
+        )
+      ],
       [
         QuizQuestionModel('1', 'Q1', ['1', '2'], 'R1')
       ],
     );
     final chapter1 = ChapterModel(
       'CT1',
-      [SectionModel('S1', 'SC1', '1.audio')],
+      [
+        SectionModel(
+          subtitle: 'S1',
+          verses: 'SV1',
+          comment: 'SC1',
+          audioId: '1.audio',
+        )
+      ],
       [
         QuizQuestionModel('1', 'Q1', ['1', '2'], 'R1')
       ],

@@ -77,7 +77,25 @@ class _ChapterScreenBody extends StatelessWidget {
                 ),
               ],
             ),
-            subtitle: Text(section.content),
+            subtitle: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(left: 4),
+                  margin: const EdgeInsets.only(bottom: 8),
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      left: BorderSide(color: Color(0xbbbbbbff), width: 3),
+                    ),
+                  ),
+                  child: Text(
+                    section.verses,
+                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  ),
+                ),
+                Text(section.comment),
+              ],
+            ),
           ),
         ],
       ),

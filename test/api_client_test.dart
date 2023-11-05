@@ -133,8 +133,18 @@ void main() {
             ChapterModel(
               'C1',
               [
-                SectionModel('Efesiana 1:4-6', 'Content 1', '1.mp3'),
-                SectionModel('Efesiana 2:10', 'Content 2', '2.mp3'),
+                SectionModel(
+                  subtitle: 'Efesiana 1:4-6',
+                  verses: 'Verses 1',
+                  comment: 'Comment 1',
+                  audioId: '1.mp3',
+                ),
+                SectionModel(
+                  subtitle: 'Efesiana 2:10',
+                  verses: 'Verses 2',
+                  comment: 'Comment 2',
+                  audioId: '2.mp3',
+                ),
               ],
               [
                 QuizQuestionModel(

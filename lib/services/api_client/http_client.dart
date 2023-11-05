@@ -7,12 +7,18 @@ import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
 class CustomHttpClient extends BaseClient {
+  final _logger = Logger('CustomHttpClient');
   final BaseClient _inner;
+  final Future<Map<String, String>> Function()? _createHeaders;
 
-  CustomHttpClient(this._inner);
+  CustomHttpClient(this._inner, this._createHeaders);
 
   @override
   Future<StreamedResponse> send(BaseRequest request) async {
+    _logger.info('${request.method} ${request.url}');
+    if (_createHeaders != null) {
+      await _addCustomHeaders(request.headers);
+    }
     final resp = await _inner.send(request);
     if (resp.statusCode >= 400) {
       final body = await resp.stream.bytesToString();
@@ -22,19 +28,21 @@ class CustomHttpClient extends BaseClient {
   }
 
   Future<Response> postJson(Uri uri, Map<String, dynamic> body) async {
+    _logger.info('POST $uri');
     return _handleErrorCodes(
-      post(uri, body: jsonEncode(body), headers: _jsonHeader()),
+      post(uri, body: jsonEncode(body), headers: await _jsonHeaders()),
     );
   }
 
-  Future<Response> putJson(Uri uri, Map<String, dynamic> body) {
+  Future<Response> putJson(Uri uri, Map<String, dynamic> body) async {
+    _logger.info('PUT $uri');
     return _handleErrorCodes(
-      put(uri, body: jsonEncode(body), headers: _jsonHeader()),
+      put(uri, body: jsonEncode(body), headers: await _jsonHeaders()),
     );
   }
 
-  Map<String, String> _jsonHeader() {
-    return {'Content-Type': 'application/json'};
+  Future<Map<String, String>> _jsonHeaders() async {
+    return _addCustomHeaders({'Content-Type': 'application/json'});
   }
 
   Future<Response> _handleErrorCodes(Future<Response> futureResponse) async {
@@ -45,7 +53,18 @@ class CustomHttpClient extends BaseClient {
     return resp;
   }
 
-  _convertResponseToException(int code, String body) {
+  Future<Map<String, String>> _addCustomHeaders(
+      Map<String, String> base) async {
+    if (_createHeaders != null) {
+      final extra = await _createHeaders!();
+      extra.forEach((key, value) {
+        base[key] = value;
+      });
+    }
+    return base;
+  }
+
+  void _convertResponseToException(int code, String body) {
     final data = jsonDecode(body);
     switch (data['code']) {
       case 'invalidCredentials':
@@ -61,28 +80,12 @@ class CustomHttpClient extends BaseClient {
 }
 
 class HttpClientWithAuth extends CustomHttpClient {
-  final AuthService _authService;
-  final _logger = Logger('_ClientWithAuth');
-
-  HttpClientWithAuth(this._authService, BaseClient inner) : super(inner);
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) async {
-    _logger.info('${request.method} ${request.url}');
-    final accessToken = await _authService.getAccessToken();
-    request.headers['Authorization'] = 'Bearer $accessToken';
-    return super.send(request);
-  }
-}
-
-class AuthServiceHttpClient extends CustomHttpClient {
-  final _logger = Logger('AuthClient');
-
-  AuthServiceHttpClient(super.inner);
-
-  @override
-  Future<StreamedResponse> send(BaseRequest request) {
-    _logger.info('${request.method} ${request.url}');
-    return super.send(request);
-  }
+  HttpClientWithAuth(final AuthService authService, BaseClient inner)
+      : super(
+          inner,
+          () async {
+            final accessToken = await authService.getAccessToken();
+            return {'Authorization': 'Bearer $accessToken'};
+          },
+        );
 }
