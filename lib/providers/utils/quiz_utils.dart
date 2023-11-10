@@ -10,8 +10,9 @@ List<WrongAnswer> calculateWrongAnswers(
   final wrongAnswers = <WrongAnswer>[];
   for (final q in questions) {
     final given = value[q.key];
-    if (given != q.response) {
-      wrongAnswers.add(WrongAnswer(q.question, given, q.response));
+    final correctAnswer = q.options[q.responseIndex];
+    if (given != correctAnswer) {
+      wrongAnswers.add(WrongAnswer(q.question, given, correctAnswer));
     }
   }
   return wrongAnswers;

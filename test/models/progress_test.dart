@@ -21,7 +21,7 @@ void main() {
         )
       ],
       [
-        QuizQuestionModel('1', 'Q1', ['1', '2'], 'R1')
+        QuizQuestionModel('1', 'Q1', ['1', '2'], 0)
       ],
     );
     final chapter1 = ChapterModel(
@@ -35,7 +35,7 @@ void main() {
         )
       ],
       [
-        QuizQuestionModel('1', 'Q1', ['1', '2'], 'R1')
+        QuizQuestionModel('1', 'Q1', ['1', '2'], 0)
       ],
     );
     final teaching = TeachingModel(1, 'T1', 'ST1', [chapter]);

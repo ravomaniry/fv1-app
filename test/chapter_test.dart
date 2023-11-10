@@ -78,9 +78,9 @@ void main() {
                 ),
               ],
               [
-                QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 'c1'),
-                QuizQuestionModel('q2', 'Q2?', ['c2', 'c22'], 'c2'),
-                QuizQuestionModel('q3', 'Q3?', ['c3', 'c33'], 'c33'),
+                QuizQuestionModel('q1', 'Q1?', ['c1', 'c11'], 0),
+                QuizQuestionModel('q2', 'Q2?', ['c2', 'c22'], 0),
+                QuizQuestionModel('q3', 'Q3?', ['c3', 'c33'], 1),
               ],
             ),
             ChapterModel(
@@ -94,7 +94,7 @@ void main() {
                 ),
               ],
               [
-                QuizQuestionModel('a', 'A?', ['x', 'y'], 'x'),
+                QuizQuestionModel('a', 'A?', ['x', 'y'], 0),
               ],
             ),
           ],
