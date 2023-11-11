@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Future<void> tick(WidgetTester tester, [int s = 0]) async {
@@ -63,6 +64,6 @@ Future<void> tapBackButton(WidgetTester tester, [int s = 0]) async {
   await tester.pump(Duration(seconds: s));
 }
 
-T findByStringKey<T extends Widget>(WidgetTester tester, String key) {
-  return tester.widget<T>(find.byKey(Key(key)));
+String getMarkdownData(WidgetTester tester, String key) {
+  return tester.widget<MarkdownBody>(find.byKey(Key(key))).data;
 }

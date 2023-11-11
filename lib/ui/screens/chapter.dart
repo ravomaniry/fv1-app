@@ -87,9 +87,9 @@ class _ChapterScreenBody extends StatelessWidget {
               children: [
                 QuoteCard(
                   borderColor: isPlaying ? colors.secondary : colors.primary,
-                  child: Text(
-                    section.verses,
-                    style: const TextStyle(fontStyle: FontStyle.italic),
+                  child: MarkdownBody(
+                    data: section.verses,
+                    key: Key('Verse$sectionIndex'),
                   ),
                 ),
                 MarkdownBody(
