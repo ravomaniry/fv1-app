@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:fv1/models/section.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
@@ -9,6 +10,7 @@ import 'package:fv1/ui/widgets/audio_player.dart';
 import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/h1.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:fv1/ui/widgets/quote_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -63,6 +65,7 @@ class _ChapterScreenBody extends StatelessWidget {
           ListTile(
             onTap: onTap,
             selected: isPlaying,
+            tileColor: Colors.white,
             key: Key('PlayButton$sectionIndex'),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -82,38 +85,17 @@ class _ChapterScreenBody extends StatelessWidget {
             subtitle: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.only(
-                    left: 8,
-                    top: 4,
-                    bottom: 4,
-                    right: 4,
-                  ),
-                  margin: const EdgeInsets.only(bottom: 8, top: 8),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(2, 2),
-                        blurRadius: 2,
-                        blurStyle: BlurStyle.normal,
-                        spreadRadius: 2,
-                      ),
-                    ],
-                    border: Border(
-                      left: BorderSide(
-                        color: isPlaying ? colors.secondary : colors.primary,
-                        width: 2,
-                      ),
-                    ),
-                  ),
+                QuoteCard(
+                  borderColor: isPlaying ? colors.secondary : colors.primary,
                   child: Text(
                     section.verses,
                     style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                 ),
-                Text(section.comment),
+                MarkdownBody(
+                  data: section.comment,
+                  key: Key('Comment$sectionIndex'),
+                ),
               ],
             ),
           ),

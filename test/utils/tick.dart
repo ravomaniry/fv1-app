@@ -62,3 +62,7 @@ Future<void> tapBackButton(WidgetTester tester, [int s = 0]) async {
   await tester.tap(find.byTooltip('Back').last);
   await tester.pump(Duration(seconds: s));
 }
+
+T findByStringKey<T extends Widget>(WidgetTester tester, String key) {
+  return tester.widget<T>(find.byKey(Key(key)));
+}

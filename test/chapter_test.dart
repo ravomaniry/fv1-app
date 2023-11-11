@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fv1/app.dart';
 import 'package:fv1/models/chapter.dart';
@@ -139,9 +140,15 @@ void main() {
     // Render content
     expect(find.text('SC211 title'), findsOneWidget);
     expect(find.text('SC211 verses'), findsOneWidget);
-    expect(find.text('SC211 content'), findsOneWidget);
+    expect(
+      findByStringKey<MarkdownBody>(tester, 'Comment1').data,
+      'SC212 content',
+    );
     expect(find.text('SC212 title'), findsOneWidget);
-    expect(find.text('SC212 content'), findsOneWidget);
+    expect(
+      findByStringKey<MarkdownBody>(tester, 'Comment1').data,
+      'SC212 content',
+    );
     // Audio player
     when(dataService.getAudioUrl('1')).thenAnswer((_) async => 'http://1.wav');
     when(dataService.getAudioUrl('2')).thenAnswer((_) async => 'http://2.wav');
