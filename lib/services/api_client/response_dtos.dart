@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:fv1/models/login_response.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching_summary.dart';
+import 'package:fv1/models/user_tokens.dart';
 import 'package:http/http.dart';
 
 typedef ParserFn<T> = T Function(dynamic data);
@@ -47,6 +48,6 @@ class LoginDto extends DtoParser<LoginResponseModel> {
   LoginDto() : super((dynamic d) => LoginResponseModel.fromJson(d));
 }
 
-class RefreshTokenDto extends DtoParser<String> {
-  RefreshTokenDto() : super((dynamic d) => d['token']);
+class RefreshTokenDto extends DtoParser<UserTokens> {
+  RefreshTokenDto() : super((dynamic d) => UserTokens.fromJson(d));
 }

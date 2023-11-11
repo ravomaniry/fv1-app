@@ -96,13 +96,16 @@ void main() {
     );
     cachedTokens = UserTokens('rt', accessTk);
     final newAccessTk = createAccessToken(DateTime.now().add(oneHour));
-    authResponse = http.Response(jsonEncode({'token': newAccessTk}), 200);
+    authResponse = http.Response(
+      jsonEncode({'accessToken': newAccessTk, 'refreshToken': 'rt2'}),
+      200,
+    );
     await apiClient.loadNewTeachings();
     // Refresh access token and store it locally
     final call1 = verify(apiBaseClient.send(captureAny));
     expect(call1.callCount, 1);
     expect(_getAuthHeader(call1.captured.single), 'Bearer $newAccessTk');
-    verify(storage.saveTokens(UserTokens('rt', newAccessTk)));
+    verify(storage.saveTokens(UserTokens('rt2', newAccessTk)));
     // Subsequent request
     await apiClient.loadNewTeachings();
     final call2 = verify(apiBaseClient.send(captureAny));

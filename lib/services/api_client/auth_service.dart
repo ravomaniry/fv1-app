@@ -44,28 +44,27 @@ class AuthService {
 
   Future<UserModel> _handleLogin(Future<LoginResponseModel> future) async {
     final resp = await future;
-    _saveTokens(resp.tokens);
+    _tokens = resp.tokens;
+    _saveTokens();
     _storage.saveUser(resp.user);
     return resp.user;
   }
 
   Future<void> _refreshExpiredToken() async {
     if (_tokens!.isAccessTokenExpired) {
-      final token = await RefreshTokenDto().parse(
+      _tokens = await RefreshTokenDto().parse(
         _client.postJson(
           _routes.refreshToken,
           {'token': _tokens!.refreshToken},
         ),
       );
-      _tokens?.updateAccessToken(token);
       _logger.info('Access token refreshed');
-      _saveTokens(_tokens!);
+      _saveTokens();
     }
   }
 
-  _saveTokens(UserTokens tokens) {
-    _tokens = tokens;
-    _storage.saveTokens(tokens);
+  _saveTokens() {
+    _storage.saveTokens(_tokens!);
     _logger.info('Tokens saved');
   }
 
