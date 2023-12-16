@@ -25,6 +25,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (_, state, __) => HomePageContainer(
+        texts: state.texts,
         body: WrapInLoader(
           isReady: !state.isBusy,
           builder: () => _LoginScreen(state),

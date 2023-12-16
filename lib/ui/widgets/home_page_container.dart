@@ -1,16 +1,19 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fv1/models/texts.dart';
 import 'package:fv1/ui/widgets/responsive_padding.dart';
 
 class HomePageContainer extends StatelessWidget {
   final Widget body;
+  final AppTexts texts;
   final Widget? floatingActionButton;
   final List<Widget>? appBarActions;
 
   const HomePageContainer({
     super.key,
     required this.body,
+    required this.texts,
     this.floatingActionButton,
     this.appBarActions,
   });
@@ -109,6 +112,10 @@ class HomePageContainer extends StatelessWidget {
                     fontFamily: fontFamily,
                   ),
                 ),
+              ),
+              Text(
+                texts.appSlogan,
+                style: const TextStyle(color: Colors.white),
               ),
             ],
           ),

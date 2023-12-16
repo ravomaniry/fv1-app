@@ -90,6 +90,7 @@ class _Body extends StatelessWidget {
   Widget build(BuildContext context) {
     final isReady = _browserState.localProgresses != null;
     return HomePageContainer(
+      texts: _appState.texts,
       appBarActions: const [AppBarActionButton()],
       floatingActionButton: isReady
           ? SearchButton(

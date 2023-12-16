@@ -1,4 +1,5 @@
 class AppTexts {
+  final String appSlogan;
   final String continueButton;
   final String login;
   final String loginTitle;
@@ -24,6 +25,7 @@ class AppTexts {
   final String logOut;
 
   AppTexts({
+    required this.appSlogan,
     required this.continueButton,
     required this.login,
     required this.loginTitle,
@@ -51,6 +53,8 @@ class AppTexts {
 }
 
 final mgTexts = AppTexts(
+  appSlogan:
+      "... fa ny fahasoavana sy ny fahamarinana kosa dia tonga tamin’ ny alalan’ i Jesosy Kristy - Jaona 1:17",
   continueButton: 'TOHIZANA',
   login: 'HIDITRA',
   loginTitle: "Hiditra amin'ny kaontinao:",
