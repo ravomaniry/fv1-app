@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/routes.dart';
@@ -66,7 +67,7 @@ class _BodyState extends State<_Body> {
                         subtitle: Text(teaching.subtitle),
                         trailing: Icon(
                           Icons.chevron_right,
-                          color: Theme.of(context).colorScheme.primary,
+                          color: context.themePrimaryColor,
                         ),
                         onTap: () => _onOpen(teaching.id),
                       ),

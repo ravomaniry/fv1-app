@@ -8,11 +8,12 @@ List<WrongAnswer> calculateWrongAnswers(
   Map<String, dynamic> value,
 ) {
   final wrongAnswers = <WrongAnswer>[];
-  for (final q in questions) {
-    final given = value[q.key];
-    final correctAnswer = q.options[q.responseIndex];
+  for (final (index, question) in questions.indexed) {
+    final given = value[question.key];
+    final correctAnswer = question.options[question.responseIndex];
     if (given != correctAnswer) {
-      wrongAnswers.add(WrongAnswer(q.question, given, correctAnswer));
+      wrongAnswers
+          .add(WrongAnswer(index, question.question, given, correctAnswer));
     }
   }
   return wrongAnswers;

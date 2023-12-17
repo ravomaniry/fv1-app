@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 
 class ErrorText extends StatelessWidget {
   final String data;
@@ -11,7 +12,7 @@ class ErrorText extends StatelessWidget {
     return Text(
       data,
       key: widgetKey,
-      style: TextStyle(color: Theme.of(context).colorScheme.error),
+      style: TextStyle(color: context.themeErrorColor),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 
 class AppCard extends StatelessWidget {
   final Widget child;
@@ -16,8 +17,7 @@ class AppCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final selectedColor =
-        selected == true ? Theme.of(context).colorScheme.secondary : null;
+    final selectedColor = selected == true ? context.themeSecondaryColor : null;
     return Card(
       color: color ?? selectedColor,
       child: Padding(

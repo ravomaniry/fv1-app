@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/models/texts.dart';
 import 'package:fv1/types/exceptions.dart';
 
@@ -20,7 +21,7 @@ class LoginError extends StatelessWidget {
     return Text(
       _getErrorMsg(),
       key: textKey,
-      style: TextStyle(color: Theme.of(context).colorScheme.error),
+      style: TextStyle(color: context.themeErrorColor),
     );
   }
 }

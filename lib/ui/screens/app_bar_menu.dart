@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final primColor = Theme.of(context).colorScheme.primary;
+    final primColor = context.themePrimaryColor;
     return _state.user == null
         ? const SizedBox.shrink()
         : PopupMenuButton<_MenuActions?>(

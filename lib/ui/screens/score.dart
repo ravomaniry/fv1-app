@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/models/chapter.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
@@ -50,12 +51,23 @@ class _Body extends StatelessWidget {
     }
   }
 
-  Widget _buildScore(ChapterModel chapter) {
+  Widget _buildScore(ChapterModel chapter, BuildContext context) {
     return ScreenH2(
       '${_appState.texts.score}: '
       '${chapter.questions.length - _state.wrongAnswers!.length}/'
       '${chapter.questions.length}',
       textKey: const Key('Score'),
+      color: context.themePrimaryColor,
+    );
+  }
+
+  Widget _buildScoreChart(ChapterModel chapter, BuildContext context) {
+    final v = (chapter.questions.length - _state.wrongAnswers!.length) /
+        chapter.questions.length;
+    return CircularProgressIndicator(
+      value: v,
+      backgroundColor: context.themeSecondaryColor,
+      color: context.themePrimaryColor,
     );
   }
 
@@ -67,7 +79,7 @@ class _Body extends StatelessWidget {
                 for (final (i, wa) in _state.wrongAnswers!.indexed)
                   ListTile(
                     title: Text(
-                      wa.question,
+                      '${wa.index + 1}. ${wa.question}',
                       key: Key('WAQuestion$i'),
                     ),
                     subtitle: Column(
@@ -78,7 +90,7 @@ class _Body extends StatelessWidget {
                           style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontStyle: FontStyle.italic,
-                            color: Theme.of(context).colorScheme.error,
+                            color: context.themeErrorColor,
                           ),
                           key: Key('WAGivenAnswer$i'),
                         ),
@@ -107,7 +119,8 @@ class _Body extends StatelessWidget {
           child: Column(
             children: [
               ScreenH1(chapter!.title),
-              _buildScore(chapter),
+              _buildScoreChart(chapter, context),
+              _buildScore(chapter, context),
               _buildWrongAnswers(context, chapter),
               ContinueButton(
                 label: _appState.texts.continueButton,

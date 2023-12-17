@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/types/exceptions.dart';
@@ -30,7 +31,7 @@ class AppErrorWidget extends StatelessWidget {
         ),
         CloseButton(
           onPressed: () => browserState.dismissError(),
-          color: Theme.of(context).colorScheme.error,
+          color: context.themeErrorColor,
           key: const Key('DismissErrorButton'),
         ),
       ],

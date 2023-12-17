@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:fv1/extensions/context.dart';
 import 'package:fv1/models/section.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
@@ -113,7 +114,7 @@ class _ChapterScreenBody extends StatelessWidget {
     return isPlaying
         ? Icon(
             Icons.surround_sound,
-            color: Theme.of(context).colorScheme.primary,
+            color: context.themePrimaryColor,
             key: Key('PlayingIcon$sectionIndex'),
           )
         : const Icon(Icons.play_circle, color: Colors.black45);
