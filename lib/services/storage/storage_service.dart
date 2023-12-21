@@ -15,4 +15,8 @@ abstract class StorageService {
   void deleteToken();
 
   void deleteUser();
+
+  bool isHelpViewed();
+
+  void setIsHelpViewed();
 }

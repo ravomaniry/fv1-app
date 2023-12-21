@@ -31,6 +31,7 @@ void main() {
     when(dataService.loadNewTeachings()).thenAnswer((_) async => teachings);
     when(dataService.sync()).thenAnswer((_) async {});
     when(storage.getUser()).thenAnswer((_) => UserModel(1, 'User1'));
+    when(storage.isHelpViewed()).thenReturn(true);
     providers = createProviders(
       dataService,
       MockAppAudioPlayer(),

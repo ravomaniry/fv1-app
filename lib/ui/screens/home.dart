@@ -5,6 +5,7 @@ import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/screens/app_bar_menu.dart';
 import 'package:fv1/ui/screens/teaching_summary.dart';
+import 'package:fv1/ui/widgets/h2.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/home_page_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
@@ -13,12 +14,23 @@ import 'package:fv1/ui/widgets/search_button.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   static const syncLoaderKey = Key('syncLoader');
   static const explorerHelpKey = Key('explorerHelp');
   static const searchButtonKey = Key('searchButton');
 
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<BrowserState>().onHomeScreenMounted();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,11 +90,21 @@ class _Body extends StatelessWidget {
   }
 
   Widget _buildRegularScreen(BuildContext context) {
-    return Column(
-      children: [
-        for (final progress in _browserState.localProgresses!)
-          _buildProgress(context, progress),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (_browserState.localProgresses?.isNotEmpty == true)
+            ScreenH2(_appState.texts.teachingsInProgress),
+          for (final progress in _browserState.localProgresses ?? [])
+            _buildProgress(context, progress),
+          if (_browserState.teachingsList?.isNotEmpty == true)
+            ScreenH2(_appState.texts.teachingsAvailable),
+          for (final teaching in _browserState.teachingsList ?? [])
+            Text(teaching.title),
+        ],
+      ),
     );
   }
 

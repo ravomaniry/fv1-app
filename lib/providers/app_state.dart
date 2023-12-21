@@ -8,21 +8,24 @@ import 'package:fv1/services/storage/storage_service.dart';
 
 class AppState extends ChangeNotifier {
   final AuthService _authService;
-
+  final StorageService _storageService;
   final texts = mgTexts;
 
-  bool _isBusy = false;
   bool get isBusy => _isBusy;
+  bool _isBusy = false;
 
-  dynamic _error;
   dynamic get error => _error;
-
-  UserModel? _user;
+  dynamic _error;
 
   UserModel? get user => _user;
+  UserModel? _user;
 
-  AppState(StorageService storageService, this._authService)
-      : _user = storageService.getUser();
+  bool get isHelpViewed => _isHelpViewed;
+  bool _isHelpViewed;
+
+  AppState(this._storageService, this._authService)
+      : _user = _storageService.getUser(),
+        _isHelpViewed = _storageService.isHelpViewed();
 
   void login(LoginData data) {
     _wrapApiCall(() async {
@@ -61,5 +64,10 @@ class AppState extends ChangeNotifier {
     }
     _isBusy = false;
     notifyListeners();
+  }
+
+  void setIsHelpViewed() {
+    _isHelpViewed = true;
+    _storageService.setIsHelpViewed();
   }
 }

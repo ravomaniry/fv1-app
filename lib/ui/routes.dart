@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/ui/screens/chapter.dart';
 import 'package:fv1/ui/screens/explorer.dart';
+import 'package:fv1/ui/screens/help.dart';
 import 'package:fv1/ui/screens/home.dart';
 import 'package:fv1/ui/screens/login.dart';
 import 'package:fv1/ui/screens/quiz.dart';
@@ -23,6 +24,7 @@ abstract class Routes {
   static const explorer = 'explorer';
   static const teachingIdKey = 'teachingId';
   static const chapterIndexKey = 'chapterIndex';
+  static const help = '/help';
 }
 
 int readTeachingId(BuildContext context) {
@@ -48,9 +50,19 @@ class _CreateRouterState extends State<CreateRouter> {
   GoRouter? _routerConfig;
 
   GoRouter _createConfig() {
+    // No need to watch
     final appState = context.read<AppState>();
     _routerConfig ??= GoRouter(
+      // Redirect in this priority:
+      // If the user has not read the help yet: Go to help
+      // Allow anyone to visit the help page
+      // else: go to home page if user is authenticated, otherwise, go to auth
       redirect: (_, state) {
+        if (!appState.isHelpViewed) {
+          return Routes.help;
+        } else if (state.fullPath == Routes.help) {
+          return null;
+        }
         final isOnAuthPage =
             state.fullPath == Routes.login || state.fullPath == Routes.register;
         if (appState.user == null) {
@@ -62,6 +74,7 @@ class _CreateRouterState extends State<CreateRouter> {
       routes: [
         GoRoute(
           path: Routes.home,
+          name: Routes.home,
           builder: (_, __) => const HomeScreen(),
           routes: [
             GoRoute(
@@ -103,6 +116,11 @@ class _CreateRouterState extends State<CreateRouter> {
           name: Routes.register,
           path: Routes.register,
           builder: (_, __) => const RegisterScreen(),
+        ),
+        GoRoute(
+          path: Routes.help,
+          name: Routes.help,
+          builder: (_, __) => const HelpScreen(),
         ),
       ],
     );

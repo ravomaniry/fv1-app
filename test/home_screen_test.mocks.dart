@@ -312,6 +312,14 @@ class MockAuthService extends _i1.Mock implements _i10.AuthService {
         )),
       ) as _i5.Future<_i3.UserModel>);
   @override
+  void logOut() => super.noSuchMethod(
+        Invocation.method(
+          #logOut,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
   _i5.Future<String> getAccessToken() => (super.noSuchMethod(
         Invocation.method(
           #getAccessToken,
