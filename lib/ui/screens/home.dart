@@ -9,6 +9,7 @@ import 'package:fv1/ui/widgets/h2.dart';
 import 'package:fv1/ui/widgets/home_card.dart';
 import 'package:fv1/ui/widgets/home_page_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:fv1/ui/widgets/new_teaching.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:fv1/ui/widgets/search_button.dart';
 import 'package:go_router/go_router.dart';
@@ -40,24 +41,51 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class _Body extends StatelessWidget {
+class _Body extends StatefulWidget {
   final AppState _appState;
   final BrowserState _browserState;
 
   const _Body(this._appState, this._browserState);
 
+  @override
+  State<_Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<_Body> {
+  bool _isLoading = false;
+
   void _goToExplorer(BuildContext context) {
     context.goNamed(Routes.explorer);
   }
 
+  void _onOpenProgress(ProgressModel progress) {
+    context.goNamed(
+      Routes.teachingSummary,
+      pathParameters: {
+        TeachingSummaryScreen.teachingIdKey: progress.teaching.id.toString(),
+      },
+    );
+  }
+
+  void _onStartNewTeaching(int id) async {
+    setState(() {
+      _isLoading = true;
+    });
+    await widget._browserState.startTeaching(id);
+    setState(() {
+      _isLoading = false;
+    });
+    if (context.mounted) {
+      GoRouter.of(context).pushNamed(
+        Routes.teachingSummary,
+        pathParameters: {Routes.teachingIdKey: id.toString()},
+      );
+    }
+  }
+
   Widget _buildProgress(BuildContext context, ProgressModel progress) {
     return HomeCard(
-      onTap: () => context.goNamed(
-        Routes.teachingSummary,
-        pathParameters: {
-          TeachingSummaryScreen.teachingIdKey: progress.teaching.id.toString(),
-        },
-      ),
+      onTap: () => _onOpenProgress(progress),
       title: Text(
         progress.teaching.title,
         key: Key('HomeTeachingTitle${progress.teaching.id}'),
@@ -84,7 +112,7 @@ class _Body extends StatelessWidget {
 
   Widget _buildEmptyScreen() {
     return NoDataMessage(
-      _appState.texts.explorerHelp,
+      widget._appState.texts.explorerHelp,
       key: HomeScreen.explorerHelpKey,
     );
   }
@@ -95,14 +123,14 @@ class _Body extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if (_browserState.localProgresses?.isNotEmpty == true)
-            ScreenH2(_appState.texts.teachingsInProgress),
-          for (final progress in _browserState.localProgresses ?? [])
+          if (widget._browserState.localProgresses?.isNotEmpty == true)
+            ScreenH2(widget._appState.texts.teachingsInProgress),
+          for (final progress in widget._browserState.localProgresses ?? [])
             _buildProgress(context, progress),
-          if (_browserState.teachingsList?.isNotEmpty == true)
-            ScreenH2(_appState.texts.teachingsAvailable),
-          for (final teaching in _browserState.teachingsList ?? [])
-            Text(teaching.title),
+          if (widget._browserState.teachingsList?.isNotEmpty == true)
+            ScreenH2(widget._appState.texts.teachingsAvailable),
+          for (final teaching in widget._browserState.teachingsList ?? [])
+            NewTeaching(teaching: teaching, onSelect: _onStartNewTeaching),
         ],
       ),
     );
@@ -110,9 +138,9 @@ class _Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isReady = _browserState.localProgresses != null;
+    final isReady = widget._browserState.localProgresses != null;
     return HomePageContainer(
-      texts: _appState.texts,
+      texts: widget._appState.texts,
       appBarActions: const [AppBarActionButton()],
       floatingActionButton: isReady
           ? SearchButton(
@@ -121,8 +149,9 @@ class _Body extends StatelessWidget {
             )
           : null,
       body: WrapInLoader(
-        isReady: isReady,
-        builder: () => _browserState.localProgresses!.isEmpty
+        isReady: isReady && !_isLoading,
+        builder: () => widget._browserState.localProgresses!.isEmpty &&
+                widget._browserState.teachingsList?.isNotEmpty != true
             ? _buildEmptyScreen()
             : _buildRegularScreen(context),
       ),

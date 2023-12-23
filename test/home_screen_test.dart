@@ -5,6 +5,7 @@ import 'package:fv1/models/chapter.dart';
 import 'package:fv1/models/chapter_score.dart';
 import 'package:fv1/models/progress.dart';
 import 'package:fv1/models/teaching.dart';
+import 'package:fv1/models/teaching_summary.dart';
 import 'package:fv1/models/user.dart';
 import 'package:fv1/providers/create.dart';
 import 'package:fv1/services/api_client/auth_service.dart';
@@ -53,8 +54,12 @@ void main() {
   });
 
   testWidgets(
-    'No saved progress: Display button to go to explorer',
+    'No saved progress and no new teaching: Display button to go to explorer',
     (tester) async {
+      progresses = [];
+      when(dataService.loadNewTeachings()).thenAnswer((_) async {
+        throw Exception();
+      });
       await tester.pumpWidget(Fv1App(providers));
       // Display loader before sync is done
       expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
@@ -67,7 +72,24 @@ void main() {
     },
   );
 
-  testWidgets('Home to teaching summary', (tester) async {
+  testWidgets(
+    'Shows new teachings list when there is no progress',
+    (tester) async {
+      progresses = [];
+      when(dataService.loadNewTeachings()).thenAnswer(
+        (_) async => [TeachingSummaryModel(1, 'Teaching 1', 'Subtitle 1')],
+      );
+      await tester.pumpWidget(Fv1App(providers));
+      await tick(tester, 2);
+      expect(find.text('Teaching 1'), findsOneWidget);
+      expect(find.byKey(HomeScreen.explorerHelpKey), findsNothing);
+    },
+  );
+
+  testWidgets('Open teaching form progress', (tester) async {
+    when(dataService.loadNewTeachings()).thenAnswer((_) async {
+      throw Exception();
+    });
     progresses = [
       ProgressModel(
         id: 10,
@@ -131,5 +153,34 @@ void main() {
     await tick(tester, 2);
     expect(findTextWidget(tester, 'TSTitle').data, 'T2');
     expect(findTextWidget(tester, 'TSSubtitle').data, 'ST2');
+  });
+
+  testWidgets('Open teaching from available list on home', (tester) async {
+    progresses = [
+      ProgressModel(
+        id: 1,
+        teaching: TeachingModel(1, 'T1', 'ST1', [ChapterModel('C1', [], [])]),
+        scores: [],
+        clientTimestamp: 10,
+      ),
+    ];
+    when(dataService.loadNewTeachings()).thenAnswer(
+      (_) async => [TeachingSummaryModel(2, 'T2', 'ST2')],
+    );
+    when(dataService.startTeaching(2)).thenAnswer(
+      (_) async => ProgressModel(
+        id: 2,
+        teaching: TeachingModel(2, 'T2', 'ST2', [ChapterModel('CH2', [], [])]),
+        scores: [],
+        clientTimestamp: 1,
+      ),
+    );
+    await tester.pumpWidget(Fv1App(providers));
+    await tick(tester, 2);
+    expect(find.text('T1'), findsOneWidget);
+    expect(find.text('T2'), findsOneWidget);
+    // Open teaching calls start teaching and go to teaching summary screen
+    await tapByText(tester, 'T2', 1);
+    expect(findTextWidget(tester, 'TSTitle').data, 'T2');
   });
 }

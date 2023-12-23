@@ -18,6 +18,7 @@ import 'utils/mock_api_config.dart';
 import 'utils/tick.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
   late List<ChangeNotifierProvider<ChangeNotifier>> providers;
   late StorageService storageService;
   late MockCustomHttpClient baseClient;

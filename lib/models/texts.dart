@@ -90,8 +90,9 @@ final mgTexts = AppTexts(
   quizHelp: 'Valio ireto fanontaniana manaraka ireto '
       'araka ny fahazoanao ny fampianarana:',
   requiredFieldMessage: 'Valio ity fanontaniana ity azafady.',
-  explorerHelp: 'Mbola tsy manaraka fampianarana ianao.\n'
-      '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.',
+  explorerHelp: 'Tsy misy fampianarana azo aseho.\n'
+      '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.\n'
+      '- Mila internet vao afaka mahita ireo lisitry ny fampianarana.',
   errorInternet: 'Misy olana ny internet.',
   errorUnknown: 'Misy olana. '
       'Akatony ary avereno akatona ny application azafady.',
