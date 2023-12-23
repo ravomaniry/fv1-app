@@ -25,27 +25,27 @@ class HelpScreen extends StatelessWidget {
       _HelpItem(
         appTexts.helpLoginTitle,
         appTexts.helpLoginDescription,
-        'images/help-login.png',
+        'assets/images/help-login.png',
       ),
       _HelpItem(
         appTexts.helpHomeTitle,
         appTexts.helpHomeDescription,
-        'images/help-home.png',
+        'assets/images/help-home.png',
       ),
       _HelpItem(
         appTexts.helpTeachingSummaryTitle,
         appTexts.helpTeachingSummaryDescription,
-        'images/help-teaching.png',
+        'assets/images/help-teaching.png',
       ),
       _HelpItem(
         appTexts.helpChapterTitle,
         appTexts.helpChapterDescription,
-        'images/help-chapter.png',
+        'assets/images/help-chapter.png',
       ),
       _HelpItem(
         appTexts.helpQuizTitle,
         appTexts.helpQuizDescription,
-        'images/help-quiz.png',
+        'assets/images/help-quiz.png',
       ),
     ];
     return AppContainer(
