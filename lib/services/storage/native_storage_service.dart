@@ -8,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class NativeStorageService extends StorageService {
   final _refreshTokenKey = 'refresh_token';
   final _userKey = 'user';
+  final _isHelpVisitedKey = 'isHelpVisitedKey';
   late SharedPreferences _prefs;
 
   @override
@@ -48,5 +49,15 @@ class NativeStorageService extends StorageService {
   @override
   void deleteUser() {
     _prefs.remove(_userKey);
+  }
+
+  @override
+  bool isHelpViewed() {
+    return _prefs.getBool(_isHelpVisitedKey) ?? false;
+  }
+
+  @override
+  void setIsHelpViewed() {
+    _prefs.setBool(_isHelpVisitedKey, true);
   }
 }

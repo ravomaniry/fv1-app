@@ -10,6 +10,7 @@ import 'package:fv1/services/audio_player/player_stream_data.dart';
 import 'package:fv1/services/data/data_service.dart';
 import 'package:fv1/services/datetime/datetime_service.dart';
 import 'package:fv1/types/exceptions.dart';
+import 'package:logging/logging.dart';
 
 class BrowserState extends ChangeNotifier {
   final AbstractDataService _dataService;
@@ -17,27 +18,32 @@ class BrowserState extends ChangeNotifier {
   final DateTimeService _dateTimeService;
 
   List<ProgressModel>? _localProgresses;
+
   List<ProgressModel>? get localProgresses => _localProgresses;
 
   ProgressModel? _activeProgress;
+
   ProgressModel? get activeProgress => _activeProgress;
 
   Map<String, dynamic> _formValue = {};
 
   List<WrongAnswer>? _wrongAnswers;
+
   List<WrongAnswer>? get wrongAnswers => _wrongAnswers;
 
   List<TeachingSummaryModel>? _teachingsList;
+
   List<TeachingSummaryModel>? get teachingsList => _teachingsList;
 
   PlayingAudio? _playingAudio;
+
   PlayingAudio? get playingAudio => _playingAudio;
 
   dynamic _error;
+
   dynamic get error => _error;
 
   BrowserState(this._dataService, this.audioPlayer, this._dateTimeService) {
-    _loadInitialData();
     _listenToAudioError();
   }
 
@@ -51,11 +57,12 @@ class BrowserState extends ChangeNotifier {
     }
   }
 
-  void _loadInitialData() {
+  void onHomeScreenMounted() {
     _handleError(() async {
       await _dataService.sync();
       _localProgresses = await _dataService.loadProgresses();
       notifyListeners();
+      _attemptToLoadTeachingsList();
     });
   }
 
@@ -67,6 +74,16 @@ class BrowserState extends ChangeNotifier {
         notifyListeners();
       }
     });
+  }
+
+  /// It's an attempt because we do not want to fail if the user is not connected
+  void _attemptToLoadTeachingsList() async {
+    try {
+      _teachingsList = await _dataService.loadNewTeachings();
+      notifyListeners();
+    } catch (e) {
+      Logger('BrowserState').warning('Unable to load new teachings list $e');
+    }
   }
 
   Future<void> startTeaching(int id) async {

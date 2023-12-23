@@ -451,4 +451,37 @@ class MockStorageService extends _i1.Mock implements _i7.StorageService {
         ),
         returnValueForMissingStub: null,
       );
+  @override
+  void deleteToken() => super.noSuchMethod(
+        Invocation.method(
+          #deleteToken,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  void deleteUser() => super.noSuchMethod(
+        Invocation.method(
+          #deleteUser,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
+  @override
+  bool isHelpViewed() => (super.noSuchMethod(
+        Invocation.method(
+          #isHelpViewed,
+          [],
+        ),
+        returnValue: false,
+        returnValueForMissingStub: false,
+      ) as bool);
+  @override
+  void setIsHelpViewed() => super.noSuchMethod(
+        Invocation.method(
+          #setIsHelpViewed,
+          [],
+        ),
+        returnValueForMissingStub: null,
+      );
 }

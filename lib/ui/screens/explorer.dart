@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:fv1/extensions/context.dart';
 import 'package:fv1/providers/app_state.dart';
 import 'package:fv1/providers/browser_state.dart';
 import 'package:fv1/ui/routes.dart';
 import 'package:fv1/ui/widgets/app_container.dart';
-import 'package:fv1/ui/widgets/card_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
+import 'package:fv1/ui/widgets/new_teaching.dart';
 import 'package:fv1/ui/widgets/no_data_message.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -61,16 +60,10 @@ class _BodyState extends State<_Body> {
             : ListView(
                 children: [
                   for (final teaching in widget._state.teachingsList!)
-                    CardContainer(
-                      child: ListTile(
-                        title: Text(teaching.title),
-                        subtitle: Text(teaching.subtitle),
-                        trailing: Icon(
-                          Icons.chevron_right,
-                          color: context.themePrimaryColor,
-                        ),
-                        onTap: () => _onOpen(teaching.id),
-                      ),
+                    NewTeaching(
+                      teaching: teaching,
+                      onSelect: _onOpen,
+                      keyPrefix: 'Explorer',
                     ),
                 ],
               ),

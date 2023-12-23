@@ -23,6 +23,20 @@ class AppTexts {
   final String password;
   final String or;
   final String logOut;
+  final String close;
+  final String teachingsInProgress;
+  final String teachingsAvailable;
+  final String helpTitle;
+  final String helpLoginTitle;
+  final String helpLoginDescription;
+  final String helpHomeTitle;
+  final String helpHomeDescription;
+  final String helpTeachingSummaryTitle;
+  final String helpTeachingSummaryDescription;
+  final String helpChapterTitle;
+  final String helpChapterDescription;
+  final String helpQuizTitle;
+  final String helpQuizDescription;
 
   AppTexts({
     required this.appSlogan,
@@ -49,6 +63,20 @@ class AppTexts {
     required this.noAccountYet,
     required this.or,
     required this.logOut,
+    required this.close,
+    required this.teachingsInProgress,
+    required this.teachingsAvailable,
+    required this.helpTitle,
+    required this.helpLoginTitle,
+    required this.helpLoginDescription,
+    required this.helpHomeTitle,
+    required this.helpHomeDescription,
+    required this.helpTeachingSummaryTitle,
+    required this.helpTeachingSummaryDescription,
+    required this.helpChapterTitle,
+    required this.helpChapterDescription,
+    required this.helpQuizTitle,
+    required this.helpQuizDescription,
   });
 }
 
@@ -62,8 +90,9 @@ final mgTexts = AppTexts(
   quizHelp: 'Valio ireto fanontaniana manaraka ireto '
       'araka ny fahazoanao ny fampianarana:',
   requiredFieldMessage: 'Valio ity fanontaniana ity azafady.',
-  explorerHelp: 'Mbola tsy manaraka fampianarana ianao.\n'
-      '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.',
+  explorerHelp: 'Tsy misy fampianarana azo aseho.\n'
+      '- Tsindrio ny bokotra 🔍 hahitanao ireo fampianarana azo arahina.\n'
+      '- Mila internet vao afaka mahita ireo lisitry ny fampianarana.',
   errorInternet: 'Misy olana ny internet.',
   errorUnknown: 'Misy olana. '
       'Akatony ary avereno akatona ny application azafady.',
@@ -86,4 +115,36 @@ final mgTexts = AppTexts(
   noAccountYet: 'Mbola tsy manana kaonty ve ianao?',
   or: 'na',
   logOut: 'HIALA',
+  close: 'Akatona',
+  teachingsInProgress: 'Ireo fampianarana arahinao:',
+  teachingsAvailable: 'Fampianarana vaovao:',
+  helpTitle: 'Torolalana',
+  helpLoginTitle: '1. Miditra ao amin\'ny kaonty',
+  helpLoginDescription: '**Raha efa manana kaonty ianao**:\n'
+      '- **(1)** Fenoy ny anarana sy ny teny mifina\n'
+      '- **(2)** Tsindrio ny bokotra "Hiditra"\n\n'
+      '**Raha mbola tsy manana kanonty ianao dia afaka manao ny iray amin\'ireto:**\n'
+      '- **(3)** Manokatra kaonty vaovao misy anarana:'
+      '\\\nafaka sokafanao amin\'ny smartphone na ordinateur hafa ny kaonty misy anarana.\n'
+      '- **(4)** Manokatra kaonty **tsy misy** anarana:'
+      '\\\nafaka mampiasa ny appilcation manontolo ianao fa tsy afaka manokatra ilay kaonty '
+      'amin\'ny smarphone na ordinateur hafa satria tsy fantatrao ny anarana sy ny teny miafina.',
+  helpHomeTitle: '2. Lisitry ny fampianarana',
+  helpHomeDescription: '**(1)** Ny lisitry ny fampianarana efa natombokao. '
+      'Tsindrio izay tianao hotohizan.\n\n'
+      '**(2)** Tsindrio ity bokotra ity raha te hijery ireo fampianarana vaovao mbola tsy natombokao ianao.',
+  helpTeachingSummaryTitle: '3. Fampianarana',
+  helpTeachingSummaryDescription:
+      'Rehefa manokatra fampianarana ianao dia hitanao hoe taiza ianao no nijanona tamin\'ny farany.'
+      'Tsindrio ny lohahevitra tianao hotohizana.',
+  helpChapterTitle: '4. Lohahevitra',
+  helpChapterDescription:
+      'Ny fampianarana iray dia mizara lohahaevitra maromaro. Ny lohahevitra tsirairay dia misy audio miaraka aminy.\n\n'
+      '**(1)** Ny hevitra: Tsindrio eo raha te hihaino ny fampianarana ianao.\\\n'
+      '**(2)** Ny tenin\'Andriamanitra,\\\n'
+      '**(3)** Fanazavana fohy',
+  helpQuizTitle: '5. Fanontainana',
+  helpQuizDescription:
+      'Isaky ny mahavita lohahevitra iray ianao dia misy fanontaniana vitsivitsy valiana '
+      'ahafahanao manamafy ny zavatra nianarana.',
 );

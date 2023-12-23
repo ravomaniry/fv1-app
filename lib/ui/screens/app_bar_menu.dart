@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:fv1/extensions/context.dart';
 import 'package:fv1/providers/app_state.dart';
+import 'package:fv1/ui/widgets/help_button.dart';
 import 'package:provider/provider.dart';
 
 enum _MenuActions {
   logout,
+  help,
 }
 
 class AppBarActionButton extends StatelessWidget {
@@ -24,8 +26,12 @@ class _Body extends StatelessWidget {
 
   const _Body(this._state);
 
-  _onSelected(_MenuActions? action) {
-    _state.logOut();
+  _onSelected(_MenuActions? action, BuildContext context) {
+    if (action == _MenuActions.logout) {
+      _state.logOut();
+    } else if (action == _MenuActions.help) {
+      context.goToHelpScreen();
+    }
   }
 
   @override
@@ -34,7 +40,7 @@ class _Body extends StatelessWidget {
     return _state.user == null
         ? const SizedBox.shrink()
         : PopupMenuButton<_MenuActions?>(
-            onSelected: _onSelected,
+            onSelected: (action) => _onSelected(action, context),
             child: const CircleAvatar(
               key: AppBarActionButton.userButtonKey,
               child: Icon(
@@ -45,13 +51,14 @@ class _Body extends StatelessWidget {
             itemBuilder: (_) => [
               PopupMenuItem(
                 value: null,
-                child: Row(
-                  children: [
-                    const Icon(Icons.account_circle_outlined),
-                    const SizedBox(width: 8),
-                    Text(_state.user!.username),
-                  ],
+                child: _MenuButton(
+                  _state.user!.username,
+                  Icons.account_circle_outlined,
                 ),
+              ),
+              PopupMenuItem(
+                value: _MenuActions.help,
+                child: _MenuButton(_state.texts.helpTitle, Icons.help),
               ),
               const PopupMenuDivider(height: 1),
               PopupMenuItem(
@@ -70,5 +77,23 @@ class _Body extends StatelessWidget {
               ),
             ],
           );
+  }
+}
+
+class _MenuButton extends StatelessWidget {
+  final String _text;
+  final IconData _icon;
+
+  const _MenuButton(this._text, this._icon);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(_icon),
+        const SizedBox(width: 8),
+        Text(_text),
+      ],
+    );
   }
 }

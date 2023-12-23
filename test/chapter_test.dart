@@ -108,6 +108,7 @@ void main() {
     when(dataService.loadProgresses()).thenAnswer((_) async => progresses);
     final storage = MockStorageService();
     when(storage.getUser()).thenAnswer((_) => UserModel(1, 'A'));
+    when(storage.isHelpViewed()).thenReturn(true);
     final providers = createProviders(
       dataService,
       audioPlayer,
@@ -180,10 +181,10 @@ void main() {
     // Display score
     expect(findTextWidget(tester, 'Score').data, '${mgTexts.score}: 1/3');
     // Display errors
-    expect(findTextWidget(tester, 'WAQuestion0').data, 'Q2?');
+    expect(findTextWidget(tester, 'WAQuestion0').data, '2. Q2?');
     expect(findTextWidget(tester, 'WAGivenAnswer0').data, 'c22');
     expect(findTextWidget(tester, 'WACorrectAnswer0').data, 'c2');
-    expect(findTextWidget(tester, 'WAQuestion1').data, 'Q3?');
+    expect(findTextWidget(tester, 'WAQuestion1').data, '3. Q3?');
     expect(findTextWidget(tester, 'WAGivenAnswer1').data, 'c3');
     expect(findTextWidget(tester, 'WACorrectAnswer1').data, 'c33');
     // Save progress

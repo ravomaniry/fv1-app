@@ -31,6 +31,7 @@ void main() {
     when(dataService.loadNewTeachings()).thenAnswer((_) async => teachings);
     when(dataService.sync()).thenAnswer((_) async {});
     when(storage.getUser()).thenAnswer((_) => UserModel(1, 'User1'));
+    when(storage.isHelpViewed()).thenReturn(true);
     providers = createProviders(
       dataService,
       MockAppAudioPlayer(),
@@ -59,10 +60,12 @@ void main() {
     // Go to explorer screen
     await tapByKey(tester, HomeScreen.searchButtonKey);
     expect(find.byKey(ExplorerScreen.backButtonKey), findsOneWidget);
-    expect(find.text('T1'), findsOneWidget);
-    expect(find.text('ST1'), findsOneWidget);
-    expect(find.text('T2'), findsOneWidget);
-    expect(find.text('ST2'), findsOneWidget);
+    expect(find.byKey(const Key('Explorer1')), findsOneWidget);
+    expect(find.byKey(const Key('Explorer2')), findsOneWidget);
+    expect(find.text('T1'), findsNWidgets(2));
+    expect(find.text('ST1'), findsNWidgets(2));
+    expect(find.text('T2'), findsNWidgets(2));
+    expect(find.text('ST2'), findsNWidgets(2));
     // Open a teaching:
     // - Go to teaching screen
     // - Display dialog until teaching is loaded
@@ -76,14 +79,15 @@ void main() {
         scores: [],
       );
     });
-    await tapByText(tester, 'T1');
+    await tapByStringKey(tester, 'Explorer1');
     await tick(tester);
-    expect(find.text('T1'), findsNothing);
+    expect(find.byKey(const Key('Explorer1')), findsNothing);
     expect(find.byKey(WrapInLoader.loaderKey), findsOneWidget);
     await tick(tester, 2);
     await tick(tester, 2);
     expect(find.byKey(const Key(Routes.teachingSummary)), findsOneWidget);
-    expect(find.text('ST1'), findsOneWidget);
+    expect(textContent(tester, find.byKey(const Key('TSTitle'))), 'T1');
+    expect(textContent(tester, find.byKey(const Key('TSSubtitle'))), 'ST1');
     expect(find.text('CH1'), findsOneWidget);
   });
 }

@@ -8,6 +8,7 @@ import 'package:fv1/ui/widgets/continue_button.dart';
 import 'package:fv1/ui/widgets/form/password_field.dart';
 import 'package:fv1/ui/widgets/form/username_field.dart';
 import 'package:fv1/ui/widgets/h3.dart';
+import 'package:fv1/ui/widgets/help_button.dart';
 import 'package:fv1/ui/widgets/home_page_container.dart';
 import 'package:fv1/ui/widgets/loader.dart';
 import 'package:fv1/ui/widgets/login_error.dart';
@@ -25,6 +26,7 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<AppState>(
       builder: (_, state, __) => HomePageContainer(
+        floatingActionButton: const HelpFAB(),
         texts: state.texts,
         body: WrapInLoader(
           isReady: !state.isBusy,

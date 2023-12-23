@@ -16,7 +16,7 @@ class _Fv1AppState extends State<Fv1App> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: widget._providers,
-      child: CreateRouter(),
+      child: const CreateRouter(),
     );
   }
 }

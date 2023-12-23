@@ -40,6 +40,7 @@ void main() {
     );
     when(dataService.loadProgresses()).thenAnswer((_) async => []);
     storageService = MockStorageService();
+    when(storageService.isHelpViewed()).thenReturn(true);
     baseClient = MockCustomHttpClient();
     providers = createProviders(
       dataService,

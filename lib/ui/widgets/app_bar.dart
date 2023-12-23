@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fv1/ui/widgets/help_button.dart';
 import 'package:go_router/go_router.dart';
 
 AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
@@ -46,5 +47,6 @@ AppBar buildAppBar(BuildContext context, bool backButton, Key? backButtonKey) {
         ),
       ],
     ),
+    actions: const [HelpButton()],
   );
 }
