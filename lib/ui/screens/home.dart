@@ -118,20 +118,24 @@ class _BodyState extends State<_Body> {
   }
 
   Widget _buildRegularScreen(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (widget._browserState.localProgresses?.isNotEmpty == true)
-            ScreenH2(widget._appState.texts.teachingsInProgress),
-          for (final progress in widget._browserState.localProgresses ?? [])
-            _buildProgress(context, progress),
-          if (widget._browserState.teachingsList?.isNotEmpty == true)
-            ScreenH2(widget._appState.texts.teachingsAvailable),
-          for (final teaching in widget._browserState.teachingsList ?? [])
-            NewTeaching(teaching: teaching, onSelect: _onStartNewTeaching),
-        ],
+    return Expanded(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (widget._browserState.localProgresses?.isNotEmpty == true)
+                ScreenH2(widget._appState.texts.teachingsInProgress),
+              for (final progress in widget._browserState.localProgresses ?? [])
+                _buildProgress(context, progress),
+              if (widget._browserState.teachingsList?.isNotEmpty == true)
+                ScreenH2(widget._appState.texts.teachingsAvailable),
+              for (final teaching in widget._browserState.teachingsList ?? [])
+                NewTeaching(teaching: teaching, onSelect: _onStartNewTeaching),
+            ],
+          ),
+        ),
       ),
     );
   }
