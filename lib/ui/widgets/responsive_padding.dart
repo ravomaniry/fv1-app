@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Sets the maximum width and render the content at the center of the page.
 class ResponsivePadding extends StatelessWidget {
   final Widget child;
 
