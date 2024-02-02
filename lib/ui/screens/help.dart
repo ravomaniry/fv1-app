@@ -14,7 +14,6 @@ class HelpScreen extends StatelessWidget {
   const HelpScreen({super.key});
 
   void _onClose(BuildContext context) {
-    context.read<AppState>().setIsHelpViewed();
     context.goNamed(Routes.home);
   }
 

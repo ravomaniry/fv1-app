@@ -58,9 +58,7 @@ class _CreateRouterState extends State<CreateRouter> {
       // Allow anyone to visit the help page
       // else: go to home page if user is authenticated, otherwise, go to auth
       redirect: (_, state) {
-        if (!appState.isHelpViewed) {
-          return Routes.help;
-        } else if (state.fullPath == Routes.help) {
+        if (state.fullPath == Routes.help) {
           return null;
         }
         final isOnAuthPage =

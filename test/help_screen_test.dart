@@ -31,7 +31,6 @@ void main() {
     );
     when(dataService.loadProgresses()).thenAnswer((_) async => []);
     storageService = MockStorageService();
-    when(storageService.isHelpViewed()).thenReturn(false);
     baseClient = MockCustomHttpClient();
     providers = createProviders(
       dataService,
@@ -42,19 +41,14 @@ void main() {
     );
   });
 
-  testWidgets(
-      'Goes to help screen if help has not been viewed yet, then, closing help goes to auth screen',
+  testWidgets('Goes to help screen when user clicks on help button',
       (tester) async {
     await tester.pumpWidget(Fv1App(providers));
     await tick(tester, 1);
+    await tapByKey(tester, HelpButton.buttonKey, 1);
     expect(find.byKey(HelpScreen.widgetKey), findsOneWidget);
-    verifyNever(storageService.setIsHelpViewed());
     // It goes to home screen and then redirected to the auth screen
     await tapByKey(tester, ContinueButton.buttonKey, 1);
-    verify(storageService.setIsHelpViewed()).called(1);
     expect(find.byKey(UsernameFormField.fieldKey), findsOneWidget);
-    // Go to help with the button
-    await tapByKey(tester, HelpButton.buttonKey);
-    expect(find.byKey(HelpScreen.widgetKey), findsOneWidget);
   });
 }

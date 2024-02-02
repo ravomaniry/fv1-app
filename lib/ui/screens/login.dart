@@ -15,8 +15,6 @@ import 'package:fv1/ui/widgets/login_error.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
-final _formKey = GlobalKey<FormBuilderState>();
-
 class LoginScreen extends StatelessWidget {
   static const route = 'login';
 
@@ -37,10 +35,19 @@ class LoginScreen extends StatelessWidget {
   }
 }
 
-class _LoginScreen extends StatelessWidget {
+class _LoginScreen extends StatefulWidget {
   final AppState _state;
 
   const _LoginScreen(this._state);
+
+  @override
+  State<_LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<_LoginScreen> {
+  AppState get _state => widget._state;
+
+  final _formKey = GlobalKey<FormBuilderState>();
 
   _onSubmit(BuildContext context) {
     final isValid = _formKey.currentState
